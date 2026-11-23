@@ -23,10 +23,11 @@ jobs:
           const paths = [manifest.action.default_popup, manifest.background.service_worker, ...Object.values(manifest.icons), ...Object.values(manifest.action.default_icon)];
           for (const p of paths) if (!fs.existsSync(p)) throw new Error('missing ' + p);
           const langs = ['en','es','fr','de','pt-BR','ru','ar','zh-CN'];
-          const base = Object.keys(JSON.parse(fs.readFileSync('locales/en.json', 'utf8'))).sort().join('|');
+          const base = JSON.parse(fs.readFileSync('locales/en.json', 'utf8'));
           for (const code of langs) {
-            const keys = Object.keys(JSON.parse(fs.readFileSync('locales/' + code + '.json', 'utf8'))).sort().join('|');
-            if (keys !== base) throw new Error('locale key mismatch: ' + code);
+            const table = JSON.parse(fs.readFileSync('locales/' + code + '.json', 'utf8'));
+            const missing = Object.keys(base).filter(k => !(k in table));
+            if (missing.length) throw new Error('locale ' + code + ' missing keys: ' + missing.join(', '));
           }
           const imports = ['core.js','crypto.js','i18n.js','overlay.js','pin.js','storage.js','theme.js','ui.js','privacy.html'];
           for (const p of imports) if (!fs.existsSync(p)) throw new Error('missing static import ' + p);

@@ -52,6 +52,7 @@
   "autoLockLabel": "保持打开",
   "autoLockNever": "直到标签页关闭",
   "minutesAfter_other": "{n} 分钟",
+  "minutesAfter_one": "{n} 分钟",
   "showBadgeLabel": "在图标上显示锁定数量",
   "changePin": "更改全局 PIN",
   "resetAll": "清除全部",
