@@ -111,7 +111,7 @@ body {
 /* Selecting interface chrome is never useful and causes accidental highlights
    when the user drags across the PIN prompt. */
 .app { -webkit-user-select: none; user-select: none; }
-.selectable, .pin-input, .recovery-code, .site-host { -webkit-user-select: text; user-select: text; }
+.selectable, .recovery-code, .site-host { -webkit-user-select: text; user-select: text; }
 
 .app {
   padding: 16px 16px 12px;
@@ -202,10 +202,6 @@ a.icon-btn { text-decoration: none; }
   font-size: 15px; font-weight: 800; line-height: 1.25; color: var(--text);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.status-tag {
-  flex-shrink: 0; font-size: 10px; font-weight: 800;
-  color: var(--state); text-transform: uppercase; letter-spacing: 0.08em;
-}
 .site-host {
   font-family: var(--mono); font-size: 11.5px; color: var(--muted);
   unicode-bidi: isolate; text-align: start;
@@ -250,7 +246,6 @@ a.icon-btn { text-decoration: none; }
 .primary-btn:disabled { cursor: not-allowed; filter: saturate(0.7) brightness(0.98); opacity: 0.75; }
 
 .quick-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.row-between { justify-content: space-between; align-items: center; }
 .ghost-btn {
   flex: 1 1 0; min-width: 0; height: 40px; font-family: inherit; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -284,23 +279,6 @@ a.ghost-btn { text-decoration: none; }
    ------------------------------------------------------------------------- */
 .pin-field { display: flex; flex-direction: column; gap: 8px; }
 .field-label { font-size: 12px; font-weight: 700; color: var(--text); }
-
-.pin-input {
-  width: 100%; height: 56px; text-align: center; font-family: var(--mono);
-  font-size: 22px; font-weight: 700; letter-spacing: 0.35em; text-indent: 0.35em;
-  color: var(--text); background: var(--card);
-  border: 1px solid var(--border); border-radius: 12px; padding: 0 12px;
-  transition: border-color 0.1s, box-shadow 0.1s;
-}
-.pin-input::placeholder { letter-spacing: 0.2em; text-indent: 0.2em; color: var(--muted); opacity: 0.55; }
-.pin-input:hover { border-color: var(--switch-off); }
-.pin-input:focus {
-  outline: none; border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
-}
-.pin-input[aria-invalid="true"] { border-color: var(--danger); }
-.pin-input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px var(--danger-soft); }
-.pin-input:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .field-hint { font-size: 11.5px; color: var(--muted); line-height: 1.4; margin: 0; }
 .field-hint.error { color: var(--danger); }
@@ -454,11 +432,6 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-.sr-only {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
-}
-
 [hidden] { display: none !important; }
 
 /* ---------------------------------------------------------------------------
@@ -479,22 +452,21 @@ a:focus-visible {
   background: var(--bg); color: var(--text);
   font-family: var(--mono); font-size: 20px; font-weight: 800;
   text-align: center; caret-color: var(--accent);
+  line-height: 46px; padding: 0;
+  font-variant-numeric: tabular-nums;
   transition: border-color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
 }
 .otp-box.otp-enter { animation: otp-in 0.09s ease-out both; }
-.otp-box.otp-pop { animation: otp-pop 0.09s ease-out; }
 @keyframes otp-in {
   from { opacity: 0.6; transform: translateX(-2px); }
   to { opacity: 1; transform: none; }
 }
-@keyframes otp-pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.04); }
-  100% { transform: scale(1); }
-}
 .otp-box:focus {
-  outline: none; border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft); background: var(--card);
+  border-color: var(--accent); background: var(--card);
+}
+.otp-box:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 .otp-box.otp-next { border-style: dashed; background: var(--card); }
 .otp.invalid .otp-box { border-color: var(--danger); }
@@ -568,7 +540,7 @@ a:focus-visible {
 .confirm-strip {
   display: flex; flex-direction: column; gap: 12px;
   margin-top: 4px; padding: 14px;
-  border: 1px solid var(--danger); border-radius: 14px;
+  border: 1px solid var(--border); border-radius: 14px;
   background: var(--card);
   box-shadow: var(--card-shadow);
   animation: menu-in 0.1s ease-out;
@@ -584,6 +556,10 @@ a:focus-visible {
 .confirm-actions { display: flex; gap: 8px; }
 .confirm-actions .ghost-btn,
 .confirm-actions .danger-btn { flex: 1 1 0; min-width: 0; height: 40px; }
+.confirm-actions #resetConfirmCancel {
+  border: 0; color: var(--danger); background: var(--card);
+}
+.confirm-actions #resetConfirmCancel:hover { background: var(--danger-soft); color: var(--danger); }
 .danger-btn {
   border: 0; border-radius: 12px; cursor: pointer;
   background: var(--danger); color: #ffffff;

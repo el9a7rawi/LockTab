@@ -17,6 +17,8 @@
   const GLOBE =
     '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z"/></svg>';
 
+  let selectSequence = 0;
+
   function createSelect(native) {
     if (!native || native.dataset.customSelect === "ready") return null;
     native.dataset.customSelect = "ready";
@@ -25,6 +27,7 @@
     native.setAttribute("aria-hidden", "true");
     native.hidden = true;
 
+    const selectId = "cselect-" + (selectSequence += 1);
     const wrapper = document.createElement("div");
     wrapper.className = iconMode ? "cselect lang" : "cselect";
 
@@ -34,6 +37,7 @@
     button.setAttribute("role", "combobox");
     button.setAttribute("aria-haspopup", "listbox");
     button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-controls", selectId + "-list");
 
     const labelledBy = native.getAttribute("aria-labelledby");
     if (labelledBy) {
@@ -60,6 +64,7 @@
     }
 
     const menu = document.createElement("ul");
+    menu.id = selectId + "-list";
     menu.className = iconMode ? "cselect-menu cselect-lang-menu" : "cselect-menu";
     menu.setAttribute("role", "listbox");
     if (labelledBy) menu.setAttribute("aria-labelledby", labelledBy);
@@ -84,6 +89,7 @@
         item.className = "cselect-option";
         item.setAttribute("role", "option");
         item.setAttribute("aria-selected", String(option.selected));
+        item.id = selectId + "-option-" + index;
         item.dataset.index = String(index);
 
         const label = document.createElement("span");
@@ -111,12 +117,15 @@
       menu.hidden = true;
       button.setAttribute("aria-expanded", "false");
       wrapper.classList.remove("open");
+      button.removeAttribute("aria-activedescendant");
       highlight = -1;
     }
 
     function syncHighlight() {
       const items = menu.querySelectorAll(".cselect-option");
       items.forEach((item, index) => item.classList.toggle("highlight", index === highlight));
+      if (items[highlight]) button.setAttribute("aria-activedescendant", items[highlight].id);
+      else button.removeAttribute("aria-activedescendant");
       if (highlight >= 0 && items[highlight]) {
         items[highlight].scrollIntoView({ block: "nearest" });
       }

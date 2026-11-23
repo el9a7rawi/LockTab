@@ -1,10 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "LockTab",
+  "name": "LockTab — Your Tabs, Your Eyes Only",
   "version": "1.0.1",
-  "description": "Lock any tab behind a 6-digit PIN, with an optional PIN per site.",
+  "description": "Lock any tab in one click with a 6-digit PIN. Private PINs per site, one-time recovery, zero cloud. Your tabs, your eyes only.",
   "minimum_chrome_version": "121",
-
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
@@ -12,7 +11,6 @@
     "128": "icons/icon-128.png",
     "512": "icons/icon-512.png"
   },
-
   "action": {
     "default_popup": "popup.html",
     "default_title": "LockTab",
@@ -23,49 +21,53 @@
       "128": "icons/icon-128.png"
     }
   },
-
   "permissions": [
     "storage",
     "tabs",
     "scripting",
     "alarms"
   ],
-
   "host_permissions": [
     "<all_urls>"
   ],
-
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["core.js", "pin.js", "overlay.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "core.js",
+        "pin.js",
+        "overlay.js"
+      ],
       "run_at": "document_start",
       "all_frames": false
     }
   ],
-
   "background": {
     "service_worker": "background.js"
   },
-
   "commands": {
     "lock-now": {
-      "suggested_key": { "default": "Alt+Shift+L" },
+      "suggested_key": {
+        "default": "Alt+Shift+L"
+      },
       "description": "Lock the current tab immediately"
     }
   },
-
   "web_accessible_resources": [
     {
-      "resources": ["fonts/cairo-*.woff2"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "fonts/cairo-*.woff2"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
-
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self'; font-src 'self'"
   },
-
   "browser_specific_settings": {
     "gecko": {
       "id": "locktab@ahmedyousry",

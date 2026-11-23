@@ -1,96 +1,140 @@
-# LockTab
+<p align="center">
+  <img src="assets/banner/locktab-banner-pt-BR.png" width="100%" alt="LockTab — Suas abas, só para você" />
+</p>
 
-[![Versão](https://img.shields.io/badge/version-1.0.1-4f46e5)](https://github.com/el9a7rawi/LockTab/releases)
-[![Licença: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-047857)](LICENSE)
-[![Manifest V3](https://img.shields.io/badge/Manifest-V3-7c3aed)](manifest.json)
+<h1 align="center">LockTab — Suas abas, só para você</h1>
 
-**Suas abas, atrás de um PIN.**
+<p align="center">Bloqueie qualquer aba com um clique e um PIN de 6 dígitos. Defina um PIN privado para um site, guarde um código de recuperação de uso único e saia sabendo que ninguém pode ler sua tela. Oito idiomas, RTL árabe completo e nenhuma nuvem.</p>
 
-LockTab é uma extensão pequena e offline que esconde qualquer aba atrás de um PIN de 6 dígitos.
-Defina um PIN global, dê um PIN próprio a uma página sensível se quiser, e saia do computador sem
-preocupação.
+<p align="center">
+  <a href="https://github.com/el9a7rawi/LockTab/releases"><img src="https://img.shields.io/github/v/release/el9a7rawi/LockTab?color=4f46e5" alt="Latest release" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-E8710A" alt="Apache 2.0" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-22C55E" alt="PRs welcome" /></a>
+  <a href="https://developer.chrome.com/docs/extensions"><img src="https://img.shields.io/badge/Manifest-V3-4285F4" alt="Manifest V3" /></a>
+  <img src="https://img.shields.io/badge/8_Languages-7c3aed" alt="8 languages" />
+  <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
+</p>
 
-> Ler em outro idioma: [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) ·
-> [Deutsch](README.de.md) · [Русский](README.ru.md) · [العربية](README.ar.md) · [简体中文](README.zh-CN.md)
+<h4 align="center">
+  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md"><b>Português (Brasil)</b></a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
+</h4>
 
-## Por que o LockTab
+<h3 align="center">Baixe para seu navegador — clique no ícone</h3>
 
-- **Esconde a página de verdade.** Uma camada com shadow root fechado cobre o conteúdo, prende o foco
-  e bloqueia a rolagem. Se a página a remover, ela volta.
-- **Nenhum segredo em texto puro.** O PIN é derivado com PBKDF2-HMAC-SHA256 (600.000 iterações e um salt
-  único de 16 bytes). Apenas o hash é armazenado — no seu dispositivo.
-- **O popup não é atalho.** Toda ação que amplia o acesso pede o PIN novamente.
-- **Um contador compartilhado.** Erros escalam para 30 s → 60 s → 300 s → 900 s de bloqueio. Abrir
-  outra aba não reinicia o contador quando se usa o PIN global.
-- **Recuperação sem servidor.** Um código de uso único aparece na configuração; ao usá-lo, ele é
-  consumido e todos os bloqueios são removidos.
-- **Privado por construção.** Sem conta, sem telemetria, sem código remoto, sem requisições de rede.
+<div align="center">
 
-## Instalação
+| [<img src="assets/browsers/chrome.svg" width="52" alt="Chrome" /><br><b>Chrome</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/edge.svg" width="52" alt="Edge" /><br><b>Edge</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/firefox.svg" width="52" alt="Firefox" /><br><b>Firefox</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/brave.svg" width="52" alt="Brave" /><br><b>Brave</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/opera.svg" width="52" alt="Opera" /><br><b>Opera</b>](https://github.com/el9a7rawi/LockTab/releases/latest) |
+|---|---|---|---|---|
 
-### Chrome, Edge, Brave e Opera
+</div>
 
-1. Baixe `locktab-chrome-1.0.1.zip` em [Releases](https://github.com/el9a7rawi/LockTab/releases).
-2. Extraia em uma pasta.
-3. Abra `chrome://extensions` e ative o **Modo do desenvolvedor**.
-4. Clique em **Carregar sem compactação** e selecione a pasta extraída.
+Firefox 121 ou superior usa um arquivo dedicado com um manifesto específico.
 
-### Firefox 121+
+---
 
-1. Baixe `locktab-firefox-1.0.1.zip` em [Releases](https://github.com/el9a7rawi/LockTab/releases).
-2. Extraia em uma pasta.
-3. Abra `about:debugging#/runtime/this-firefox` e escolha **Carregar extensão temporária**.
-4. Selecione `manifest.json` na pasta extraída.
+## 1. Por que o LockTab?
 
-## Uso
-
-1. Clique no ícone do LockTab. Na primeira vez, crie um PIN (6 dígitos).
-2. **Guarde o código de recuperação**: ele aparece uma única vez.
-3. Abra a aba que deseja proteger, clique no ícone e escolha **Bloquear esta aba**.
-4. Para ler novamente, digite o PIN na camada. O popup oferece **Desbloquear por um tempo** e
-   **Remover bloqueio**; ambos pedem o PIN antes.
-5. Opcionalmente, defina um PIN específico no cartão **PIN deste site**.
-
-O popup também traz tema, idioma, duração do desbloqueio, contador no ícone, troca de PIN e reset completo.
-
-## Modelo de segurança
-
-| Decisão | Motivo |
+| Without LockTab | With LockTab |
 | --- | --- |
-| A verificação acontece apenas no background | Um content script roda em uma página que a web pode influenciar; ele nunca vê hash, salt ou contador. |
-| Query e fragmento são ignorados | Um redirecionamento não pode remover o bloqueio ao acrescentar `?utm_source=…`. |
-| A camada usa shadow root fechado | A página anfitriã não consegue ler nem estilizar a interface de bloqueio. |
-| As tentativas são gravadas em série | Dois cliques simultâneos não garantem uma tentativa extra. |
-| Desbloqueios temporários são limpos ao iniciar | Fechar o navegador conta como sair do posto. |
+| Qualquer pessoa pode ler uma aba aberta | Sua aba fica coberta até o PIN ser digitado |
+| Uma senha compartilhada por todos os sites | Um PIN dedicado às páginas que importam |
+| Perder o PIN é perder o acesso | Um código de recuperação único desfaz tudo |
+| Extensões que enviam seus dados | Totalmente offline, sem conta e sem rastreamento |
 
-O LockTab esconde uma página de quem estiver no seu computador. Não é criptografia de disco e não
-protege contra um navegador comprometido ou um administrador que remova a extensão.
+The page you left open stays private without a shared password or a cloud account. Nothing leaves
+the device, so the promise holds even when you are offline.
 
-A política de privacidade completa está em [privacy.html](privacy.html).
+---
 
-## Idiomas
+## 2. Como funciona — três passos
 
-English, Español, Français, Deutsch, Português (Brasil), Русский, العربية (RTL) e 简体中文. A interface
-segue o idioma do navegador e pode ser alterada no popup.
+1. Crie um PIN de 6 dígitos e guarde o código de recuperação mostrado uma vez.
+2. Abra a aba que deseja proteger e clique em Bloquear esta aba.
+3. Digite o PIN para ler novamente, ou conceda um desbloqueio temporário.
 
-## Compilar do código
+---
 
-```bash
-python tools/build.py          # valida os idiomas e gera os dois zips
-node --test tests/core.test.mjs
-```
+## 3. Visita à interface — cada parte da extensão
 
-Sem bundler e sem dependências npm.
+### 3.1 Cabeçalho — tudo ao alcance
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-header.png" width="400" alt="Cabeçalho — tudo ao alcance" /></p>
 
-## Apoio
+Título, tema, idioma e link do GitHub dividem uma linha discreta.
 
-Se o LockTab evitou um momento constrangedor, você pode apoiar o projeto:
+### 3.2 Uma ação principal
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-hero.png" width="400" alt="Uma ação principal" /></p>
 
-- PayPal: <https://paypal.me/27medYousry>
-- InstaPay: <https://ipn.eg/S/el9a7rawi/instapay/30U5SS>
+Um único botão em gradiente cobre a página ativa. Desbloqueio temporário e remoção pedem o PIN antes.
 
-## Licença
+### 3.3 Estado da aba
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-status.png" width="400" alt="Estado da aba" /></p>
 
-Apache-2.0 © Ahmed Yousry
+Uma placa plana mostra se a aba está bloqueada, aberta ou aberta por um tempo.
 
-Feito com cuidado ❤️ Ahmed Yousry · [GitHub](https://github.com/el9a7rawi/LockTab)
+### 3.4 Entrada do PIN
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-otp.png" width="400" alt="Entrada do PIN" /></p>
+
+Seis campos aparecem um após o outro, param no sexto e centralizam o asterisco.
+
+### 3.5 Código de recuperação
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-recovery.png" width="400" alt="Código de recuperação" /></p>
+
+Mostrado uma única vez após a configuração. Um código usado nunca volta a funcionar.
+
+### 3.6 Sites bloqueados
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-sites.png" width="400" alt="Sites bloqueados" /></p>
+
+Linhas numeradas listam cada domínio. Após cinco sites, setas percorrem a lista.
+
+### 3.7 Configurações
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-settings.png" width="400" alt="Configurações" /></p>
+
+Desfoque em três níveis, contador no ícone, duração do desbloqueio, tema e idioma — em um só lugar.
+
+### 3.8 Apoio
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-donate.png" width="400" alt="Apoio" /></p>
+
+O LockTab é gratuito e de código aberto. PayPal e um InstaPay em destaque o mantêm independente.
+
+---
+
+## 4. What the PIN protects
+
+PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
+stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
+cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
+tab does not reset the counter while the global PIN is in use. The query string and fragment are
+dropped, so a redirect cannot shed a lock.
+
+---
+
+## 5. Install
+
+1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
+2. Extract it into a folder.
+3. Chrome, Edge, Brave and Opera: open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked** and select the folder.
+4. Firefox 121+: open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on** and select `manifest.json` in the folder.
+
+A privacidade está na seção 7 e em privacy.html.
+
+---
+
+## 6. Development
+
+No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
+locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
+unit tests. The interface follows a fixed visual contract in the design reference.
+
+---
+
+## 7. Privacy
+
+Veja privacy.html. O PIN é salvo apenas como hash PBKDF2 com um salt único. Query e fragmento são descartados, o conteúdo da página nunca é lido e nenhuma requisição sai da extensão. As fontes são locais.
+
+---
+
+## 8. License
+
+O projeto é de código aberto e gratuito sob Apache-2.0 — use, modifique e compartilhe livremente; o texto completo está em LICENSE. As fontes têm licença SIL OFL 1.1. O histórico está em CHANGELOG.md.
+
+<p align="center">Feito com carinho ❤️ <b>Ahmed Yousry</b> · <a href="https://github.com/el9a7rawi/LockTab">LockTab</a> · <a href="LICENSE">Apache-2.0</a></p>

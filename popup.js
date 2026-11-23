@@ -259,6 +259,8 @@
         return I18n.t("pinInvalid");
       case "not_lockable":
         return I18n.t("errorNotLockable");
+      case "content_unavailable":
+        return I18n.t("errorContentUnavailable");
       case "unauthorized":
         return I18n.t("errorGeneric");
       default:
@@ -833,6 +835,7 @@
 
       recoveryCode = result.recoveryCode;
       el.recoveryValue.textContent = recoveryCode;
+      el.recoveryCopy.querySelector("span").textContent = I18n.t("copy");
       await savePendingRecovery(recoveryCode);
       await refresh();
     });
@@ -863,6 +866,10 @@
     el.resetConfirmCancel.addEventListener("click", () => {
       el.resetConfirmPanel.hidden = true;
       el.resetAllBtn.focus();
+    });
+
+    el.resetConfirmPanel.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") el.resetConfirmCancel.click();
     });
 
     el.resetConfirmGo.addEventListener("click", async () => {

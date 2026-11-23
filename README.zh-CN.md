@@ -1,89 +1,140 @@
-# LockTab
+<p align="center">
+  <img src="assets/banner/locktab-banner-zh-CN.png" width="100%" alt="LockTab — 你的标签页，只属于你" />
+</p>
 
-[![版本](https://img.shields.io/badge/version-1.0.1-4f46e5)](https://github.com/el9a7rawi/LockTab/releases)
-[![许可证：Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-047857)](LICENSE)
-[![Manifest V3](https://img.shields.io/badge/Manifest-V3-7c3aed)](manifest.json)
+<h1 align="center">LockTab — 你的标签页，只属于你</h1>
 
-**用 PIN 保护你的标签页。**
+<p align="center">一键用 6 位 PIN 锁定任意标签页。可为单个网站设置专属 PIN，获得一次性恢复码，然后放心离开——没人能读到你的屏幕。八种界面语言，完整的阿拉伯语 RTL，且完全不联网。</p>
 
-LockTab 是一款离线小型扩展，用 6 位 PIN 隐藏任意标签页。设置一个全局 PIN，必要时给敏感页面
-单独设一个，然后放心离开座位。
+<p align="center">
+  <a href="https://github.com/el9a7rawi/LockTab/releases"><img src="https://img.shields.io/github/v/release/el9a7rawi/LockTab?color=4f46e5" alt="Latest release" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-E8710A" alt="Apache 2.0" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-22C55E" alt="PRs welcome" /></a>
+  <a href="https://developer.chrome.com/docs/extensions"><img src="https://img.shields.io/badge/Manifest-V3-4285F4" alt="Manifest V3" /></a>
+  <img src="https://img.shields.io/badge/8_Languages-7c3aed" alt="8 languages" />
+  <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
+</p>
 
-> 其他语言：[English](README.md) · [Español](README.es.md) · [Français](README.fr.md) ·
-> [Deutsch](README.de.md) · [Português (Brasil)](README.pt-BR.md) · [Русский](README.ru.md) ·
-> [العربية](README.ar.md)
+<h4 align="center">
+  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md"><b>中文（简体）</b></a>
+</h4>
 
-## 为什么选择 LockTab
+<h3 align="center">为你的浏览器下载 — 点击图标</h3>
 
-- **真正隐藏页面。** 闭合 shadow root 覆盖层会遮住内容、锁定焦点并阻止底层滚动。页面若删除它，它会重新出现。
-- **不明文保存密码。** PIN 通过 PBKDF2-HMAC-SHA256 派生（600,000 次迭代，独立的 16 字节盐）。只保存哈希，且只存在你的设备上。
-- **弹窗无法绕过。** 任何扩大访问范围的操作都会再次要求输入 PIN。
-- **共用计数器。** 连续错误会升级为 30 秒 → 60 秒 → 300 秒 → 900 秒的锁定。使用全局 PIN 时，切换标签页不会重置计数。
-- **无需服务器的恢复方式。** 设置 PIN 时显示一次性恢复码；使用后即失效，并清除所有锁定。
-- **隐私设计。** 无账号、无遥测、无远程代码、无网络请求。
+<div align="center">
 
-## 安装
+| [<img src="assets/browsers/chrome.svg" width="52" alt="Chrome" /><br><b>Chrome</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/edge.svg" width="52" alt="Edge" /><br><b>Edge</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/firefox.svg" width="52" alt="Firefox" /><br><b>Firefox</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/brave.svg" width="52" alt="Brave" /><br><b>Brave</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/opera.svg" width="52" alt="Opera" /><br><b>Opera</b>](https://github.com/el9a7rawi/LockTab/releases/latest) |
+|---|---|---|---|---|
 
-### Chrome、Edge、Brave、Opera
+</div>
 
-1. 从 [Releases](https://github.com/el9a7rawi/LockTab/releases) 下载 `locktab-chrome-1.0.1.zip`。
-2. 解压到文件夹。
-3. 打开 `chrome://extensions`，开启**开发者模式**。
-4. 点击**加载已解压的扩展程序**，选择解压后的文件夹。
+Firefox 121 及以上使用带有专属 manifest 的独立压缩包。
 
-### Firefox 121+
+---
 
-1. 从 [Releases](https://github.com/el9a7rawi/LockTab/releases) 下载 `locktab-firefox-1.0.1.zip`。
-2. 解压到文件夹。
-3. 打开 `about:debugging#/runtime/this-firefox`，选择**载入临时附加组件**。
-4. 选中解压文件夹里的 `manifest.json`。
+## 1. 为什么选择 LockTab？
 
-## 使用
-
-1. 点击 LockTab 图标。首次运行会要求创建 PIN（6 位数字）。
-2. **保存恢复码** —— 它只显示一次。
-3. 打开要保护的标签页，点击图标，选择**锁定此标签页**。
-4. 再次查看时，在覆盖层输入 PIN。弹窗中的**暂时解锁**和**移除锁定**都会先要求 PIN。
-5. 可在**此网站的 PIN** 卡片中为单个网站设置独立 PIN。
-
-弹窗还提供主题切换、语言选择、解锁时长、图标计数开关、修改 PIN 和完全重置。
-
-## 安全模型
-
-| 决定 | 原因 |
+| Without LockTab | With LockTab |
 | --- | --- |
-| 仅在后台页面校验 | 内容脚本运行在网页可影响的环境中，永远看不到哈希、盐或尝试次数。 |
-| 忽略查询字符串与片段 | 重定向不能靠添加 `?utm_source=…` 摆脱锁定。 |
-| 覆盖层使用闭合 shadow root | 宿主页面无法读取或改写锁界面。 |
-| 尝试次数串行写入 | 两次同时点击不会换来额外一次尝试。 |
-| 临时解锁在浏览器启动时清除 | 关闭浏览器视为离开工位。 |
+| 任何人都能看到打开的标签页 | 输入 PIN 前页面始终被遮盖 |
+| 所有网站共用一个密码 | 重要页面使用专属 PIN |
+| 忘记 PIN 就失去访问 | 一次性恢复码可清除所有锁定 |
+| 会上传数据的扩展 | 完全离线，无账号、无追踪 |
 
-LockTab 用于防止他人坐到你的设备前看到页面。它不是磁盘加密，也无法防御被入侵的浏览器或有权删除扩展的管理员。
+The page you left open stays private without a shared password or a cloud account. Nothing leaves
+the device, so the promise holds even when you are offline.
 
-完整隐私政策见 [privacy.html](privacy.html)。
+---
 
-## 语言
+## 2. 如何使用 — 三个步骤
 
-English、Español、Français、Deutsch、Português (Brasil)、Русский、العربية（RTL）和简体中文。界面默认跟随浏览器语言，也可在弹窗中手动选择。
+1. 创建 6 位 PIN，并保存只显示一次的恢复码。
+2. 打开要保护的标签页，点击「锁定此标签页」。
+3. 输入 PIN 继续阅读，或授予临时解锁。
 
-## 从源码构建
+---
 
-```bash
-python tools/build.py          # 校验语言文件并生成两个发布包
-node --test tests/core.test.mjs
-```
+## 3. 界面导览 — 扩展的每个部分
 
-无需打包工具，也没有 npm 依赖。
+### 3.1 顶栏 — 触手可及
+<p align="center"><img src="assets/screenshots/zh-CN/sections/section-header.png" width="400" alt="顶栏 — 触手可及" /></p>
 
-## 支持
+标题、主题、语言与 GitHub 链接整齐地排在一行。
 
-如果 LockTab 帮你避免过尴尬时刻，可以支持这个项目：
+### 3.2 一个主操作
+<p align="center"><img src="assets/screenshots/zh-CN/sections/section-hero.png" width="400" alt="一个主操作" /></p>
 
-- PayPal: <https://paypal.me/27medYousry>
-- InstaPay: <https://ipn.eg/S/el9a7rawi/instapay/30U5SS>
+一个渐变按钮即可遮盖当前页面。临时解锁和移除锁定都需要先输入 PIN。
 
-## 许可证
+### 3.3 标签页状态
+<p align="center"><img src="assets/screenshots/zh-CN/sections/section-status.png" width="400" alt="标签页状态" /></p>
 
-Apache-2.0 © Ahmed Yousry
+扁平状态条显示标签页是已锁定、已打开还是暂时打开。
 
-用心打造 ❤️ Ahmed Yousry · [GitHub](https://github.com/el9a7rawi/LockTab)
+### 3.4 PIN 输入
+<p align="center"><img src="assets/screenshots/zh-CN/sections/section-otp.png" width="400" alt="PIN 输入" /></p>
+
+六个框依次出现，到第六个停止，星号居中显示。
+
+### 3.5 恢复码
+<p align="center"><img src="assets/screenshots/zh-CN/sections/section-recovery.png" width="400" alt="恢复码" /></p>
+
+设置后只显示一次。已使用的恢复码无法再次使用。
+
+### 3.6 已锁定的网站
+<p align="center"><img src="assets/screenshots/zh-CN/sections/section-sites.png" width="400" alt="已锁定的网站" /></p>
+
+带编号的行列出每个被锁定的域名。超过五个网站后可用箭头翻页。
+
+### 3.7 设置
+<p align="center"><img src="assets/screenshots/zh-CN/sections/section-settings.png" width="400" alt="设置" /></p>
+
+三档模糊、图标计数、解锁时长、主题和语言——尽在一处。
+
+### 3.8 支持
+<p align="center"><img src="assets/screenshots/zh-CN/sections/section-donate.png" width="400" alt="支持" /></p>
+
+LockTab 免费且开源。PayPal 和醒目的 InstaPay 帮助它保持独立。
+
+---
+
+## 4. What the PIN protects
+
+PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
+stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
+cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
+tab does not reset the counter while the global PIN is in use. The query string and fragment are
+dropped, so a redirect cannot shed a lock.
+
+---
+
+## 5. Install
+
+1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
+2. Extract it into a folder.
+3. Chrome, Edge, Brave and Opera: open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked** and select the folder.
+4. Firefox 121+: open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on** and select `manifest.json` in the folder.
+
+隐私说明见下方第 7 节及 privacy.html。
+
+---
+
+## 6. Development
+
+No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
+locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
+unit tests. The interface follows a fixed visual contract in the design reference.
+
+---
+
+## 7. Privacy
+
+请参阅 privacy.html。PIN 仅以 PBKDF2 哈希和唯一盐值保存。查询字符串与片段会被丢弃，页面内容从不读取，没有任何请求离开扩展。字体全部本地打包。
+
+---
+
+## 8. License
+
+本项目基于 Apache-2.0 开源且免费——可自由使用、修改与分享；全文见 LICENSE。内置字体采用 SIL OFL 1.1。发布历史见 CHANGELOG.md。
+
+<p align="center">用心打造 ❤️ <b>Ahmed Yousry</b> · <a href="https://github.com/el9a7rawi/LockTab">LockTab</a> · <a href="LICENSE">Apache-2.0</a></p>

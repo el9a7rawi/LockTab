@@ -1,0 +1,71 @@
+name: Release
+
+# Any tag like v1.0.0 triggers: package -> publish GitHub Release.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify tag matches manifest
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          MANIFEST_VERSION=$(node -p "require('./manifest.json').version")
+          test "$VERSION" = "$MANIFEST_VERSION" || { echo "tag $VERSION != manifest $MANIFEST_VERSION"; exit 1; }
+
+      - name: Package extension-only archives
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          mkdir -p dist
+          FILES=(manifest.json popup.html privacy.html ui.css ui.js background.js core.js crypto.js i18n.js overlay.js pin.js storage.js theme.js LICENSE icons locales fonts)
+          for BROWSER in chrome edge brave opera firefox; do
+            STAGE="dist/stage-${BROWSER}"
+            mkdir -p "$STAGE"
+            cp -R "${FILES[@]}" "$STAGE/"
+
+            if [ "$BROWSER" = "firefox" ]; then
+              node - "$STAGE/manifest.json" <<'NODE'
+              const fs = require('fs');
+              const path = process.argv[2];
+              const m = JSON.parse(fs.readFileSync(path, 'utf8'));
+              delete m.minimum_chrome_version;
+              delete m.content_security_policy;
+              m.background = { scripts: ['background.js'] };
+              m.browser_specific_settings.gecko.strict_min_version = '121.0';
+              fs.writeFileSync(path, JSON.stringify(m, null, 2) + '\n');
+              NODE
+            fi
+
+            ARCHIVE="dist/locktab-${BROWSER}-v${VERSION}.zip"
+            (cd "$STAGE" && zip -qr "${GITHUB_WORKSPACE}/${ARCHIVE}" .)
+
+            CONTENTS=$(unzip -Z1 "$ARCHIVE")
+            for REQUIRED in ui.css ui.js popup.html privacy.html background.js core.js crypto.js i18n.js overlay.js pin.js storage.js theme.js LICENSE \
+                            icons/icon-128.png fonts/cairo-arabic.woff2 \
+                            locales/en.json locales/ar.json; do
+              echo "$CONTENTS" | grep -qx "$REQUIRED" || { echo "$ARCHIVE missing $REQUIRED"; exit 1; }
+            done
+            if echo "$CONTENTS" | grep -Eq '^(AGENTS|TODO|OrderLog|DESIGN)\.md$|^([A-Za-z0-9_-]+/)?(scripts|dev|tests|social|video|assets|tools)/'; then
+              echo "$ARCHIVE contains governance or development files"; exit 1
+            fi
+            rm -rf "$STAGE"
+          done
+          (cd dist && sha256sum *.zip > SHA256SUMS.txt)
+
+      - name: Prepare release notes
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          sed "s/{{VERSION}}/$VERSION/g" .github/RELEASE_TEMPLATE.md > /tmp/NOTES.md
+
+      - name: Create GitHub Release
+        run: gh release create "$GITHUB_REF_NAME" dist/* --title "LockTab $GITHUB_REF_NAME" --notes-file /tmp/NOTES.md --verify-tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

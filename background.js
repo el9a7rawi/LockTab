@@ -95,8 +95,27 @@ if (typeof importScripts === "function") {
     return call((done) => api.tabs.get(tabId, done));
   }
 
+  /** Returns false instead of hiding a failed delivery: the caller can retry. */
   function sendToTab(tabId, message) {
-    return call((done) => api.tabs.sendMessage(tabId, message, done)).catch(() => undefined);
+    return call((done) => api.tabs.sendMessage(tabId, message, done))
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  /** A tab may still run a stale content script after an extension reload. */
+  async function ensureContentScript(tabId) {
+    if (!api.scripting || !api.scripting.executeScript) return false;
+    const injected = await call((done) =>
+      api.scripting.executeScript(
+        {
+          target: { tabId },
+          files: ["core.js", "pin.js", "overlay.js"],
+          injectImmediately: true,
+        },
+        done
+      )
+    ).catch(() => false);
+    return injected !== false;
   }
 
   function queryTabs(query) {
@@ -104,13 +123,16 @@ if (typeof importScripts === "function") {
   }
 
   /**
-   * Resolves the page identity from the browser's own record of the sender,
-   * never from a value the caller supplied. A content script can be influenced
-   * by the page it runs in; `sender.tab.url` cannot.
+   * Resolves the page identity from the browser's own record of the sender.
+   * At document_start `sender.tab.url` can still be the previous document, so
+   * prefer the content script's own document URL whenever it is a real page.
    */
   function senderPageInfo(sender) {
-    const url = (sender && sender.tab && sender.tab.url) || (sender && sender.url) || "";
-    return { url, info: Core.normalizeUrl(url) };
+    const tabUrl = (sender && sender.tab && sender.tab.url) || "";
+    const docUrl = (sender && sender.url) || "";
+    const tabInfo = Core.normalizeUrl(tabUrl);
+    const docInfo = Core.normalizeUrl(docUrl);
+    return docInfo ? { url: docUrl, info: docInfo } : { url: tabUrl, info: tabInfo };
   }
 
   async function readState() {
@@ -162,15 +184,36 @@ if (typeof importScripts === "function") {
 
   async function pushPolicy(tabId) {
     const [tab, data] = await Promise.all([getTab(tabId), readState()]).catch(() => [null, null]);
-    if (!tab || !data) return;
+    if (!tab || !data) return false;
+
     const info = Core.normalizeUrl(tab.url);
     if (!info) {
-      await sendToTab(tabId, { type: "POLICY", locked: false, urlKey: null });
-      return;
+      return sendToTab(tabId, { type: "POLICY", locked: false, urlKey: null });
     }
+
     tabUrlKey.set(tabId, info.urlKey);
     ensureLockFonts(tabId);
-    await sendToTab(tabId, await policyPayload(data, info, tab.url));
+    const payload = await policyPayload(data, info, tab.url);
+
+    if (await sendToTab(tabId, payload)) return true;
+    /* The tab may be running the previous overlay build. Let it release its
+       listeners and install flag first, then re-inject once and retry. */
+    await call((done) =>
+      api.scripting.executeScript(
+        {
+          target: { tabId },
+          func: () => {
+            if (window.__locktabReinit) window.__locktabReinit();
+          },
+        },
+        done
+      )
+    ).catch(() => undefined);
+    if (await ensureContentScript(tabId)) {
+      if (await sendToTab(tabId, payload)) return true;
+    }
+    await call((done) => api.tabs.reload(tabId, {}, done)).catch(() => undefined);
+    return false;
   }
 
   /* --------------------------------------------------------------------------
@@ -257,14 +300,11 @@ if (typeof importScripts === "function") {
 
   function ensureLockFonts(tabId) {
     if (!api.scripting || !api.scripting.insertCSS || !tabId || styledTabs.has(tabId)) return;
-    styledTabs.add(tabId);
-    call((done) =>
-      api.scripting.insertCSS({ target: { tabId }, css: FONT_CSS, origin: "MAIN" }, done)
-    ).catch(() =>
-      call((done) => api.scripting.insertCSS({ target: { tabId }, css: FONT_CSS }, done)).catch(
-        () => undefined
-      )
-    );
+    /* `origin` accepts AUTHOR/USER; "MAIN" belongs to executeScript and would
+       make this call fail every time. Track the tab only after a real success. */
+    call((done) => api.scripting.insertCSS({ target: { tabId }, css: FONT_CSS }, done))
+      .then(() => styledTabs.add(tabId))
+      .catch(() => undefined);
   }
 
   /* --------------------------------------------------------------------------
@@ -277,14 +317,21 @@ if (typeof importScripts === "function") {
 
   async function refreshBadge() {
     if (!api.action) return;
-    const [tabs, data] = await Promise.all([queryTabs({}), readState()]);
+    const data = await readState();
+    if (!data.settings.showBadge) {
+      await call((done) => api.action.setBadgeText({ text: "" }, done)).catch(() => undefined);
+      return;
+    }
+
+    const tabs = await queryTabs({});
     let count = 0;
     for (const tab of tabs) {
-      const info = Core.normalizeUrl(tab.url);
+      /* The map is already maintained by onUpdated; avoid re-parsing URLs. */
+      const info = Core.normalizeUrl(tabUrlKey.get(tab.id) || tab.url);
       if (info && Core.findRule(data.rules, info)) count += 1;
     }
 
-    const text = data.settings.showBadge && count > 0 ? String(count) : "";
+    const text = count > 0 ? String(count) : "";
     await call((done) => api.action.setBadgeText({ text }, done)).catch(() => undefined);
     if (count > 0) {
       await call((done) => api.action.setBadgeBackgroundColor({ color: BADGE_COLOR }, done)).catch(
@@ -403,8 +450,9 @@ if (typeof importScripts === "function") {
 
     if (!result.ok) return result;
     tabUrlKey.set(tabId, info.urlKey);
-    await pushPolicy(tabId);
+    const delivered = await pushPolicy(tabId);
     scheduleBadgeRefresh();
+    if (!delivered) return { ok: false, error: "content_unavailable" };
     return { ok: true, urlKey: info.urlKey, host: info.host };
   }
 
@@ -462,9 +510,14 @@ if (typeof importScripts === "function") {
       const rules = Object.assign({}, data.rules, {
         [key]: Object.assign({}, existing, { mode: "custom", scope: "path", pin: record }),
       });
-      await Store.set({ rules });
+      /* A site PIN is a lock: an old temporary pass must not keep it readable. */
+      const unlocked = Object.assign({}, data.unlocked);
+      delete unlocked[info.urlKey];
+      await Store.set({ rules, unlocked });
     });
+    const delivered = await pushPolicy(tabId);
     scheduleBadgeRefresh();
+    if (!delivered) return { ok: false, error: "content_unavailable" };
     return { ok: true };
   }
 
@@ -731,9 +784,21 @@ if (typeof importScripts === "function") {
   if (api.storage && api.storage.onChanged) {
     api.storage.onChanged.addListener((changes, areaName) => {
       if (areaName !== "local") return;
-      if (changes.locale) stringsCache.clear();
-      if (changes.settings) broadcastPolicy().catch(() => undefined);
-      if (changes.rules || changes.settings || changes.unlocked) scheduleBadgeRefresh();
+      if (changes.locale) {
+        stringsCache.clear();
+        broadcastPolicy().catch(() => undefined);
+      }
+      if (changes.settings) {
+        const before = changes.settings.oldValue || {};
+        const after = changes.settings.newValue || {};
+        const overlayKeys = ["blurEnabled", "blurStrength", "autoLockMinutes"];
+        if (overlayKeys.some((key) => before[key] !== after[key])) {
+          broadcastPolicy().catch(() => undefined);
+        }
+      }
+      /* The badge counts rules, not unlock state, so an unlock does not need a
+         full tabs query on every PIN entry. */
+      if (changes.rules || changes.settings) scheduleBadgeRefresh();
     });
   }
 
@@ -757,6 +822,8 @@ if (typeof importScripts === "function") {
     if (changeInfo.status === "loading" && tab.url) {
       const info = Core.normalizeUrl(tab.url);
       if (info) tabUrlKey.set(tabId, info.urlKey);
+      /* Injected CSS does not survive a document navigation. */
+      styledTabs.delete(tabId);
     }
 
     if (changeInfo.url) {

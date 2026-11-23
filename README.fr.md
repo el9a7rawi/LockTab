@@ -1,98 +1,140 @@
-# LockTab
+<p align="center">
+  <img src="assets/banner/locktab-banner-fr.png" width="100%" alt="LockTab — Vos onglets, rien que pour vous" />
+</p>
 
-[![Version](https://img.shields.io/badge/version-1.0.1-4f46e5)](https://github.com/el9a7rawi/LockTab/releases)
-[![Licence : Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-047857)](LICENSE)
-[![Manifest V3](https://img.shields.io/badge/Manifest-V3-7c3aed)](manifest.json)
+<h1 align="center">LockTab — Vos onglets, rien que pour vous</h1>
 
-**Vos onglets, derrière un code PIN.**
+<p align="center">Verrouillez n'importe quel onglet en un clic avec un code à 6 chiffres. Ajoutez un code privé pour un site, conservez un code de récupération à usage unique et éloignez-vous en sachant que personne ne peut lire votre écran. Huit langues, RTL arabe complet et aucun cloud.</p>
 
-LockTab est une petite extension hors ligne qui masque n'importe quel onglet derrière un code PIN
-à 6 chiffres. Définissez un code global, attribuez-en un autre à une page sensible, et éloignez-vous
-de votre écran l'esprit tranquille.
+<p align="center">
+  <a href="https://github.com/el9a7rawi/LockTab/releases"><img src="https://img.shields.io/github/v/release/el9a7rawi/LockTab?color=4f46e5" alt="Latest release" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-E8710A" alt="Apache 2.0" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-22C55E" alt="PRs welcome" /></a>
+  <a href="https://developer.chrome.com/docs/extensions"><img src="https://img.shields.io/badge/Manifest-V3-4285F4" alt="Manifest V3" /></a>
+  <img src="https://img.shields.io/badge/8_Languages-7c3aed" alt="8 languages" />
+  <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
+</p>
 
-> Lire dans une autre langue : [English](README.md) · [Español](README.es.md) · [Deutsch](README.de.md) ·
-> [Português (Brasil)](README.pt-BR.md) · [Русский](README.ru.md) · [العربية](README.ar.md) ·
-> [简体中文](README.zh-CN.md)
+<h4 align="center">
+  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md"><b>Français</b></a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
+</h4>
 
-## Pourquoi LockTab
+<h3 align="center">Téléchargez pour votre navigateur — cliquez sur l’icône</h3>
 
-- **Il masque vraiment la page.** Une couche à shadow root fermé recouvre le contenu, capture le focus
-  et bloque le défilement. Si la page la supprime, elle revient.
-- **Aucun secret en clair.** Le code est dérivé avec PBKDF2-HMAC-SHA256 (600 000 itérations et un sel
-  unique de 16 octets). Seul le hachage est conservé, sur votre appareil.
-- **Le popup ne contourne rien.** Toute action qui élargit l'accès redemande le code.
-- **Un compteur partagé.** Les erreurs montent jusqu'à 30 s → 60 s → 300 s → 900 s de blocage. Ouvrir
-  un autre onglet ne réinitialise pas le compteur avec le code global.
-- **Récupération sans serveur.** Un code à usage unique est affiché à la création du PIN ; il se
-  consomme une fois utilisé et efface tous les verrous.
-- **Privé par construction.** Aucun compte, aucune télémétrie, aucun code distant, aucune requête réseau.
+<div align="center">
 
-## Installation
+| [<img src="assets/browsers/chrome.svg" width="52" alt="Chrome" /><br><b>Chrome</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/edge.svg" width="52" alt="Edge" /><br><b>Edge</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/firefox.svg" width="52" alt="Firefox" /><br><b>Firefox</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/brave.svg" width="52" alt="Brave" /><br><b>Brave</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/opera.svg" width="52" alt="Opera" /><br><b>Opera</b>](https://github.com/el9a7rawi/LockTab/releases/latest) |
+|---|---|---|---|---|
 
-### Chrome, Edge, Brave et Opera
+</div>
 
-1. Téléchargez `locktab-chrome-1.0.1.zip` depuis [Releases](https://github.com/el9a7rawi/LockTab/releases).
-2. Extrayez-le dans un dossier.
-3. Ouvrez `chrome://extensions` et activez le **mode développeur**.
-4. Cliquez sur **Charger l'extension non empaquetée** et sélectionnez le dossier extrait.
+Firefox 121 ou plus récent utilise une archive dédiée avec un manifeste spécifique.
 
-### Firefox 121+
+---
 
-1. Téléchargez `locktab-firefox-1.0.1.zip` depuis [Releases](https://github.com/el9a7rawi/LockTab/releases).
-2. Extrayez-le dans un dossier.
-3. Ouvrez `about:debugging#/runtime/this-firefox` et choisissez **Charger un module complémentaire temporaire**.
-4. Sélectionnez `manifest.json` dans le dossier extrait.
+## 1. Pourquoi LockTab ?
 
-## Utilisation
-
-1. Cliquez sur l'icône LockTab. Au premier lancement, créez un code PIN (6 chiffres).
-2. **Conservez le code de récupération** : il n'est affiché qu'une seule fois.
-3. Ouvrez l'onglet à protéger, cliquez sur l'icône puis sur **Verrouiller cet onglet**.
-4. Pour le relire, saisissez le code dans la couche. Le popup propose **Déverrouiller un moment** et
-   **Retirer le verrou** ; les deux demandent le code au préalable.
-5. Vous pouvez aussi définir un code propre à un site depuis la carte **Code PIN de ce site**.
-
-Le popup contient également le thème, la langue, la durée de déverrouillage, le compteur de l'icône,
-le changement de code et la réinitialisation complète.
-
-## Modèle de sécurité
-
-| Décision | Raison |
+| Without LockTab | With LockTab |
 | --- | --- |
-| La vérification a lieu uniquement dans le background | Un content script s'exécute dans une page que le web peut influencer ; il ne voit jamais le hachage, le sel ni le compteur. |
-| La query et le fragment sont ignorés | Une redirection ne doit pas pouvoir lever le verrou en ajoutant `?utm_source=…`. |
-| La couche utilise un shadow root fermé | La page hôte ne peut ni lire ni styliser l'interface de verrouillage. |
-| Les tentatives sont écrites en série | Deux clics simultanés ne peuvent pas offrir un essai gratuit. |
-| Les déverrouillages temporaires sont effacés au démarrage | Fermer le navigateur compte comme quitter son poste. |
+| N'importe qui peut lire un onglet ouvert | Votre onglet est masqué jusqu'à la saisie du code |
+| Un mot de passe partagé pour tous les sites | Un code dédié aux pages qui comptent |
+| Perdre le code, c’est perdre accès | Un code de récupération à usage unique efface tout |
+| Des extensions qui envoient vos données | Entièrement hors ligne, sans compte ni suivi |
 
-LockTab masque une page à quelqu'un qui s'assoit à votre place. Ce n'est pas un chiffrement de disque
-et cela ne protège pas contre un navigateur compromis ou un administrateur qui supprime l'extension.
+The page you left open stays private without a shared password or a cloud account. Nothing leaves
+the device, so the promise holds even when you are offline.
 
-La politique de confidentialité complète se trouve dans [privacy.html](privacy.html).
+---
 
-## Langues
+## 2. Comment ça marche — trois étapes
 
-English, Español, Français, Deutsch, Português (Brasil), Русский, العربية (RTL) et 简体中文. L'interface
-suit la langue du navigateur et peut être modifiée dans le popup.
+1. Créez un code à 6 chiffres et conservez le code de récupération affiché une seule fois.
+2. Ouvrez l'onglet à protéger et cliquez sur Verrouiller cet onglet.
+3. Saisissez le code pour le relire, ou accordez un déverrouillage temporaire.
 
-## Compiler depuis les sources
+---
 
-```bash
-python tools/build.py          # valide les langues et génère les deux archives
-node --test tests/core.test.mjs
-```
+## 3. Visite de l'interface — chaque partie de l'extension
 
-Aucun bundler, aucune dépendance npm.
+### 3.1 En-tête — tout à portée
+<p align="center"><img src="assets/screenshots/fr/sections/section-header.png" width="400" alt="En-tête — tout à portée" /></p>
 
-## Soutien
+Le titre, le thème, la langue et le lien GitHub partagent une même rangée discrète.
 
-Si LockTab vous a évité une situation gênante, vous pouvez soutenir le projet :
+### 3.2 Une action principale
+<p align="center"><img src="assets/screenshots/fr/sections/section-hero.png" width="400" alt="Une action principale" /></p>
 
-- PayPal : <https://paypal.me/27medYousry>
-- InstaPay : <https://ipn.eg/S/el9a7rawi/instapay/30U5SS>
+Un seul bouton dégradé masque la page active. Le déverrouillage temporaire et la suppression demandent le code.
 
-## Licence
+### 3.3 État de l'onglet
+<p align="center"><img src="assets/screenshots/fr/sections/section-status.png" width="400" alt="État de l'onglet" /></p>
 
-Apache-2.0 © Ahmed Yousry
+Une plaque plate indique si l'onglet est verrouillé, ouvert ou ouvert temporairement.
 
-Fait avec soin ❤️ Ahmed Yousry · [GitHub](https://github.com/el9a7rawi/LockTab)
+### 3.4 Saisie du code
+<p align="center"><img src="assets/screenshots/fr/sections/section-otp.png" width="400" alt="Saisie du code" /></p>
+
+Six cases apparaissent les unes après les autres, s'arrêtent à six et centrent l'astérisque.
+
+### 3.5 Code de récupération
+<p align="center"><img src="assets/screenshots/fr/sections/section-recovery.png" width="400" alt="Code de récupération" /></p>
+
+Affiché une seule fois après la configuration. Un code déjà utilisé ne peut jamais être rejoué.
+
+### 3.6 Sites verrouillés
+<p align="center"><img src="assets/screenshots/fr/sections/section-sites.png" width="400" alt="Sites verrouillés" /></p>
+
+Des lignes numérotées listent chaque domaine. Au-delà de cinq sites, des flèches parcourent la liste.
+
+### 3.7 Réglages
+<p align="center"><img src="assets/screenshots/fr/sections/section-settings.png" width="400" alt="Réglages" /></p>
+
+Flou sur trois niveaux, badge, durée de déverrouillage, thème et langue — au même endroit.
+
+### 3.8 Soutien
+<p align="center"><img src="assets/screenshots/fr/sections/section-donate.png" width="400" alt="Soutien" /></p>
+
+LockTab est gratuit et open source. PayPal et un InstaPay mis en avant le gardent indépendant.
+
+---
+
+## 4. What the PIN protects
+
+PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
+stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
+cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
+tab does not reset the counter while the global PIN is in use. The query string and fragment are
+dropped, so a redirect cannot shed a lock.
+
+---
+
+## 5. Install
+
+1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
+2. Extract it into a folder.
+3. Chrome, Edge, Brave and Opera: open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked** and select the folder.
+4. Firefox 121+: open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on** and select `manifest.json` in the folder.
+
+La confidentialité est détaillée à la section 7 et dans privacy.html.
+
+---
+
+## 6. Development
+
+No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
+locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
+unit tests. The interface follows a fixed visual contract in the design reference.
+
+---
+
+## 7. Privacy
+
+Voir privacy.html. Le code est stocké uniquement comme hash PBKDF2 avec un sel unique. La query et le fragment sont écartés, le contenu de la page jamais lu, et aucune requête ne quitte l’extension. Les polices sont locales.
+
+---
+
+## 8. License
+
+Le projet est open source et gratuit sous Apache-2.0 — utilisez-le, modifiez-le et partagez-le librement ; le texte intégral est dans LICENSE. Les polices ont une licence SIL OFL 1.1. L'historique est dans CHANGELOG.md.
+
+<p align="center">Fait avec soin ❤️ <b>Ahmed Yousry</b> · <a href="https://github.com/el9a7rawi/LockTab">LockTab</a> · <a href="LICENSE">Apache-2.0</a></p>

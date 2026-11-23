@@ -1,7 +1,7 @@
 {
-  "docTitle": "LockTab — تبويباتك، عينيك فقط",
+  "docTitle": "LockTab — تبويباتك، عينك فقط",
   "appTitle": "LockTab",
-  "subtitle": "تبويباتك. عينيك فقط.",
+  "subtitle": "تبويباتك، عينك فقط.",
   "githubAria": "LockTab على GitHub",
   "githubTitle": "شاهد المشروع على GitHub",
   "themeToDark": "التبديل إلى الوضع الداكن",
@@ -62,7 +62,7 @@
   "resetAll": "مسح كل شيء",
   "resetConfirm": "ستُمسح كل الرموز وكل الأقفال. لا يمكن التراجع. هل تتابع؟",
   "lockHeading": "هذا التبويب مقفل",
-  "lockSubtitle": "أدخل رمزك لتكمل من حيث توقفت",
+  "lockSubtitle": "أدخل رمزك المكوّن من ٦ أرقام لتكمل من حيث توقفت.",
   "unlock": "فتح القفل",
   "verifying": "جارٍ التحقق…",
   "attemptsLabel": "المحاولات المتبقية",
@@ -70,14 +70,14 @@
   "retryIn": "أعد المحاولة بعد {time}",
   "useRecovery": "استخدم رمز الاستعادة",
   "recoveryHeading": "رمز الاستعادة",
-  "recoverySubtitle": "أدخل الرمز الذي حفظته عند ضبط رمزك",
+  "recoverySubtitle": "أدخل الرمز الذي حفظته عند ضبط رمزك.",
   "recoveryInvalid": "هذا الرمز غير صالح.",
   "recoveryUsed": "تم استخدام هذا الرمز من قبل.",
   "recoveryPrompt": "تم مسح الرمز. أنشئ رمزاً جديداً لحماية تبويباتك.",
   "errorGeneric": "حدث خطأ. حاول مرة أخرى.",
   "errorNoPin": "أنشئ رمزاً أولاً.",
   "errorNotLockable": "لا يمكن قفل هذه الصفحة",
-  "errorNotLockableHint": "صفحات المتصفح والمتاجر ترفض طبقات الإضافات",
+  "errorNotLockableHint": "صفحات المتصفح ترفض طبقات الإضافات",
   "footerMade": "صُنع بعناية",
   "footerAuthor": "Ahmed Yousry",
   "paypalAria": "التبرع عبر PayPal",
@@ -113,5 +113,6 @@
   "sitePage": "{n} من {total}",
   "unsupportedTitle": "صفحة النظام",
   "unsupportedHint": "هذه صفحة تابعة للمتصفح، ولا يمكن لـ LockTab تغطيتها.",
-  "resetConfirmTitle": "مسح كل شيء؟"
+  "resetConfirmTitle": "مسح كل شيء؟",
+  "errorContentUnavailable": "تحتاج هذه التبويبة إلى إعادة تحميل قبل ظهور القفل. أعد تحميلها ثم حاول مرة أخرى."
 }

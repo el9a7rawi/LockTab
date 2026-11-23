@@ -1,94 +1,140 @@
-# LockTab
+<p align="center">
+  <img src="assets/banner/locktab-banner-ar.png" width="100%" alt="LockTab — تبويباتك، عينك فقط" />
+</p>
 
-[![الإصدار](https://img.shields.io/badge/version-1.0.1-4f46e5)](https://github.com/el9a7rawi/LockTab/releases)
-[![الترخيص: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-047857)](LICENSE)
-[![Manifest V3](https://img.shields.io/badge/Manifest-V3-7c3aed)](manifest.json)
+<h1 align="center">LockTab — تبويباتك، عينك فقط</h1>
 
-**تبويباتك، خلف رمز PIN.**
+<p align="center">اقفل أي تبويب بنقرة واحدة برمز من ٦ أرقام. خصّص رمزاً لموقع بعينه، واحصل على رمز استعادة لمرة واحدة، واترك جهازك وأنت تعلم أن أحداً لا يستطيع قراءة ما على شاشتك. ثماني لغات، ودعم RTL كامل، ولا أي اتصال بالإنترنت.</p>
 
-LockTab إضافة متصفح صغيرة تعمل دون اتصال، وتخفي أي تبويب خلف رمز PIN من ٦ أرقام. اضبط رمزاً
-عاماً، وخصّص رمزاً مستقلاً لصفحة حساسة إن أردت، ثم اترك جهازك دون تردد.
+<p align="center">
+  <a href="https://github.com/el9a7rawi/LockTab/releases"><img src="https://img.shields.io/github/v/release/el9a7rawi/LockTab?color=4f46e5" alt="Latest release" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-E8710A" alt="Apache 2.0" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-22C55E" alt="PRs welcome" /></a>
+  <a href="https://developer.chrome.com/docs/extensions"><img src="https://img.shields.io/badge/Manifest-V3-4285F4" alt="Manifest V3" /></a>
+  <img src="https://img.shields.io/badge/8_Languages-7c3aed" alt="8 languages" />
+  <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
+</p>
 
-> اقرأ بلغة أخرى: [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) ·
-> [Deutsch](README.de.md) · [Português (Brasil)](README.pt-BR.md) · [Русский](README.ru.md) ·
-> [简体中文](README.zh-CN.md)
+<h4 align="center">
+  <a href="README.md">English</a> · <a href="README.ar.md"><b>العربية</b></a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
+</h4>
 
-## لماذا LockTab
+<h3 align="center">نزّل لمتصفحك — اضغط الأيقونة</h3>
 
-- **يخفي الصفحة فعلاً.** طبقة بـ shadow root مغلق تغطي المحتوى وتحصر التركيز وتمنع التمرير تحتها. ولو
-  أزالتها الصفحة تعود من جديد.
-- **لا سرّاً بنص صريح.** يُشتق الرمز عبر PBKDF2-HMAC-SHA256 بـ ٦٠٠٬٠٠٠ تكرار وملح عشوائي فريد بطول
-  ١٦ بايت. لا يُحفظ سوى الـ hash — على جهازك أنت.
-- **الـ popup ليس ثغرة.** كل إجراء يوسّع الوصول يطلب الرمز مرة أخرى.
-- **عدّاد واحد مشترك.** تتصاعد المحاولات الخاطئة إلى حظر ٣٠ ث → ٦٠ ث → ٣٠٠ ث → ٩٠٠ ث. فتح تبويب آخر
-  لا يعيد ضبط العدّاد عند استخدام الرمز العام.
-- **استعادة بلا خادم.** يظهر رمز استخدام واحد عند إعداد PIN؛ وبمجرد استخدامه يُستهلك وتُمسح كل الأقفال.
-- **خصوصية بالتصميم.** بلا حساب، بلا قياسات، بلا كود بعيد، بلا طلبات شبكة.
+<div align="center">
 
-## التثبيت
+| [<img src="assets/browsers/chrome.svg" width="52" alt="Chrome" /><br><b>Chrome</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/edge.svg" width="52" alt="Edge" /><br><b>Edge</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/firefox.svg" width="52" alt="Firefox" /><br><b>Firefox</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/brave.svg" width="52" alt="Brave" /><br><b>Brave</b>](https://github.com/el9a7rawi/LockTab/releases/latest) | [<img src="assets/browsers/opera.svg" width="52" alt="Opera" /><br><b>Opera</b>](https://github.com/el9a7rawi/LockTab/releases/latest) |
+|---|---|---|---|---|
 
-### Chrome وEdge وBrave وOpera
+</div>
 
-1. نزّل `locktab-chrome-1.0.1.zip` من [Releases](https://github.com/el9a7rawi/LockTab/releases).
-2. استخرج الملف في مجلد.
-3. افتح `chrome://extensions` وفعّل **وضع المطوّر**.
-4. اختر **تحميل الإضافة غير المجمّعة** وحدد المجلد المستخرج.
+Firefox 121 فأحدث يستخدم أرشيفاً منفصلاً بمانيفست مخصص.
 
-### Firefox 121+
+---
 
-1. نزّل `locktab-firefox-1.0.1.zip` من [Releases](https://github.com/el9a7rawi/LockTab/releases).
-2. استخرج الملف في مجلد.
-3. افتح `about:debugging#/runtime/this-firefox` واختر **تحميل إضافة مؤقتة**.
-4. حدد `manifest.json` داخل المجلد المستخرج.
+## 1. لماذا LockTab؟
 
-## الاستخدام
-
-1. اضغط أيقونة LockTab. في التشغيل الأول سيُطلب منك إنشاء رمز PIN (٦ أرقام).
-2. **احفظ رمز الاستعادة** — يُعرض مرة واحدة فقط.
-3. افتح التبويب الذي تريد حمايته، اضغط الأيقونة ثم **قفل هذا التبويب**.
-4. لقراءته مجدداً أدخل الرمز في الطبقة. ويوفر الـ popup خيارَي **فتح لفترة** و**إزالة القفل**، وكلاهما
-   يطلب الرمز أولاً.
-5. يمكنك ضبط رمز خاص بموقع واحد من بطاقة **رمز PIN لهذا الموقع**.
-
-يضم الـ popup أيضاً مفتاح الثيم واللغة ومدة الفتح ومؤشر العدد على الأيقونة وتغيير الرمز وإعادة الضبط الكامل.
-
-## نموذج الأمان
-
-| القرار | السبب |
+| Without LockTab | With LockTab |
 | --- | --- |
-| التحقق يحدث في الـ background وحده | الـ content script يعمل داخل صفحة قد يتحكم بها الموقع، ولا يرى الـ hash أو الملح أو العدّاد أبداً. |
-| يتم تجاهل الاستعلام والجزء | لا يجب أن تسقط إعادة التوجيه القفل بإضافة `?utm_source=…`. |
-| الطبقة تستخدم shadow root مغلق | لا تستطيع الصفحة المضيفة قراءة واجهة القفل أو تنسيقها. |
-| تُكتب المحاولات بتسلسل | لا تمنح نقرتان متزامنتان محاولة مجانية. |
-| تُمسح كل الفتحات المؤقتة عند تشغيل المتصفح | إغلاق المتصفح يُعدّ مغادرةً لمكتبك. |
+| أي شخص يستطيع قراءة تبويب مفتوح | تبويبك مغطى حتى يُدخل الرمز |
+| كلمة مرور واحدة لكل المواقع | رمز خاص بالصفحات التي تهمك |
+| نسيان الرمز يعني فقدان الوصول | رمز استعادة لمرة واحدة يفتح كل شيء |
+| إضافات ترسل بياناتك للخارج | يعمل دون اتصال تماماً، بلا حساب وتتبع |
 
-LockTab يخفي الصفحة عم يجلس على جهازك. ليس تشفيراً للقرص، ولا يحمي من متصفح مخترق أو من مدير يزيل الإضافة.
+The page you left open stays private without a shared password or a cloud account. Nothing leaves
+the device, so the promise holds even when you are offline.
 
-سياسة الخصوصية الكاملة في [privacy.html](privacy.html).
+---
 
-## اللغات
+## 2. كيف يعمل — ثلاث خطوات
 
-English وEspañol وFrançais وDeutsch وPortuguês (Brasil) وРусский والعربية (RTL) و简体中文. تتبع الواجهة
-لغة المتصفح ويمكن تجاوزها من الـ popup.
+1. أنشئ رمزاً من ٦ أرقام واحفظ رمز الاستعادة الذي يُعرض مرة واحدة.
+2. افتح التبويب الذي تريد حمايته واضغط «اقفل هذا التبويب».
+3. أدخل الرمز للقراءة مجدداً، أو امنح فتحاً مؤقتاً.
 
-## البناء من المصدر
+---
 
-```bash
-python tools/build.py          # يتحقق من اللغات ويُنشئ ملفي الإصدار
-node --test tests/core.test.mjs
-```
+## 3. جولة في الواجهة — كل جزء من الإضافة
 
-بلا bundler وبلا تبعيات npm.
+### 3.1 الرأس — كل شيء في متناولك
+<p align="center"><img src="assets/screenshots/ar/sections/section-header.png" width="400" alt="الرأس — كل شيء في متناولك" /></p>
 
-## الدعم
+العنوان ومفتاح الثيم واللغة ورابط GitHub في صفّ واحد هادئ.
 
-إن أنقذك LockTab من موقف محرج، يمكنك دعم المشروع:
+### 3.2 إجراء رئيسي واحد
+<p align="center"><img src="assets/screenshots/ar/sections/section-hero.png" width="400" alt="إجراء رئيسي واحد" /></p>
 
-- PayPal: <https://paypal.me/27medYousry>
-- InstaPay: <https://ipn.eg/S/el9a7rawi/instapay/30U5SS>
+زر واحد بتدرج لوني يغطي الصفحة النشطة. الفتح المؤقت وإزالة القفل يطلبان الرمز أولاً.
 
-## الترخيص
+### 3.3 حالة التبويب
+<p align="center"><img src="assets/screenshots/ar/sections/section-status.png" width="400" alt="حالة التبويب" /></p>
 
-Apache-2.0 © Ahmed Yousry
+لوحة مسطّحة تُظهر ما إذا كان التبويب مقفلاً أو مفتوحاً أو مفتوحاً لفترة.
 
-صُنع بعناية ❤️ Ahmed Yousry · [GitHub](https://github.com/el9a7rawi/LockTab)
+### 3.4 إدخال الرمز
+<p align="center"><img src="assets/screenshots/ar/sections/section-otp.png" width="400" alt="إدخال الرمز" /></p>
+
+ست خانات تظهر واحدة تلو الأخرى، وتتوقف عند السادسة، وتوسّط النجمة.
+
+### 3.5 رمز الاستعادة
+<p align="center"><img src="assets/screenshots/ar/sections/section-recovery.png" width="400" alt="رمز الاستعادة" /></p>
+
+يُعرض مرة واحدة بعد الإعداد. احفظه في مكان آمن؛ لا يمكن إعادة استخدام رمز مستهلك.
+
+### 3.6 المواقع المقفلة
+<p align="center"><img src="assets/screenshots/ar/sections/section-sites.png" width="400" alt="المواقع المقفلة" /></p>
+
+صفوف مرقّمة تعرض كل دومين مقفل. بعد خمسة مواقع تظهر أسهم للتنقل.
+
+### 3.7 الإعدادات
+<p align="center"><img src="assets/screenshots/ar/sections/section-settings.png" width="400" alt="الإعدادات" /></p>
+
+التمويه بثلاث درجات، شارة الأيقونة، مدة الفتح، الثيم واللغة — في مكان واحد.
+
+### 3.8 الدعم
+<p align="center"><img src="assets/screenshots/ar/sections/section-donate.png" width="400" alt="الدعم" /></p>
+
+LockTab مجاني ومفتوح المصدر. PayPal وInstaPay يساعدان في إبقائه مستقلاً.
+
+---
+
+## 4. What the PIN protects
+
+PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
+stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
+cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
+tab does not reset the counter while the global PIN is in use. The query string and fragment are
+dropped, so a redirect cannot shed a lock.
+
+---
+
+## 5. Install
+
+1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
+2. Extract it into a folder.
+3. Chrome, Edge, Brave and Opera: open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked** and select the folder.
+4. Firefox 121+: open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on** and select `manifest.json` in the folder.
+
+الخصوصية موضحة في القسم ٧ أدناه وفي privacy.html.
+
+---
+
+## 6. Development
+
+No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
+locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
+unit tests. The interface follows a fixed visual contract in the design reference.
+
+---
+
+## 7. Privacy
+
+راجع privacy.html. يُخزَّن الرمز كـ hash عبر PBKDF2 مع ملح فريد. يُهمل الاستعلام والجزء، ولا تُقرأ محتويات الصفحة، ولا يخرج أي طلب من الإضافة. الخطوط مضمّنة محلياً.
+
+---
+
+## 8. License
+
+المشروع مفتوح المصدر ومجاني للجميع بموجب Apache-2.0 — استخدمه وعدّله وشاركه بحرية؛ النص الكامل في LICENSE. الخطوط مرخّصة منفصلة بموجب SIL OFL 1.1. سجل الإصدارات في CHANGELOG.md.
+
+<p align="center">صُنع بعناية ❤️ <b>Ahmed Yousry</b> · <a href="https://github.com/el9a7rawi/LockTab">LockTab</a> · <a href="LICENSE">Apache-2.0</a></p>

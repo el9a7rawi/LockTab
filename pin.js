@@ -43,20 +43,10 @@
     }
 
     function focusBox(index) {
-      requestAnimationFrame(() => {
-        if (!wrap) return;
-        const boxes = wrap.querySelectorAll(".otp-box");
-        const target = boxes[Math.max(0, Math.min(index, boxes.length - 1))];
-        if (target) target.focus({ preventScroll: true });
-      });
-    }
-
-    function pop(index) {
-      const box = wrap && wrap.children[index];
-      if (!box) return;
-      box.classList.remove("otp-pop");
-      void box.offsetWidth;
-      box.classList.add("otp-pop");
+      if (!wrap) return;
+      const boxes = wrap.querySelectorAll(".otp-box");
+      const target = boxes[Math.max(0, Math.min(index, boxes.length - 1))];
+      if (target) target.focus({ preventScroll: true });
     }
 
     function makeBox(index) {
@@ -161,7 +151,6 @@
       }
       hint.textContent = hintText;
 
-      if (changedIndex !== undefined) pop(changedIndex);
       if (focusIndex !== undefined) focusBox(focusIndex);
     }
 

@@ -18,11 +18,6 @@
 
   const HOST_TAG = "locktab-gate";
   const SVG_NS = "http://www.w3.org/2000/svg";
-  /* sessionStorage outlives the reloads this guard triggers, unlike the
-     in-memory tick state — that is what makes a bounded budget possible. */
-  const RELOAD_BUDGET_KEY = "locktab.gate.reloadBudget";
-  const MAX_AUTO_RELOADS = 2;
-
   /* Fonts are extension assets, so the absolute URLs must come from the
      runtime. Only `fonts/*.woff2` is made web-accessible in the manifest. */
   /* One family for both scripts. The unicode-range means the browser fetches
@@ -60,6 +55,23 @@
     -webkit-font-smoothing: antialiased;
     animation: fade 0.12s ease-out both;
   }
+  /* An animating subtree over a full-viewport backdrop filter forces Chromium
+     to re-capture the blurred snapshot on every frame. */
+  /* With a blur the heavy scrim would hide the effect completely. */
+  .wrap.blurred { animation: none; background: rgba(12, 14, 24, 0.45); }
+  .wrap.blurred .card { animation: none; }
+  /* Nothing inside a blurred layer may animate or filter: each frame would
+     invalidate the full-viewport backdrop snapshot. */
+  .wrap.blurred .primary,
+  .wrap.blurred .ghost,
+  .wrap.blurred .otp-box {
+    animation: none !important;
+    transition: none !important;
+  }
+  .wrap.blurred .primary:hover { filter: none; }
+  @media (prefers-color-scheme: dark) {
+    .wrap.blurred { background: rgba(0, 0, 0, 0.55); }
+  }
   @media (prefers-color-scheme: dark) {
     .wrap {
       --bg: #000000; --card: #141417; --text: #fafafa; --muted: #a1a1aa;
@@ -74,7 +86,6 @@
   @keyframes rise { from { opacity: 0; transform: translateY(4px) scale(0.99) } to { opacity: 1; transform: none } }
   @keyframes shake { 0%,100% { transform: translateX(0) } 25% { transform: translateX(-4px) } 50% { transform: translateX(4px) } 75% { transform: translateX(-2px) } }
   @keyframes otp-in { from { opacity: 0.6; transform: translateX(-2px) } to { opacity: 1; transform: none } }
-  @keyframes otp-pop { 0% { transform: scale(1) } 50% { transform: scale(1.04) } 100% { transform: scale(1) } }
   .card {
     width: min(360px, 100%); background: var(--card); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 20px; box-shadow: 0 12px 32px rgba(20, 24, 38, 0.14);
@@ -107,24 +118,25 @@
     background: var(--bg); color: var(--text);
     font-family: var(--mono); font-size: 20px; font-weight: 800;
     text-align: center; caret-color: var(--accent);
-    transition: border-color 0.15s, box-shadow 0.15s;
+    line-height: 46px; padding: 0;
+    font-variant-numeric: tabular-nums;
+    transition: border-color 0.1s, box-shadow 0.1s;
   }
-  .otp-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .otp-box:focus { border-color: var(--accent); }
+  .otp-box:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: 0 0 0 3px var(--accent-soft); }
   .otp-box.filled { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   .otp-box.filled:focus { box-shadow: 0 0 0 3px var(--accent-soft); }
   .otp-box.otp-next { border-style: dashed; border-color: var(--muted); background: var(--card); }
   .otp.invalid .otp-box,
   .otp.invalid .otp-box.filled { border-color: var(--danger); }
   .otp-box.otp-enter { animation: otp-in 0.09s ease-out both; }
-  .otp-box.otp-pop { animation: otp-pop 0.09s ease-out; }
   .otp-hint { margin-top: 14px; font-size: 11px; color: var(--muted); }
   .primary {
     min-height: 44px; width: 100%; border: 0; border-radius: 16px; cursor: pointer;
     background: var(--button-gradient); color: #ffffff;
     font-family: inherit; font-size: 15px; font-weight: 800;
-    transition: filter 0.15s, transform 0.06s;
+    transition: transform 0.06s;
   }
-  .primary:hover { filter: brightness(1.07); }
   .primary:active { transform: scale(0.98); }
   .primary:disabled { cursor: progress; opacity: 0.75; }
   .ghost {
@@ -174,10 +186,10 @@
   let pinField = null;
   let styleNode = null;
   let wrapNode = null;
-  let lastRestore = 0;
   let appliedBlur = 0;
   let lastBlurValue = "";
   let enforceTick = 0;
+  let lastEnforce = 0;
 
   function send(message) {
     return new Promise((resolve) => {
@@ -278,6 +290,7 @@
       shadowObserver.disconnect();
       shadowObserver = null;
     }
+    document.removeEventListener("visibilitychange", refreshBlur);
     if (pinField) {
       pinField.destroy();
       pinField = null;
@@ -306,55 +319,43 @@
       style recalculation on every guard tick. */
   function applyBlur() {
     if (!host) return;
-    const value = appliedBlur ? "blur(" + appliedBlur + "px)" : "none";
+    /* An explicit user choice wins over any OS-level transparency preference,
+       which is commonly enabled on Windows VMs and RDP sessions and previously
+       turned the configured blur off silently. */
+    const strength = appliedBlur;
+    const value = strength ? "blur(" + strength + "px)" : "none";
     if (value === lastBlurValue) return;
     lastBlurValue = value;
     host.style.setProperty("backdrop-filter", value, "important");
     host.style.setProperty("-webkit-backdrop-filter", value, "important");
+    if (wrapNode) wrapNode.classList.toggle("blurred", strength > 0);
   }
 
-  function autoReloadsUsed() {
-    try {
-      return Number(window.sessionStorage.getItem(RELOAD_BUDGET_KEY)) || 0;
-    } catch (_error) {
-      return 0;
-    }
-  }
-
-  /** Returns the count after spending one reload. A storage failure disables
-      reloading outright, so a locked-down storage context can never loop. */
-  function spendAutoReload() {
-    try {
-      const used = autoReloadsUsed() + 1;
-      window.sessionStorage.setItem(RELOAD_BUDGET_KEY, String(used));
-      return used;
-    } catch (_error) {
-      return MAX_AUTO_RELOADS + 1;
-    }
+  function refreshBlur() {
+    lastBlurValue = "";
+    applyBlur();
   }
 
   /**
-   * Rebuilds anything DevTools removed from the gate.
+   * Re-attaches the gate if a page removes it.
    *
-   * A first removal is undone in place. A removal within two seconds of the
-   * last restore is treated as tampering and, while the budget lasts, reloads
-   * the document so the page is rebuilt with the gate injected at
-   * document_start. The reload count is capped per tab session: a page that
-   * strips the host on every load would otherwise keep us reloading forever.
-   * Once the budget is gone, tampering is answered by re-attaching in place.
+   * We deliberately never reload the page here: single-page apps such as
+   * YouTube routinely replace DOM subtrees, and an automatic reload turned a
+   * routine mutation into a reload loop that lost form state. Re-attaching is
+   * enough to restore the lock without disrupting the page.
    */
   function enforceGate(forceDeep) {
     if (!host || !shadow || !policy) return;
 
+    /* Busy pages mutate the DOM constantly. Coalesce those callbacks so the
+       guard never adds measurable work on top of the blur compositing cost. */
+    const now = Date.now();
+    if (!forceDeep && now - lastEnforce < 200) return;
+    lastEnforce = now;
+
     enforceTick += 1;
-    if (!host.isConnected) {
-      const now = Date.now();
-      if (now - lastRestore < 2000 && spendAutoReload() <= MAX_AUTO_RELOADS) {
-        location.replace(location.href);
-        return;
-      }
-      lastRestore = now;
-      if (document.documentElement) document.documentElement.appendChild(host);
+    if (!host.isConnected && document.documentElement) {
+      document.documentElement.appendChild(host);
     }
 
     /* The host check is cheap and runs on every tick. Rebuilding the shadow
@@ -394,6 +395,14 @@
 
   function startCountdown(meta, until, onExpiry) {
     if (countdown) clearInterval(countdown);
+
+    /* Build the three nodes once. Updating a single text node each second
+       avoids four DOM mutations per tick inside the blurred layer. */
+    const parts = t("retryIn").split("{time}");
+    setMeta(meta, "", "warn");
+    const clock = el("b", { class: "countdown-clock", text: "" });
+    meta.append(el("span", { text: parts[0] }), clock, el("span", { text: parts[1] || "" }));
+
     const paint = () => {
       const remaining = until - Date.now();
       if (remaining <= 0) {
@@ -403,12 +412,7 @@
         if (onExpiry) onExpiry();
         return;
       }
-      const parts = t("retryIn").split("{time}");
-      setMeta(meta, "", "warn");
-      meta.appendChild(document.createTextNode(parts[0]));
-      const clock = el("b", { text: Core.formatDuration(Math.ceil(remaining / 1000)) });
-      meta.appendChild(clock);
-      meta.appendChild(document.createTextNode(parts[1] || ""));
+      clock.textContent = Core.formatDuration(Math.ceil(remaining / 1000));
     };
     paint();
     countdown = setInterval(paint, 1000);
@@ -611,7 +615,8 @@
     host.style.cssText =
       "position:fixed!important;inset:0!important;width:100%!important;height:100%!important;" +
       "margin:0!important;padding:0!important;border:0!important;display:block!important;" +
-      "z-index:2147483647!important;background:transparent!important;";
+      "z-index:2147483647!important;background:transparent!important;" +
+      "contain:layout style!important;";
 
     shadow = host.attachShadow({ mode: "closed" });
     styleNode = document.createElement("style");
@@ -656,6 +661,7 @@
       true
     );
 
+    document.addEventListener("visibilitychange", refreshBlur);
     lastFocus = document.activeElement;
     lockPageScroll();
     attachToDocument();
@@ -663,11 +669,19 @@
   }
 
   function show(payload) {
+    const previous = policy;
     policy = payload;
     if (host && shadow) {
       appliedBlur = Number(payload.blur) > 0 ? Core.clampBlur(payload.blur) : 0;
       applyBlur();
-      if (payload.lockedUntil && payload.lockedUntil > Date.now()) renderPinView();
+      const copyChanged =
+        !previous ||
+        previous.dir !== payload.dir ||
+        previous.pinLength !== payload.pinLength ||
+        JSON.stringify(previous.strings) !== JSON.stringify(payload.strings);
+      if (copyChanged || (payload.lockedUntil && payload.lockedUntil > Date.now())) {
+        renderPinView();
+      }
       return;
     }
     build(payload);
@@ -676,6 +690,17 @@
   function hide() {
     if (host) teardown();
   }
+
+  /* The background calls this before re-injecting after an extension reload,
+     so the new instance can own the message listener and the gate. */
+  window.__locktabReinit = () => {
+    teardown();
+    try {
+      delete window.__locktabInstalled;
+    } catch (_error) {
+      window.__locktabInstalled = false;
+    }
+  };
 
   chrome.runtime.onMessage.addListener((message) => {
     if (!message || message.type !== "POLICY") return;

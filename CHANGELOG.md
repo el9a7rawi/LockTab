@@ -7,6 +7,21 @@ All notable changes to LockTab are documented here. The format follows
 ## [1.0.1] — 2026-11-23
 
 ### Fixed
+- Restore tab locking: a stray `global.matchMedia` reference threw before the overlay could mount, so the rule was stored but the page was never covered.
+- Make the blur option visible again: an OS-level reduced-transparency preference no longer overrides the explicit user choice, the scrim is lighter while blurring, and `contain: paint` was dropped.
+- Detect a failed POLICY delivery, re-inject the content script and retry, then reload the tab as a last resort with an actionable message.
+- Vertically centre the PIN asterisk in its box.
+- Use a light grey border on the reset confirmation panel and remove the cancel button's border while keeping red text.
+- Coalesce overlay guard callbacks on mutation-heavy pages and keep all animations off while blurring.
+- Fix `SET_SITE_PIN` so the page is covered immediately, reinitialise stale content scripts before re-injection, and refresh the overlay when the language changes.
+- Refresh injected fonts after navigation, narrow policy broadcasts to overlay-relevant settings, and restore keyboard focus visibility in OTP boxes.
+- Stop the lock gate flashing off during document_start by trusting the content script's document URL over a stale tab URL.
+- Remove the automatic page reload from the overlay guard; re-attach in place instead, which fixes repeated reloads on YouTube and other SPAs.
+- Make PIN entry instant: drop the per-keystroke pop animation and forced layout, and focus boxes synchronously.
+- Show an asterisk instead of the platform password glyph in PIN boxes.
+- Remove the redundant site icon from the locked-sites list and add a tinted globe mark to the lock screen's host name.
+- Drop the duplicated recovery label and suspend the full-viewport blur on hidden tabs or when reduced transparency is requested.
+- Stop refreshing the toolbar badge on unlock changes, which queried every tab on each PIN entry.
 - Authorize every background message by sender scope; only the popup may set, change or reset the PIN, and only our content script may ask policy questions.
 - Reject a second `SETUP_PIN` when a PIN already exists.
 - Decay the failed-attempt counter after a lockout has been served, so one typo a day no longer keeps the user locked out forever.
@@ -23,6 +38,10 @@ All notable changes to LockTab are documented here. The format follows
 ### Changed
 - Remove the redundant `activeTab` permission and the unused fallback lock page.
 - Cap PBKDF2 iteration counts read from storage.
+- Give the extension a single production voice: "Your tabs. Your eyes only." across the manifest, the lock screen and all eight locale bundles.
+- Rewrite all eight READMEs in the reference release format with localized banners, six badges, browser icons and an eight-section tour.
+- Add round transparent corners to every banner and interface capture, and a localized social post for English and Arabic.
+- Add CI and tag-driven release workflows that publish five browser archives with SHA-256 checksums and no governance or development files.
 
 ## [1.0.0] — 2026-11-22
 
