@@ -98,6 +98,7 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .host:hover { text-decoration: none; }
+  .host-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .field { display: flex; flex-direction: column; gap: 8px; }
   .otp { display: flex; align-items: center; justify-content: center; gap: 8px; direction: ltr; }
   .otp-box {
@@ -147,7 +148,6 @@
     letter-spacing: 0.12em; text-indent: 0.12em; direction: ltr; text-transform: uppercase; padding: 0 12px;
   }
   .code:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-  .input-label { font-size: 11px; font-weight: 800; color: var(--text); margin-bottom: -2px; }
   .input-caption { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--muted); }
   .card-actions { display: flex; gap: 8px; }
   .card-actions .primary { flex: 3 1 0; }
@@ -556,6 +556,7 @@
       autocapitalize: "characters",
       spellcheck: "false",
       dir: "ltr",
+      "aria-label": t("recoveryHeading"),
     });
     const submit = el("button", { class: "primary", type: "button", text: t("unlock") });
     const back = el("button", { class: "ghost", type: "button", text: t("cancel") });
@@ -566,7 +567,6 @@
       el("h2", { class: "title", id: "locktab-title", text: t("recoveryHeading") }),
       el("p", { class: "subtitle", text: t("recoverySubtitle") }),
       el("div", { class: "field" }, [
-        el("label", { class: "input-label", for: "locktab-recovery-code", text: t("recoveryHeading") }),
         input,
         el("span", { class: "input-caption", text: t("recoveryPlaceholder") }),
       ]),
