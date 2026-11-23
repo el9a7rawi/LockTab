@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>LockTab — Privacy you can verify</title>
+  <link rel="stylesheet" href="ui.css" />
+  <script src="theme.js"></script>
+</head>
+<body class="page-body">
+  <main class="app">
+    <header class="header">
+      <div class="brand-text">
+        <h1>LockTab</h1>
+        <p class="subtitle">Your tabs. Your eyes only.</p>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="card-head"><h2>Nothing leaves your browser</h2></div>
+      <p class="field-hint">
+        LockTab has no server, no account and no analytics. There is nothing to sign up for and
+        nothing to sync. Every byte it keeps lives in this browser, on this device.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Your PIN is never stored as text</h2></div>
+      <p class="field-hint">
+        We derive a key with PBKDF2-HMAC-SHA256 using 600,000 iterations and a fresh 16-byte salt.
+        Only that hash and its settings are saved. The same applies to your one-time recovery code.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>What the extension reads</h2></div>
+      <p class="field-hint">
+        Only the address of the current tab, so we can decide whether that page should be covered.
+        We keep the origin and path as a key to remember what you locked; the query string and
+        fragment are dropped, the full URL is never stored, and nothing is transmitted. Page
+        content is never read.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Why it asks for these permissions</h2></div>
+      <p class="field-hint">
+        <b>Storage</b> keeps your settings and hashes locally. <b>Tabs</b> identifies the page you
+        are covering. <b>Scripting</b> draws the lock over it. <b>Alarms</b> wakes the extension
+        when a temporary unlock expires. <b>All sites</b> is necessary because any tab you open
+        later may need locking — no page content is collected.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>What LockTab is honest about</h2></div>
+      <p class="field-hint">
+        It hides a page from someone who sits down at your desk. It is not disk encryption, and it
+        cannot stop a compromised browser or an administrator who removes the extension. Your PIN
+        is yours to keep; if you lose it, only the recovery code you saved can bring it back.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Questions</h2></div>
+      <p class="field-hint">
+        The source is open and the issue tracker is public:
+        <a href="https://github.com/el9a7rawi/LockTab">github.com/el9a7rawi/LockTab</a>
+      </p>
+    </section>
+
+    <footer class="footer">
+      <span>Made with care</span>
+      <span aria-hidden="true">❤️</span>
+      <span dir="ltr">Ahmed Yousry</span>
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,101 @@
+# ============================================================================
+# LockTab — .gitignore
+# The repository publishes the extension only. Everything below is either
+# machine-local, generated, or agent/governance material that must never ship.
+# ============================================================================
+
+# --- Secrets: never committed, not even in examples -------------------------
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.cer
+*.crt
+id_rsa*
+id_ed25519*
+credentials*.json
+secrets*.json
+*.keystore
+
+# --- Governance and agent memory: local only, never uploaded ---------------
+AGENTS.md
+TODO.md
+OrderLog.md
+DESIGN.md
+.opencode/
+*.prompt
+*.prompt.*
+system-prompt*
+CLAUDE.md
+.cursor/
+.cursorrules
+
+# --- Reference project: read-only design source, excluded from Git ---------
+Mail Aura/
+
+# --- Development-only tooling and fixtures ---------------------------------
+tools/
+tests/
+scripts/
+dev/
+
+# --- Local creative work: social graphics and promo video ------------------
+social/
+video/
+assets/social/
+assets/video/
+
+# --- Build output: release zips belong in Releases, not the repo -----------
+dist/
+build/
+out/
+*.zip
+*.xpi
+*.crx
+*.pem.pub
+
+# --- Dependencies and tool caches ------------------------------------------
+node_modules/
+.pnpm-store/
+.yarn/
+coverage/
+.nyc_output/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# --- OS junk ---------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+
+# --- Editors ---------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+*.orig
+*.rej
+
+# --- Logs and local dumps --------------------------------------------------
+*.log
+npm-debug.log*
+yarn-error.log*
+*.trace
+*.cpuprofile
+*.heapsnapshot
+
+# --- Signing and publishing artifacts --------------------------------------
+*.pem.enc
+webstore-key.json
+chrome-webstore-upload.json
