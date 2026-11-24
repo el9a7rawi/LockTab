@@ -15,9 +15,9 @@
   <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
 </p>
 
-<h4 align="center">
-  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md"><b>Français</b></a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
-</h4>
+<p align="center">
+  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
+</p>
 
 <h3 align="center">Téléchargez pour votre navigateur — cliquez sur l’icône</h3>
 
@@ -41,8 +41,7 @@ Firefox 121 ou plus récent utilise une archive dédiée avec un manifeste spéc
 | Perdre le code, c’est perdre accès | Un code de récupération à usage unique efface tout |
 | Des extensions qui envoient vos données | Entièrement hors ligne, sans compte ni suivi |
 
-The page you left open stays private without a shared password or a cloud account. Nothing leaves
-the device, so the promise holds even when you are offline.
+L'onglet verrouillé reste masqué jusqu'à la saisie du code. Aucun compte cloud, aucun mot de passe partagé, aucune requête sortante.
 
 ---
 
@@ -98,17 +97,24 @@ LockTab est gratuit et open source. PayPal et un InstaPay mis en avant le garden
 
 ---
 
-## 4. What the PIN protects
+## 4. Ce que protège le code
 
-PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
-stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
-cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
-tab does not reset the counter while the global PIN is in use. The query string and fragment are
-dropped, so a redirect cannot shed a lock.
+Le code ne quitte jamais votre appareil. Il est stocké comme hash PBKDF2 avec un sel unique, et le volet est remis en place sans recharger la page.
+
+<div dir="ltr">
+
+```text
+PBKDF2-HMAC-SHA256 · 600 000 itérations · sel de 16 octets · shadow root fermé · délai 30/60/300/900 s
+```
+
+</div>
+
+The query string and fragment are ignored, so a redirect cannot shed a lock. Every action that widens
+access asks for the PIN again, including the temporary unlock and lock removal.
 
 ---
 
-## 5. Install
+## 5. Installation
 
 1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
 2. Extract it into a folder.
@@ -119,7 +125,7 @@ La confidentialité est détaillée à la section 7 et dans privacy.html.
 
 ---
 
-## 6. Development
+## 6. Développement
 
 No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
 locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
@@ -127,13 +133,13 @@ unit tests. The interface follows a fixed visual contract in the design referenc
 
 ---
 
-## 7. Privacy
+## 7. Confidentialité
 
 Voir privacy.html. Le code est stocké uniquement comme hash PBKDF2 avec un sel unique. La query et le fragment sont écartés, le contenu de la page jamais lu, et aucune requête ne quitte l’extension. Les polices sont locales.
 
 ---
 
-## 8. License
+## 8. Licence
 
 Le projet est open source et gratuit sous Apache-2.0 — utilisez-le, modifiez-le et partagez-le librement ; le texte intégral est dans LICENSE. Les polices ont une licence SIL OFL 1.1. L'historique est dans CHANGELOG.md.
 

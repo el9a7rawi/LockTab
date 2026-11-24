@@ -15,9 +15,9 @@
   <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
 </p>
 
-<h4 align="center">
-  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md"><b>中文（简体）</b></a>
-</h4>
+<p align="center">
+  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a>
+</p>
 
 <h3 align="center">为你的浏览器下载 — 点击图标</h3>
 
@@ -41,8 +41,7 @@ Firefox 121 及以上使用带有专属 manifest 的独立压缩包。
 | 忘记 PIN 就失去访问 | 一次性恢复码可清除所有锁定 |
 | 会上传数据的扩展 | 完全离线，无账号、无追踪 |
 
-The page you left open stays private without a shared password or a cloud account. Nothing leaves
-the device, so the promise holds even when you are offline.
+锁定的标签页在输入 PIN 前始终被遮盖。无云端账号、无共享密码、无任何外发请求。
 
 ---
 
@@ -98,17 +97,24 @@ LockTab 免费且开源。PayPal 和醒目的 InstaPay 帮助它保持独立。
 
 ---
 
-## 4. What the PIN protects
+## 4. PIN 保护什么
 
-PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
-stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
-cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
-tab does not reset the counter while the global PIN is in use. The query string and fragment are
-dropped, so a redirect cannot shed a lock.
+PIN 永不离开你的设备。它以带唯一盐值的 PBKDF2 哈希保存，锁定层会原地重新挂接，不会刷新页面。
+
+<div dir="ltr">
+
+```text
+PBKDF2-HMAC-SHA256 · 600,000 次迭代 · 16 字节盐值 · 封闭 shadow root · 30/60/300/900 秒退避
+```
+
+</div>
+
+The query string and fragment are ignored, so a redirect cannot shed a lock. Every action that widens
+access asks for the PIN again, including the temporary unlock and lock removal.
 
 ---
 
-## 5. Install
+## 5. 安装
 
 1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
 2. Extract it into a folder.
@@ -119,7 +125,7 @@ dropped, so a redirect cannot shed a lock.
 
 ---
 
-## 6. Development
+## 6. 开发
 
 No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
 locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
@@ -127,13 +133,13 @@ unit tests. The interface follows a fixed visual contract in the design referenc
 
 ---
 
-## 7. Privacy
+## 7. 隐私
 
 请参阅 privacy.html。PIN 仅以 PBKDF2 哈希和唯一盐值保存。查询字符串与片段会被丢弃，页面内容从不读取，没有任何请求离开扩展。字体全部本地打包。
 
 ---
 
-## 8. License
+## 8. 许可
 
 本项目基于 Apache-2.0 开源且免费——可自由使用、修改与分享；全文见 LICENSE。内置字体采用 SIL OFL 1.1。发布历史见 CHANGELOG.md。
 

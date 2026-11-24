@@ -4,12 +4,26 @@ All notable changes to LockTab are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.0.2] - 2026-11-24
+
+### Fixed
+- Stop the page reloading on every post or photo click on Facebook. The overlay acknowledged no POLICY message, so Chrome reported the handoff as failed and the background escalated to `tabs.reload` on each SPA URL change; the overlay now answers every policy push and `pushPolicy` no longer reloads tabs.
+- Report `content_unavailable` for an unreachable content script instead of silently discarding the page state.
+- Clear the `Uncaught TypeError: Cannot assign to read only property '__locktabInstalled'` errors: the install marker is now configurable so the background can delete it, and re-injected overlays install again instead of silently bailing out.
+
+### Changed
+- Rebuild all eight README covers in the reference art direction: black canvas, single restrained accent, two-line statement, product mockup and floating confirmation.
+- Redraw all 64 interface captures so each section shows a different part of the product instead of one repeated card.
+- Exclude the current language from each README's language picker and translate the section headings in every bundle.
+
 ## [1.0.1] — 2026-11-23
 
 ### Fixed
 - Restore tab locking: a stray `global.matchMedia` reference threw before the overlay could mount, so the rule was stored but the page was never covered.
 - Make the blur option visible again: an OS-level reduced-transparency preference no longer overrides the explicit user choice, the scrim is lighter while blurring, and `contain: paint` was dropped.
-- Detect a failed POLICY delivery, re-inject the content script and retry, then reload the tab as a last resort with an actionable message.
+- Detect a failed POLICY delivery, re-inject the content script and retry, then surface an actionable message (superseded in Unreleased: the last-resort reload was removed).
 - Vertically centre the PIN asterisk in its box.
 - Use a light grey border on the reset confirmation panel and remove the cancel button's border while keeping red text.
 - Coalesce overlay guard callbacks on mutation-heavy pages and keep all animations off while blurring.
@@ -68,5 +82,6 @@ All notable changes to LockTab are documented here. The format follows
 - The attempt counter is shared across all sites when the global PIN is used,
   so switching tabs cannot reset the lock-out ladder.
 
+[1.0.2]: https://github.com/el9a7rawi/LockTab/releases/tag/v1.0.2
 [1.0.1]: https://github.com/el9a7rawi/LockTab/releases/tag/v1.0.1
 [1.0.0]: https://github.com/el9a7rawi/LockTab/releases/tag/v1.0.0

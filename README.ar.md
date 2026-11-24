@@ -15,9 +15,9 @@
   <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
 </p>
 
-<h4 align="center">
-  <a href="README.md">English</a> · <a href="README.ar.md"><b>العربية</b></a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
-</h4>
+<p align="center">
+  <a href="README.md">English</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
+</p>
 
 <h3 align="center">نزّل لمتصفحك — اضغط الأيقونة</h3>
 
@@ -41,8 +41,7 @@ Firefox 121 فأحدث يستخدم أرشيفاً منفصلاً بمانيفس
 | نسيان الرمز يعني فقدان الوصول | رمز استعادة لمرة واحدة يفتح كل شيء |
 | إضافات ترسل بياناتك للخارج | يعمل دون اتصال تماماً، بلا حساب وتتبع |
 
-The page you left open stays private without a shared password or a cloud account. Nothing leaves
-the device, so the promise holds even when you are offline.
+يظل التبويب المقفل مغطى حتى يُدخل الرمز. بلا حساب سحابي أو كلمة مرور مشتركة أو طلب يخرج من الجهاز.
 
 ---
 
@@ -98,17 +97,24 @@ LockTab مجاني ومفتوح المصدر. PayPal وInstaPay يساعدان �
 
 ---
 
-## 4. What the PIN protects
+## 4. ما الذي يحميه الرمز
 
-PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
-stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
-cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
-tab does not reset the counter while the global PIN is in use. The query string and fragment are
-dropped, so a redirect cannot shed a lock.
+لا يخرج الرمز من جهازك أبداً. يُخزَّن كـ hash عبر PBKDF2 مع ملح فريد، ويُعاد لصق الحاجز في مكانه بدل إعادة تحميل الصفحة.
+
+<div dir="ltr">
+
+```text
+PBKDF2-HMAC-SHA256 · 600,000 تكرار · ملح 16 بايت · shadow root مغلق · تأخير ٣٠/٦٠/٣٠٠/٩٠٠ ثانية
+```
+
+</div>
+
+The query string and fragment are ignored, so a redirect cannot shed a lock. Every action that widens
+access asks for the PIN again, including the temporary unlock and lock removal.
 
 ---
 
-## 5. Install
+## 5. التثبيت
 
 1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
 2. Extract it into a folder.
@@ -119,7 +125,7 @@ dropped, so a redirect cannot shed a lock.
 
 ---
 
-## 6. Development
+## 6. التطوير
 
 No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
 locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
@@ -127,13 +133,13 @@ unit tests. The interface follows a fixed visual contract in the design referenc
 
 ---
 
-## 7. Privacy
+## 7. الخصوصية
 
 راجع privacy.html. يُخزَّن الرمز كـ hash عبر PBKDF2 مع ملح فريد. يُهمل الاستعلام والجزء، ولا تُقرأ محتويات الصفحة، ولا يخرج أي طلب من الإضافة. الخطوط مضمّنة محلياً.
 
 ---
 
-## 8. License
+## 8. الترخيص
 
 المشروع مفتوح المصدر ومجاني للجميع بموجب Apache-2.0 — استخدمه وعدّله وشاركه بحرية؛ النص الكامل في LICENSE. الخطوط مرخّصة منفصلة بموجب SIL OFL 1.1. سجل الإصدارات في CHANGELOG.md.
 

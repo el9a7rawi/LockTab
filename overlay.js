@@ -10,7 +10,14 @@
 
   if (window.top !== window) return;
   if (window.__locktabInstalled) return;
-  Object.defineProperty(window, "__locktabInstalled", { value: true, enumerable: false });
+  /* The background clears this marker before re-injecting after an extension
+     reload. Configurable is essential: the defaults would make it permanent,
+     so cleanup threw and the replacement instance refused to install. */
+  Object.defineProperty(window, "__locktabInstalled", {
+    value: true,
+    configurable: true,
+    enumerable: false,
+  });
 
   const Core = window.LockTabCore;
   const Pin = window.LockTabPin;
@@ -695,17 +702,20 @@
      so the new instance can own the message listener and the gate. */
   window.__locktabReinit = () => {
     teardown();
-    try {
-      delete window.__locktabInstalled;
-    } catch (_error) {
-      window.__locktabInstalled = false;
-    }
+    delete window.__locktabInstalled;
   };
 
-  chrome.runtime.onMessage.addListener((message) => {
+  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (!message || message.type !== "POLICY") return;
-    if (message.locked) show(message);
-    else hide();
+    /* The sender passes a callback, so Chrome only treats the handoff as
+       successful when the receiver answers. An unacknowledged POLICY is read
+       as a failed delivery and the background escalates to a tab reload. */
+    try {
+      if (message.locked) show(message);
+      else hide();
+    } finally {
+      sendResponse({ applied: true });
+    }
   });
 
   function whenRootReady(callback) {

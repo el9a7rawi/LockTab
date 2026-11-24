@@ -212,7 +212,10 @@ if (typeof importScripts === "function") {
     if (await ensureContentScript(tabId)) {
       if (await sendToTab(tabId, payload)) return true;
     }
-    await call((done) => api.tabs.reload(tabId, {}, done)).catch(() => undefined);
+    /* An unreachable tab keeps whatever gate it already has. Reloading here
+       would wipe form state on every SPA route change, which Chrome reports
+       through tabs.onUpdated as an ordinary URL change. Explicit callers turn
+       the false result into content_unavailable; passive ones simply move on. */
     return false;
   }
 

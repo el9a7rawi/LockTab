@@ -15,9 +15,9 @@
   <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
 </p>
 
-<h4 align="center">
-  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md"><b>Русский</b></a> · <a href="README.zh-CN.md">中文（简体）</a>
-</h4>
+<p align="center">
+  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.zh-CN.md">中文（简体）</a>
+</p>
 
 <h3 align="center">Скачайте для своего браузера — нажмите значок</h3>
 
@@ -41,8 +41,7 @@ Firefox 121 и новее использует отдельный архив с�
 | Забыли PIN — потеряли доступ | Одноразовый код снимает все блокировки |
 | Расширения, которые отправляют данные | Полностью офлайн, без аккаунта и слежки |
 
-The page you left open stays private without a shared password or a cloud account. Nothing leaves
-the device, so the promise holds even when you are offline.
+Заблокированная вкладка остаётся скрытой до ввода PIN-кода. Без облачного аккаунта, общего пароля и исходящих запросов.
 
 ---
 
@@ -98,17 +97,24 @@ LockTab бесплатен и с открытым кодом. PayPal и выде
 
 ---
 
-## 4. What the PIN protects
+## 4. Что защищает PIN-код
 
-PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
-stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
-cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
-tab does not reset the counter while the global PIN is in use. The query string and fragment are
-dropped, so a redirect cannot shed a lock.
+PIN-код никогда не покидает устройство. Он хранится как хеш PBKDF2 с уникальной солью, а блокировка возвращается на место без перезагрузки страницы.
+
+<div dir="ltr">
+
+```text
+PBKDF2-HMAC-SHA256 · 600 000 итераций · соль 16 байт · закрытый shadow root · задержка 30/60/300/900 с
+```
+
+</div>
+
+The query string and fragment are ignored, so a redirect cannot shed a lock. Every action that widens
+access asks for the PIN again, including the temporary unlock and lock removal.
 
 ---
 
-## 5. Install
+## 5. Установка
 
 1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
 2. Extract it into a folder.
@@ -119,7 +125,7 @@ dropped, so a redirect cannot shed a lock.
 
 ---
 
-## 6. Development
+## 6. Разработка
 
 No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
 locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
@@ -127,13 +133,13 @@ unit tests. The interface follows a fixed visual contract in the design referenc
 
 ---
 
-## 7. Privacy
+## 7. Конфиденциальность
 
 См. privacy.html. PIN хранится только как хеш PBKDF2 с уникальной солью. Запрос и фрагмент отбрасываются, содержимое страницы не читается, ни один запрос не покидает расширение. Шрифты локальны.
 
 ---
 
-## 8. License
+## 8. Лицензия
 
 Проект с открытым кодом и бесплатен по Apache-2.0 — используйте, изменяйте и делитесь свободно; полный текст в LICENSE. Шрифты имеют лицензию SIL OFL 1.1. История в CHANGELOG.md.
 

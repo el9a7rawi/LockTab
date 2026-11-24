@@ -15,9 +15,9 @@
   <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
 </p>
 
-<h4 align="center">
-  <a href="README.md"><b>English</b></a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
-</h4>
+<p align="center">
+  <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
+</p>
 
 <h3 align="center">Download for your browser — click the icon</h3>
 
@@ -41,8 +41,7 @@ Firefox 121 or newer uses a dedicated archive with a Firefox-specific manifest.
 | Lose the PIN, lose access | One-time recovery code clears every lock |
 | Extensions that phone home | Fully offline, no account, no tracking |
 
-The page you left open stays private without a shared password or a cloud account. Nothing leaves
-the device, so the promise holds even when you are offline.
+A locked tab stays covered until the PIN is entered. No cloud account, no shared password, and no request leaves the device.
 
 ---
 
@@ -100,11 +99,18 @@ LockTab is free and open source. PayPal and a highlighted InstaPay option help k
 
 ## 4. What the PIN protects
 
-PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
-stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
-cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
-tab does not reset the counter while the global PIN is in use. The query string and fragment are
-dropped, so a redirect cannot shed a lock.
+The PIN never leaves your device. It is stored as a PBKDF2 hash with a unique salt, and the lock gate is reattached in place instead of reloading the page.
+
+<div dir="ltr">
+
+```text
+PBKDF2-HMAC-SHA256 · 600,000 iterations · 16-byte salt · closed shadow root · 30s / 60s / 300s / 900s backoff
+```
+
+</div>
+
+The query string and fragment are ignored, so a redirect cannot shed a lock. Every action that widens
+access asks for the PIN again, including the temporary unlock and lock removal.
 
 ---
 

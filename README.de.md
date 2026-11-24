@@ -15,9 +15,9 @@
   <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
 </p>
 
-<h4 align="center">
-  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md"><b>Deutsch</b></a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
-</h4>
+<p align="center">
+  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
+</p>
 
 <h3 align="center">Für deinen Browser herunterladen — Symbol anklicken</h3>
 
@@ -41,8 +41,7 @@ Firefox 121 oder neuer nutzt ein eigenes Archiv mit einem Firefox-spezifischen M
 | PIN vergessen bedeutet Zugriff verlieren | Ein einmaliger Code hebt alle Sperren auf |
 | Erweiterungen, die nach Hause telefonieren | Völlig offline, ohne Konto und Tracking |
 
-The page you left open stays private without a shared password or a cloud account. Nothing leaves
-the device, so the promise holds even when you are offline.
+Ein gesperrter Tab bleibt bis zur PIN-Eingabe verdeckt. Kein Cloud-Konto, kein gemeinsames Passwort, keine ausgehenden Anfragen.
 
 ---
 
@@ -98,17 +97,24 @@ LockTab ist kostenlos und Open Source. PayPal und ein hervorgehobenes InstaPay h
 
 ---
 
-## 4. What the PIN protects
+## 4. Was die PIN schützt
 
-PBKDF2-HMAC-SHA256 with 600,000 iterations and a unique 16-byte salt — the plaintext PIN is never
-stored. The overlay runs in a closed shadow root, focus stays inside it, and the page underneath
-cannot scroll. Wrong guesses escalate through 30s, 60s, 300s and 900s lock-outs, and opening another
-tab does not reset the counter while the global PIN is in use. The query string and fragment are
-dropped, so a redirect cannot shed a lock.
+Die PIN verlässt dein Gerät nie. Sie wird als PBKDF2-Hash mit einem eindeutigen Salt gespeichert, und die Sperre wird ohne Seiten-Reload wieder eingesetzt.
+
+<div dir="ltr">
+
+```text
+PBKDF2-HMAC-SHA256 · 600.000 Iterationen · 16-Byte-Salt · geschlossene Shadow Root · 30/60/300/900 s Sperre
+```
+
+</div>
+
+The query string and fragment are ignored, so a redirect cannot shed a lock. Every action that widens
+access asks for the PIN again, including the temporary unlock and lock removal.
 
 ---
 
-## 5. Install
+## 5. Installation
 
 1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
 2. Extract it into a folder.
@@ -119,7 +125,7 @@ Datenschutz steht in Abschnitt 7 und in privacy.html.
 
 ---
 
-## 6. Development
+## 6. Entwicklung
 
 No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
 locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
@@ -127,13 +133,13 @@ unit tests. The interface follows a fixed visual contract in the design referenc
 
 ---
 
-## 7. Privacy
+## 7. Datenschutz
 
 Siehe privacy.html. Die PIN wird nur als PBKDF2-Hash mit einem eindeutigen Salt gespeichert. Query und Fragment werden verworfen, Seiteninhalte nie gelesen, keine Anfrage verlässt die Erweiterung. Schriften sind lokal.
 
 ---
 
-## 8. License
+## 8. Lizenz
 
 Das Projekt ist Open Source und kostenlos unter Apache-2.0 — nutze, ändere und teile es frei; der vollständige Text steht in LICENSE. Die Schriften stehen unter SIL OFL 1.1. Die Historie steht in CHANGELOG.md.
 
