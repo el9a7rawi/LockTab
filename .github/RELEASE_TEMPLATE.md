@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/el9a7rawi/LockTab/v{{VERSION}}/assets/banner/locktab-banner-en.png" width="100%" alt="LockTab — Your tabs, your eyes only" />
+  <img src="https://raw.githubusercontent.com/el9a7rawi/LockTab/v{{VERSION}}/icons/icon-128.png" width="96" alt="LockTab" />
 </p>
 
 <h1 align="center">LockTab v{{VERSION}}</h1>
 
-<p align="center">Lock any tab in one click with a 6-digit PIN. Private PINs per site, one-time recovery, zero cloud. Your tabs, your eyes only.</p>
+<p align="center">Lock any tab in one click with a 6-digit PIN. Private PINs per site, one-time recovery, zero cloud.</p>
 
 <p align="center">
   <a href="https://github.com/el9a7rawi/LockTab/releases"><img src="https://img.shields.io/github/v/release/el9a7rawi/LockTab?color=4f46e5" alt="Latest release" /></a>
@@ -15,63 +15,88 @@
   <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
 </p>
 
+---
+
 ## 1. Release files
 
+<div align="center">
+
 | File | Browser |
-| --- | --- |
-| `locktab-chrome-v{{VERSION}}.zip` | Chrome, Chromium |
-| `locktab-edge-v{{VERSION}}.zip` | Microsoft Edge |
+|---|---|
+| `locktab-chrome-v{{VERSION}}.zip` | Chrome |
+| `locktab-edge-v{{VERSION}}.zip` | Edge |
 | `locktab-brave-v{{VERSION}}.zip` | Brave |
 | `locktab-opera-v{{VERSION}}.zip` | Opera |
-| `locktab-firefox-v{{VERSION}}.zip` | Firefox 121+ |
-| `SHA256SUMS.txt` | Checksums for all archives |
-| Source code (zip / tar.gz) | Automatically attached by GitHub |
+| `locktab-firefox-v{{VERSION}}.zip` | Firefox |
+| `SHA256SUMS.txt` | Checksums for verifying the integrity of every file above |
+| `Source code (zip / tar.gz)` | Tracked source — extension files plus docs (dev tooling excluded) |
 
-Every archive contains the extension only: no development tools, test files, governance documents or
-secrets. Firefox ships a dedicated manifest with a classic background script.
+</div>
+
+---
 
 ## 2. Installation — one minute
 
-**Chrome, Edge, Brave and Opera**
+**Chrome / Edge / Brave / Opera** (file `locktab-<browser>-v{{VERSION}}.zip`):
 
-1. Download your browser's archive above and extract it into a folder.
-2. Open `chrome://extensions`.
-3. Enable **Developer mode**.
-4. Click **Load unpacked** and select the extracted folder.
+1. Unzip the archive.
+2. Open `chrome://extensions` (or the equivalent page) and enable **Developer mode**.
+3. Choose **Load unpacked**, select the unzipped folder, then pin the toolbar icon.
 
-**Firefox 121+**
+**Firefox** (file `locktab-firefox-v{{VERSION}}.zip`):
 
-1. Download `locktab-firefox-v{{VERSION}}.zip` and extract it.
-2. Open `about:debugging#/runtime/this-firefox`.
-3. Click **Load Temporary Add-on** and select `manifest.json` in the extracted folder.
+This archive has its own Firefox manifest with a classic background script and Gecko settings. Do not use the Chrome archive on Firefox.
+
+1. Unzip the archive.
+2. Open `about:debugging` → This Firefox → Load Temporary Add-on → select `manifest.json`.
+
+---
 
 ## 3. Requirements
 
+<div align="center">
+
 | Browser | Minimum version |
-| --- | --- |
-| Chrome / Chromium | 121+ |
-| Edge | 121+ |
-| Brave | 121+ |
-| Opera | 121+ |
-| Firefox | 121+ |
+|---|---|
+| Chrome / Edge / Brave / Opera | **121+** |
+| Firefox | **121+** |
+
+</div>
+
+---
 
 ## 4. Verify file integrity
 
+<p align="center">Compare the checksum of the file you downloaded with the matching line in <code>SHA256SUMS.txt</code>.</p>
+
+<div dir="ltr">
+
 ```powershell
-Get-FileHash .\locktab-chrome-v{{VERSION}}.zip -Algorithm SHA256
+Get-FileHash locktab-chrome-v{{VERSION}}.zip -Algorithm SHA256
 ```
+
+</div>
+
+<div dir="ltr">
 
 ```bash
 sha256sum -c SHA256SUMS.txt
 ```
 
+</div>
+
+---
+
 ## 5. What's changed
 
-See [CHANGELOG.md](https://github.com/el9a7rawi/LockTab/blob/main/CHANGELOG.md) for the full
-release history.
+See [`CHANGELOG.md`](https://github.com/el9a7rawi/LockTab/blob/main/CHANGELOG.md) for the complete list of changes.
+
+---
 
 ## 6. Source code and license
 
-Open source under Apache-2.0. Bundled fonts are licensed separately under SIL OFL 1.1.
+<p align="center">The tracked source code is attached below, and the project is licensed under <b>Apache-2.0</b> — free to use, modify, and share. Bundled fonts carry their own SIL OFL 1.1 notice in <code>fonts/OFL.txt</code>.</p>
 
-<p align="center">Made with care ❤️ <b>Ahmed Yousry</b> · <a href="https://github.com/el9a7rawi/LockTab">LockTab</a> · <a href="https://github.com/el9a7rawi/LockTab/blob/main/LICENSE">Apache-2.0</a></p>
+---
+
+<p align="center">Made with care ❤️ <b>Ahmed Yousry</b> · <a href="https://github.com/el9a7rawi/LockTab/blob/main/LICENSE">Apache-2.0</a></p>

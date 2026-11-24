@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner/locktab-banner-ar.png" width="100%" alt="LockTab — تبويباتك، عينك فقط" />
+  <img src="assets/banner/locktab-banner-ar.webp" width="100%" alt="LockTab — تبويباتك، عينك فقط" />
 </p>
 
 <h1 align="center">LockTab — تبويباتك، عينك فقط</h1>
@@ -12,14 +12,14 @@
   <a href="https://github.com/el9a7rawi/LockTab/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-22C55E" alt="PRs welcome" /></a>
   <a href="https://developer.chrome.com/docs/extensions"><img src="https://img.shields.io/badge/Manifest-V3-4285F4" alt="Manifest V3" /></a>
   <img src="https://img.shields.io/badge/8_Languages-7c3aed" alt="8 languages" />
-  <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
+  <img src="https://img.shields.io/badge/Works-Offline-059669" alt="يعمل دون اتصال" />
 </p>
 
-<p align="center">
+<h4 align="center">
   <a href="README.md">English</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
-</p>
+</h4>
 
-<h3 align="center">نزّل لمتصفحك — اضغط الأيقونة</h3>
+<h3 align="center">Download for your browser — click the icon</h3>
 
 <div align="center">
 
@@ -28,20 +28,24 @@
 
 </div>
 
-Firefox 121 فأحدث يستخدم أرشيفاً منفصلاً بمانيفست مخصص.
+Chrome ومتصفحات Chromium هي الهدف الأساسي. يدعم Firefox 121 فأحدث عبر أرشيف مخصص بمانيفست خاص به (سكربت خلفي كلاسيكي وإعدادات Gecko).
 
 ---
 
 ## 1. لماذا LockTab؟
 
+<div align="center">
+
 | Without LockTab | With LockTab |
-| --- | --- |
+|---|---|
 | أي شخص يستطيع قراءة تبويب مفتوح | تبويبك مغطى حتى يُدخل الرمز |
 | كلمة مرور واحدة لكل المواقع | رمز خاص بالصفحات التي تهمك |
 | نسيان الرمز يعني فقدان الوصول | رمز استعادة لمرة واحدة يفتح كل شيء |
 | إضافات ترسل بياناتك للخارج | يعمل دون اتصال تماماً، بلا حساب وتتبع |
 
-يظل التبويب المقفل مغطى حتى يُدخل الرمز. بلا حساب سحابي أو كلمة مرور مشتركة أو طلب يخرج من الجهاز.
+</div>
+
+يخفي LockTab التبويب عن شخص يجلس على جهازك. ليس تشفيراً للقرص ولا يستطيع حمايتك من متصفح مخترق أو مسؤول يزيل الإضافة.
 
 ---
 
@@ -56,91 +60,109 @@ Firefox 121 فأحدث يستخدم أرشيفاً منفصلاً بمانيفس
 ## 3. جولة في الواجهة — كل جزء من الإضافة
 
 ### 3.1 الرأس — كل شيء في متناولك
-<p align="center"><img src="assets/screenshots/ar/sections/section-header.png" width="400" alt="الرأس — كل شيء في متناولك" /></p>
+<p align="center"><img src="assets/screenshots/ar/sections/section-header.webp" width="400" alt="الرأس" /></p>
 
-العنوان ومفتاح الثيم واللغة ورابط GitHub في صفّ واحد هادئ.
+العنوان ومفتاح الثيم ورابط GitHub واختيار اللغة في صفّ واحد مدمج.
 
 ### 3.2 إجراء رئيسي واحد
-<p align="center"><img src="assets/screenshots/ar/sections/section-hero.png" width="400" alt="إجراء رئيسي واحد" /></p>
+<p align="center"><img src="assets/screenshots/ar/sections/section-hero.webp" width="400" alt="الإجراء الرئيسي" /></p>
 
 زر واحد بتدرج لوني يغطي الصفحة النشطة. الفتح المؤقت وإزالة القفل يطلبان الرمز أولاً.
 
 ### 3.3 حالة التبويب
-<p align="center"><img src="assets/screenshots/ar/sections/section-status.png" width="400" alt="حالة التبويب" /></p>
+<p align="center"><img src="assets/screenshots/ar/sections/section-status.webp" width="400" alt="حالة التبويب" /></p>
 
 لوحة مسطّحة تُظهر ما إذا كان التبويب مقفلاً أو مفتوحاً أو مفتوحاً لفترة.
 
-### 3.4 إدخال الرمز
-<p align="center"><img src="assets/screenshots/ar/sections/section-otp.png" width="400" alt="إدخال الرمز" /></p>
+### 3.4 أول تشغيل — أنشئ رمزك
+<p align="center"><img src="assets/screenshots/ar/sections/section-setup.webp" width="400" alt="إعداد الرمز" /></p>
 
 ست خانات تظهر واحدة تلو الأخرى، وتتوقف عند السادسة، وتوسّط النجمة.
 
-### 3.5 رمز الاستعادة
-<p align="center"><img src="assets/screenshots/ar/sections/section-recovery.png" width="400" alt="رمز الاستعادة" /></p>
+### 3.5 رمز الاستعادة يُعرض مرة واحدة
+<p align="center"><img src="assets/screenshots/ar/sections/section-recovery.webp" width="400" alt="رمز الاستعادة" /></p>
 
-يُعرض مرة واحدة بعد الإعداد. احفظه في مكان آمن؛ لا يمكن إعادة استخدام رمز مستهلك.
+يظهر الرمز أثناء الإعداد فقط. احفظه في مكان آمن؛ لا يمكن إعادة استخدام رمز مستهلك.
 
-### 3.6 المواقع المقفلة
-<p align="center"><img src="assets/screenshots/ar/sections/section-sites.png" width="400" alt="المواقع المقفلة" /></p>
+### 3.6 رمز لموقع واحد
+<p align="center"><img src="assets/screenshots/ar/sections/section-pin.webp" width="400" alt="رمز الموقع" /></p>
+
+رمز الموقع يتجاوز الرمز العام على ذلك النطاق، فتبقى الصفحات الحساسة منفصلة.
+
+### 3.7 المواقع المقفلة
+<p align="center"><img src="assets/screenshots/ar/sections/section-sites.webp" width="400" alt="المواقع المقفلة" /></p>
 
 صفوف مرقّمة تعرض كل دومين مقفل. بعد خمسة مواقع تظهر أسهم للتنقل.
 
-### 3.7 الإعدادات
-<p align="center"><img src="assets/screenshots/ar/sections/section-settings.png" width="400" alt="الإعدادات" /></p>
+### 3.8 القفل من أي مكان
+اختصار Alt+Shift+L يقفل التبويب الحالي دون فتح الـ popup.
 
-التمويه بثلاث درجات، شارة الأيقونة، مدة الفتح، الثيم واللغة — في مكان واحد.
+### 3.9 الإعدادات
+<p align="center"><img src="assets/screenshots/ar/sections/section-settings.webp" width="400" alt="الإعدادات" /></p>
 
-### 3.8 الدعم
-<p align="center"><img src="assets/screenshots/ar/sections/section-donate.png" width="400" alt="الدعم" /></p>
+التمويه وشارة الأيقونة ومدة الفتح والاختصار والثيم واللغة في كرت واحد.
 
-LockTab مجاني ومفتوح المصدر. PayPal وInstaPay يساعدان في إبقائه مستقلاً.
+### 3.10 ثماني لغات وRTL حقيقي
+<p align="center"><img src="assets/screenshots/ar/sections/section-language.webp" width="400" alt="قائمة اللغات" /></p>
+
+تبدّل فوري بين الحزم الثماني. العربية تعكس التخطيط منطقياً، وتبقى عناوين URL من اليسار إلى اليمين.
+
+### 3.11 ثيم داكن أسود حقيقي
+<p align="center"><img src="assets/screenshots/ar/popup-dark.webp" width="280" alt="نافذة LockTab — الثيم الداكن" /></p>
+
+خلفية سوداء فعلية بتباين مضبوط، تُبدّل من الرأس وتُحفظ بين الجلسات.
+
+### 3.12 إدخال الرمز على شاشة القفل
+<p align="center"><img src="assets/screenshots/ar/lockscreen.webp" width="600" alt="إدخال الرمز" /></p>
+
+الحاجز shadow root مغلق: يبقى التركيز داخله، ولا تستطيع الصفحة التمرير، والخطأ الخاطئ يرفع مدة الحظر.
+
+### 3.13 الحالة الفارغة
+<p align="center"><img src="assets/screenshots/ar/sections/section-empty.webp" width="400" alt="الحالة الفارغة" /></p>
+
+دعوة صادقة لقفل تبويب بدل صندوق فارغ.
+
+### 3.14 دعم التطوير المستمر
+<p align="center"><img src="assets/screenshots/ar/sections/section-donate.webp" width="400" alt="قسم الدعم" /></p>
+
+LockTab مجاني ومفتوح المصدر. PayPal وInstaPay يساعدان في إبقائه مستقلاً؛ كلاهما يفتح في تبويب جديد ولا ترسل الإضافة أي بيانات.
+
+## 4. ما الذي يحميه القفل
+
+1. **A 6-digit PIN.** Stored as a PBKDF2 hash with a unique 16-byte salt; the plaintext is never written to disk.
+2. **A closed gate.** The overlay runs in a closed shadow root, traps focus and blocks scrolling underneath.
+3. **A shared counter.** Wrong guesses escalate through 30, 60, 300 and 900 second lock-outs; switching tabs does not reset it.
+4. **One-time recovery.** The code is shown once, consumed once, and clears every lock.
 
 ---
 
-## 4. ما الذي يحميه الرمز
+## 5. التثبيت (غير مجمّع)
 
-لا يخرج الرمز من جهازك أبداً. يُخزَّن كـ hash عبر PBKDF2 مع ملح فريد، ويُعاد لصق الحاجز في مكانه بدل إعادة تحميل الصفحة.
+1. Open `chrome://extensions`.
+2. Enable **Developer mode**.
+3. Click **Load unpacked** and select the extracted release folder.
+4. Click the LockTab icon in the toolbar.
 
-<div dir="ltr">
-
-```text
-PBKDF2-HMAC-SHA256 · 600,000 تكرار · ملح 16 بايت · shadow root مغلق · تأخير ٣٠/٦٠/٣٠٠/٩٠٠ ثانية
-```
-
-</div>
-
-The query string and fragment are ignored, so a redirect cannot shed a lock. Every action that widens
-access asks for the PIN again, including the temporary unlock and lock removal.
-
----
-
-## 5. التثبيت
-
-1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
-2. Extract it into a folder.
-3. Chrome, Edge, Brave and Opera: open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked** and select the folder.
-4. Firefox 121+: open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on** and select `manifest.json` in the folder.
-
-الخصوصية موضحة في القسم ٧ أدناه وفي privacy.html.
+الخصوصية موضحة في القسم ٧ أدناه وفي `privacy.html`.
 
 ---
 
 ## 6. التطوير
 
-No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
-locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
-unit tests. The interface follows a fixed visual contract in the design reference.
+المستودع المنشور يحتوي على الإضافة ووثائقها فقط. أدوات التطوير وسكربتات التصوير والاختبارات المحلية مستبعدة قصداً؛ يتحقق GitHub Actions من الـ manifest وCSP وتطابق اللغات والملفات المضمّنة مع كل دفع.
 
 ---
 
 ## 7. الخصوصية
 
-راجع privacy.html. يُخزَّن الرمز كـ hash عبر PBKDF2 مع ملح فريد. يُهمل الاستعلام والجزء، ولا تُقرأ محتويات الصفحة، ولا يخرج أي طلب من الإضافة. الخطوط مضمّنة محلياً.
+راجع `privacy.html`. يُخزَّن الرمز كـ hash عبر PBKDF2 مع ملح فريد، ولا يخرج النص الأصلي من الـ popup. يُهمل الاستعلام والجزء، ولا تُقرأ محتويات الصفحة، ولا يخرج أي طلب من الإضافة. الخطوط مضمّنة محلياً.
 
 ---
 
 ## 8. الترخيص
 
-المشروع مفتوح المصدر ومجاني للجميع بموجب Apache-2.0 — استخدمه وعدّله وشاركه بحرية؛ النص الكامل في LICENSE. الخطوط مرخّصة منفصلة بموجب SIL OFL 1.1. سجل الإصدارات في CHANGELOG.md.
+المشروع مفتوح المصدر ومجاني للجميع بموجب ترخيص **Apache-2.0** — استخدمه، وعدّله، وشاركه بحرية؛ والنص الكامل في [LICENSE](LICENSE). الخطوط مرخّصة منفصلة بموجب [SIL OFL 1.1](fonts/OFL.txt). سجل الإصدارات في [CHANGELOG.md](CHANGELOG.md).
+
+---
 
 <p align="center">صُنع بعناية ❤️ <b>Ahmed Yousry</b> · <a href="https://github.com/el9a7rawi/LockTab">LockTab</a> · <a href="LICENSE">Apache-2.0</a></p>

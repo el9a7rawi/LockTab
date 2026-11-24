@@ -121,7 +121,7 @@
   .otp { display: flex; align-items: center; justify-content: center; gap: 8px; direction: ltr; }
   .otp-box {
     flex: 1 1 0; width: auto; min-width: 0; max-width: 40px; height: 48px;
-    border: 1px solid var(--muted); border-radius: 12px;
+    border: 1px solid var(--border); border-radius: 12px;
     background: var(--bg); color: var(--text);
     font-family: var(--mono); font-size: 20px; font-weight: 800;
     text-align: center; caret-color: var(--accent);
@@ -130,10 +130,9 @@
     transition: border-color 0.1s, box-shadow 0.1s;
   }
   .otp-box:focus { border-color: var(--accent); }
-  .otp-box:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: 0 0 0 3px var(--accent-soft); }
+  .otp-box:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .otp-box.filled { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-  .otp-box.filled:focus { box-shadow: 0 0 0 3px var(--accent-soft); }
-  .otp-box.otp-next { border-style: dashed; border-color: var(--muted); background: var(--card); }
+  .otp-box.otp-next { border-style: dashed; border-color: var(--accent); background: var(--card); }
   .otp.invalid .otp-box,
   .otp.invalid .otp-box.filled { border-color: var(--danger); }
   .otp-box.otp-enter { animation: otp-in 0.09s ease-out both; }
@@ -162,18 +161,19 @@
   .link:hover { text-decoration: underline; }
   .code {
     width: 100%; height: 52px; text-align: center; border-radius: 12px;
-    border: 1px solid var(--muted); background: var(--bg); color: var(--text);
+    border: 1px solid var(--border); background: var(--bg); color: var(--text);
     font-family: var(--mono); font-size: 15px; font-weight: 700;
     letter-spacing: 0.12em; text-indent: 0.12em; direction: ltr; text-transform: uppercase; padding: 0 12px;
   }
-  .code:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .code:focus { outline: none; border-color: var(--accent); }
   .input-caption { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--muted); }
   .card-actions { display: flex; gap: 8px; }
   .card-actions .primary { flex: 3 1 0; }
   .card-actions .ghost { flex: 1 1 0; min-width: 0; border: 0; }
   [dir="rtl"] .card-actions { flex-direction: row-reverse; }
   .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button:focus-visible, a:focus-visible { outline: 1px solid var(--accent); outline-offset: 1px; }
+  input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   @media (prefers-reduced-motion: reduce) {
     .wrap, .card, .card.shake, .otp-box { animation: none !important; }
     * { transition-duration: 0.01ms !important; }

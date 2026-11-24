@@ -1,10 +1,33 @@
 # Changelog
 
-All notable changes to LockTab are documented here. The format follows
-[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and versions follow
-[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+All notable changes to this project are documented in this file. The format is
+based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this
+project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Changed
+
+- Mirror the reference release and README format exactly: six badges, centered language strip, browser table in an alignment wrapper, eight numbered sections with a 14-part interface tour, and the same separator placement in every translation.
+- Rebuild all eight banners as real HTML/CSS composited at 1500x500 CSS pixels and captured at 2x into 3000x1000 WebP with transparent rounded corners, using the same dark tokens, Inter Tight / Cairo / Noto Sans SC typography and product-shot structure as the reference.
+- Regenerate every README screenshot from the shipped popup markup through a generated fixture and headless Chrome at 2x, with transparent dynamic corners and a theme-aware inner border, in all eight languages.
+- Add square social posts rendered from HTML/CSS at 2x and downsampled in-page for crisp type.
+- Rewrite the eight banner headlines and supporting copy around a concrete moment and outcome ("Step away. Still locked."), and make the four chips name distinct capabilities instead of restating the PIN claim.
+- Frame every README screenshot on the whole popup rather than an isolated card, and group neighbouring cards in each fixture state so a single capture shows several features in context.
+- Take the screenshot fixture off the shipped 600px popup cap, so a capture paints the full panel while the published popup and stylesheet stay unchanged.
+- Replace the single hand-drawn product preview in every banner with a staggered gallery of four real captures: the live lock gate, tab status and action, the locked-sites list, and the true-black theme. Each carries a translated label, and the layout mirrors logically in Arabic.
+- Wait for image decode and font readiness before capturing a banner instead of using a fixed delay, so a slow local decode cannot leave a blank frame.
+
+### Fixed
+- Localize the status label and PIN-match text in the screenshot fixture instead of falling back to English markup in translated captures.
+- Render the status icon and its translated label in every captured state; the empty and locked-sites shots previously showed an empty square.
+- Show the correct inherited-PIN state in the site card: the "uses your main PIN" badge with a single "set a site PIN" action, hiding the revert button that only exists once a custom PIN is set.
+- Shorten the language-menu capture and keep the real panel visible behind it so the shot reads as a live extension.
+- Remove the PIN hint from the popup action capture and replace it with an actual lock-screen photo of the shipped overlay.
+- Retry an individual capture when Chrome keeps the DevTools port busy, so one transient launch failure no longer aborts a whole locale run.
+
+### Added
+- `tools/capture-lockscreen.mjs` and a dev fixture that drives the production `core.js`, `pin.js` and `overlay.js` with a translated POLICY payload, producing a real lock-screen WebP in all eight languages. The gate is shown with four entered digits to document how the OTP row grows and stops at six.
 
 ## [1.0.2] - 2026-11-24
 
@@ -82,6 +105,7 @@ All notable changes to LockTab are documented here. The format follows
 - The attempt counter is shared across all sites when the global PIN is used,
   so switching tabs cannot reset the lock-out ladder.
 
-[1.0.2]: https://github.com/el9a7rawi/LockTab/releases/tag/v1.0.2
-[1.0.1]: https://github.com/el9a7rawi/LockTab/releases/tag/v1.0.1
+[Unreleased]: https://github.com/el9a7rawi/LockTab/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/el9a7rawi/LockTab/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/el9a7rawi/LockTab/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/el9a7rawi/LockTab/releases/tag/v1.0.0

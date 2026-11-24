@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner/locktab-banner-pt-BR.png" width="100%" alt="LockTab — Suas abas, só para você" />
+  <img src="assets/banner/locktab-banner-pt-BR.webp" width="100%" alt="LockTab — Suas abas, só para você" />
 </p>
 
 <h1 align="center">LockTab — Suas abas, só para você</h1>
@@ -7,19 +7,19 @@
 <p align="center">Bloqueie qualquer aba com um clique e um PIN de 6 dígitos. Defina um PIN privado para um site, guarde um código de recuperação de uso único e saia sabendo que ninguém pode ler sua tela. Oito idiomas, RTL árabe completo e nenhuma nuvem.</p>
 
 <p align="center">
-  <a href="https://github.com/el9a7rawi/LockTab/releases"><img src="https://img.shields.io/github/v/release/el9a7rawi/LockTab?color=4f46e5" alt="Latest release" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/releases"><img src="https://img.shields.io/github/v/release/el9a7rawi/LockTab?color=4f46e5" alt="Última versão" /></a>
   <a href="https://github.com/el9a7rawi/LockTab/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-E8710A" alt="Apache 2.0" /></a>
-  <a href="https://github.com/el9a7rawi/LockTab/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-22C55E" alt="PRs welcome" /></a>
+  <a href="https://github.com/el9a7rawi/LockTab/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-22C55E" alt="PRs bem-vindos" /></a>
   <a href="https://developer.chrome.com/docs/extensions"><img src="https://img.shields.io/badge/Manifest-V3-4285F4" alt="Manifest V3" /></a>
-  <img src="https://img.shields.io/badge/8_Languages-7c3aed" alt="8 languages" />
-  <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Works offline" />
+  <img src="https://img.shields.io/badge/8_Languages-7c3aed" alt="8 idiomas" />
+  <img src="https://img.shields.io/badge/Works-Offline-059669" alt="Offline" />
 </p>
 
-<p align="center">
-  <a href="README.md">English</a> · <a href="README.ar.md">العربية</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
-</p>
+<h4 align="center">
+  <a href="README.md">English</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.ru.md">Русский</a> · <a href="README.ar.md">العربية</a> · <a href="README.zh-CN.md">中文（简体）</a>
+</h4>
 
-<h3 align="center">Baixe para seu navegador — clique no ícone</h3>
+<h3 align="center">Download for your browser — click the icon</h3>
 
 <div align="center">
 
@@ -28,20 +28,24 @@
 
 </div>
 
-Firefox 121 ou superior usa um arquivo dedicado com um manifesto específico.
+Chrome e navegadores Chromium são o foco principal. Firefox 121+ é compatível por meio de um arquivo dedicado com seu próprio manifesto.
 
 ---
 
 ## 1. Por que o LockTab?
 
+<div align="center">
+
 | Without LockTab | With LockTab |
-| --- | --- |
+|---|---|
 | Qualquer pessoa pode ler uma aba aberta | Sua aba fica coberta até o PIN ser digitado |
 | Uma senha compartilhada por todos os sites | Um PIN dedicado às páginas que importam |
 | Perder o PIN é perder o acesso | Um código de recuperação único desfaz tudo |
 | Extensões que enviam seus dados | Totalmente offline, sem conta e sem rastreamento |
 
-A aba bloqueada fica coberta até o PIN ser digitado. Sem conta na nuvem, senha compartilhada ou requisições saindo do dispositivo.
+</div>
+
+undefined
 
 ---
 
@@ -53,94 +57,112 @@ A aba bloqueada fica coberta até o PIN ser digitado. Sem conta na nuvem, senha 
 
 ---
 
-## 3. Visita à interface — cada parte da extensão
+## 3. Visão geral da interface — todas as partes da extensão
 
-### 3.1 Cabeçalho — tudo ao alcance
-<p align="center"><img src="assets/screenshots/pt-BR/sections/section-header.png" width="400" alt="Cabeçalho — tudo ao alcance" /></p>
+### 3.1 Header — everything in reach
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-header.webp" width="400" alt="Header" /></p>
 
-Título, tema, idioma e link do GitHub dividem uma linha discreta.
+The title, theme toggle, GitHub link and language picker share one compact row.
 
-### 3.2 Uma ação principal
-<p align="center"><img src="assets/screenshots/pt-BR/sections/section-hero.png" width="400" alt="Uma ação principal" /></p>
+### 3.2 One primary action
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-hero.webp" width="400" alt="Primary action" /></p>
 
-Um único botão em gradiente cobre a página ativa. Desbloqueio temporário e remoção pedem o PIN antes.
+A single gradient button covers the active page. Temporary unlock and lock removal ask for the PIN first.
 
-### 3.3 Estado da aba
-<p align="center"><img src="assets/screenshots/pt-BR/sections/section-status.png" width="400" alt="Estado da aba" /></p>
+### 3.3 Tab status
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-status.webp" width="400" alt="Tab status" /></p>
 
-Uma placa plana mostra se a aba está bloqueada, aberta ou aberta por um tempo.
+A flat status plate shows whether the tab is locked, open, or open for a while.
 
-### 3.4 Entrada do PIN
-<p align="center"><img src="assets/screenshots/pt-BR/sections/section-otp.png" width="400" alt="Entrada do PIN" /></p>
+### 3.4 First run — create your PIN
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-setup.webp" width="400" alt="PIN setup" /></p>
 
-Seis campos aparecem um após o outro, param no sexto e centralizam o asterisco.
+Six boxes appear one after another, stop exactly at six, and centre the asterisk.
 
-### 3.5 Código de recuperação
-<p align="center"><img src="assets/screenshots/pt-BR/sections/section-recovery.png" width="400" alt="Código de recuperação" /></p>
+### 3.5 Recovery code shown once
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-recovery.webp" width="400" alt="Recovery code" /></p>
 
-Mostrado uma única vez após a configuração. Um código usado nunca volta a funcionar.
+The code is displayed only at setup. Store it somewhere safe; a used code can never be replayed.
 
-### 3.6 Sites bloqueados
-<p align="center"><img src="assets/screenshots/pt-BR/sections/section-sites.png" width="400" alt="Sites bloqueados" /></p>
+### 3.6 A PIN for one site
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-pin.webp" width="400" alt="Site PIN" /></p>
 
-Linhas numeradas listam cada domínio. Após cinco sites, setas percorrem a lista.
+A site PIN overrides the global one on that domain, so sensitive pages can stay separate.
 
-### 3.7 Configurações
-<p align="center"><img src="assets/screenshots/pt-BR/sections/section-settings.png" width="400" alt="Configurações" /></p>
+### 3.7 Locked sites
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-sites.webp" width="400" alt="Locked sites" /></p>
 
-Desfoque em três níveis, contador no ícone, duração do desbloqueio, tema e idioma — em um só lugar.
+Numbered rows list every locked domain. Past five sites, arrows page through the list.
 
-### 3.8 Apoio
-<p align="center"><img src="assets/screenshots/pt-BR/sections/section-donate.png" width="400" alt="Apoio" /></p>
+### 3.8 Lock from anywhere
+The Alt+Shift+L shortcut locks the current tab without opening the popup.
 
-O LockTab é gratuito e de código aberto. PayPal e um InstaPay em destaque o mantêm independente.
+### 3.9 Configurações
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-settings.webp" width="400" alt="Settings" /></p>
+
+Desfoque, contador, duração, tema e idioma em um só cartão.
+
+### 3.10 Oito idiomas, RTL real
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-language.webp" width="400" alt="Language menu" /></p>
+
+Troca instantânea; o árabe inverte o layout de forma lógica.
+
+### 3.11 Tema escuro preto real
+<p align="center"><img src="assets/screenshots/pt-BR/popup-dark.webp" width="280" alt="LockTab popup — dark theme" /></p>
+
+Fundo preto de verdade com contraste ajustado e lembrado.
+
+### 3.12 Entrada do PIN
+<p align="center"><img src="assets/screenshots/pt-BR/lockscreen.webp" width="600" alt="PIN entry" /></p>
+
+A capa usa uma shadow root fechada; o foco fica dentro.
+
+### 3.13 Estado vazio
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-empty.webp" width="400" alt="Empty state" /></p>
+
+Um convite honesto para bloquear uma aba.
+
+### 3.14 Apoio
+<p align="center"><img src="assets/screenshots/pt-BR/sections/section-donate.webp" width="400" alt="Support section" /></p>
+
+PayPal e InstaPay ajudam a manter o projeto independente.
+
+## 4. O que a trava protege
+
+1. **A 6-digit PIN.** Stored as a PBKDF2 hash with a unique 16-byte salt; the plaintext is never written to disk.
+2. **A closed gate.** The overlay runs in a closed shadow root, traps focus and blocks scrolling underneath.
+3. **A shared counter.** Wrong guesses escalate through 30, 60, 300 and 900 second lock-outs; switching tabs does not reset it.
+4. **One-time recovery.** The code is shown once, consumed once, and clears every lock.
 
 ---
 
-## 4. O que o PIN protege
+## 5. Instalar (sem empacotamento)
 
-O PIN nunca sai do seu dispositivo. Ele fica salvo como hash PBKDF2 com um salt único, e a capa é recolocada no lugar sem recarregar a página.
+1. Open `chrome://extensions`.
+2. Enable **Developer mode**.
+3. Click **Load unpacked** and select the extracted release folder.
+4. Click the LockTab icon in the toolbar.
 
-<div dir="ltr">
-
-```text
-PBKDF2-HMAC-SHA256 · 600.000 iterações · salt de 16 bytes · shadow root fechada · espera 30/60/300/900 s
-```
-
-</div>
-
-The query string and fragment are ignored, so a redirect cannot shed a lock. Every action that widens
-access asks for the PIN again, including the temporary unlock and lock removal.
-
----
-
-## 5. Instalar
-
-1. Download the release archive for your browser from [Releases](https://github.com/el9a7rawi/LockTab/releases).
-2. Extract it into a folder.
-3. Chrome, Edge, Brave and Opera: open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked** and select the folder.
-4. Firefox 121+: open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on** and select `manifest.json` in the folder.
-
-A privacidade está na seção 7 e em privacy.html.
+A privacidade está na seção 7 e em `privacy.html`.
 
 ---
 
 ## 6. Desenvolvimento
 
-No bundler and no npm dependencies. Run `python tools/build.py` to validate all eight
-locale bundles and write the release archives, then `node --test tests/core.test.mjs` for the
-unit tests. The interface follows a fixed visual contract in the design reference.
+O repositório publicado contém apenas a extensão e sua documentação. Scripts de captura e testes locais ficam de fora; o GitHub Actions valida o manifesto, o CSP e os idiomas.
 
 ---
 
 ## 7. Privacidade
 
-Veja privacy.html. O PIN é salvo apenas como hash PBKDF2 com um salt único. Query e fragmento são descartados, o conteúdo da página nunca é lido e nenhuma requisição sai da extensão. As fontes são locais.
+Veja `privacy.html`. O PIN fica salvo apenas como hash PBKDF2 com salt único; o conteúdo da página nunca é lido e nenhuma requisição sai da extensão.
 
 ---
 
 ## 8. Licença
 
-O projeto é de código aberto e gratuito sob Apache-2.0 — use, modifique e compartilhe livremente; o texto completo está em LICENSE. As fontes têm licença SIL OFL 1.1. O histórico está em CHANGELOG.md.
+O projeto é de código aberto sob **Apache-2.0**; texto completo em [LICENSE](LICENSE). Fontes sob [SIL OFL 1.1](fonts/OFL.txt). Histórico em [CHANGELOG.md](CHANGELOG.md).
+
+---
 
 <p align="center">Feito com carinho ❤️ <b>Ahmed Yousry</b> · <a href="https://github.com/el9a7rawi/LockTab">LockTab</a> · <a href="LICENSE">Apache-2.0</a></p>
