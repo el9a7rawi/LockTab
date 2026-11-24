@@ -19,6 +19,10 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Wait for image decode and font readiness before capturing a banner instead of using a fixed delay, so a slow local decode cannot leave a blank frame.
 
 ### Fixed
+- Render locked-site rows exactly as the popup does: index, domain plus path, and the translated inherited/custom PIN badge, instead of a host-only approximation.
+- Bring the lock-screen capture closer and apply the same transparent rounded-corner mask used by the other interface shots.
+
+### Fixed
 - Localize the status label and PIN-match text in the screenshot fixture instead of falling back to English markup in translated captures.
 - Render the status icon and its translated label in every captured state; the empty and locked-sites shots previously showed an empty square.
 - Show the correct inherited-PIN state in the site card: the "uses your main PIN" badge with a single "set a site PIN" action, hiding the revert button that only exists once a custom PIN is set.
