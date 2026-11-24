@@ -585,7 +585,11 @@ if (typeof importScripts === "function") {
   }
 
   async function changePin(current, next) {
-    if (!Core.validatePin(next)) return { ok: false, error: "invalid_pin" };
+    /* The first box proves ownership of the old secret and the second becomes
+       the new one; validate both at the boundary before touching storage. */
+    if (!Core.validatePin(current) || !Core.validatePin(next)) {
+      return { ok: false, error: "invalid_pin" };
+    }
 
     /* Verification and installation share one slot: two concurrent changes
        must not both pass against the same old hash and return different codes. */

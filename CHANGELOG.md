@@ -9,6 +9,7 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - The first box in "Set a site PIN" is now the main PIN. It was verified against the site's previous PIN whenever a rule existed, so changing a custom PIN only worked when all three boxes held the same digits. The main-PIN check also no longer counts as a lock-screen guess or grants a temporary unlock. The box is shown before the site has a rule and is translated in all eight languages.
+- Label the "Change main PIN" fields explicitly as current PIN, new PIN and repeat new PIN. Both labels previously rendered as plain "PIN", which made the first box look like the new one. The background now validates the current PIN's format at the boundary instead of reporting a malformed first box as a wrong PIN.
 
 ## [1.0.3] - 2026-11-24
 
