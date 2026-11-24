@@ -34,6 +34,7 @@
   "setupTitle": "设置 PIN",
   "setupHint": "6 位数字。只保存哈希，绝不保存明文。",
   "pinLabel": "PIN",
+  "primaryPinLabel": "主 PIN",
   "confirmLabel": "再次输入 PIN",
   "save": "保存",
   "cancel": "取消",

@@ -490,24 +490,29 @@ if (typeof importScripts === "function") {
     return { ok: true };
   }
 
+  /**
+   * A per-site PIN is an override of the main secret, so the first box in the
+   * popup proves ownership of the main secret — never the site's previous PIN.
+   * Verification and the write share one exclusive slot: two open popups must
+   * not both validate against the same hash and then both replace the rule.
+   */
   async function setSitePin(tabId, pin, current) {
     const tab = await getTab(tabId);
     const info = Core.normalizeUrl(tab && tab.url);
     if (!info) return { ok: false, error: "not_lockable" };
     if (!Core.validatePin(pin)) return { ok: false, error: "invalid_pin" };
 
-    /* Changing the secret that guards a page is only allowed by whoever can
-       already read it. Without this check the popup becomes the very bypass it
-       is meant to prevent. */
-    const currentState = await readState();
-    if (Core.findRule(currentState.rules, info)) {
-      const verified = await verifyPin(info, String(current || ""));
-      if (!verified.ok) return verified;
-    }
-
-    const record = await Crypto.createSecret(pin);
-    await Store.exclusive(async () => {
+    const result = await Store.exclusive(async () => {
       const data = await readState();
+      if (!data.globalPin) return { ok: false, error: "no_pin" };
+      /* Deliberately not verifyPin(): that also grants a temporary unlock and
+         records lock-screen attempts, neither of which belongs to an admin
+         action taken from the popup. */
+      if (!(await Crypto.verifySecret(Core.messageString(current), data.globalPin))) {
+        return { ok: false, error: "wrong_pin" };
+      }
+
+      const record = await Crypto.createSecret(pin);
       const key = Core.ruleKeyFor(info, "path");
       const existing = data.rules[key] || { mode: "inherit", scope: "path", createdAt: Date.now() };
       const rules = Object.assign({}, data.rules, {
@@ -517,45 +522,43 @@ if (typeof importScripts === "function") {
       const unlocked = Object.assign({}, data.unlocked);
       delete unlocked[info.urlKey];
       await Store.set({ rules, unlocked });
+      return { ok: true };
     });
+    if (!result.ok) return result;
+
     const delivered = await pushPolicy(tabId);
     scheduleBadgeRefresh();
     if (!delivered) return { ok: false, error: "content_unavailable" };
     return { ok: true };
   }
 
+  /** The same first box authorises both site-PIN modes: it is the main secret. */
   async function useGlobalPin(tabId, current) {
     const tab = await getTab(tabId);
     const info = Core.normalizeUrl(tab && tab.url);
     if (!info) return { ok: false, error: "not_lockable" };
 
-    const data = await readState();
-    const found = Core.findRule(data.rules, info);
-    if (!found) return { ok: true };
+    return Store.exclusive(async () => {
+      const data = await readState();
+      if (!data.globalPin) return { ok: false, error: "no_pin" };
+      if (!(await Crypto.verifySecret(Core.messageString(current), data.globalPin))) {
+        return { ok: false, error: "wrong_pin" };
+      }
 
-    /* Dropping a per-site PIN lowers the bar for this page, so it requires the
-       PIN currently in force rather than a bare click. */
-    if (found.rule && found.rule.pin) {
-      const verified = await verifyPin(info, String(current || ""));
-      if (!verified.ok) return verified;
-    }
-
-    await Store.exclusive(async () => {
-      const latest = await readState();
-      const rule = Core.findRule(latest.rules, info);
-      if (!rule) return;
-      const rules = Object.assign({}, latest.rules, {
+      const rule = Core.findRule(data.rules, info);
+      if (!rule) return { ok: true };
+      const rules = Object.assign({}, data.rules, {
         [rule.key]: {
           mode: "inherit",
           scope: "path",
           createdAt: rule.rule.createdAt || Date.now(),
         },
       });
-      const attempts = Object.assign({}, latest.attempts);
+      const attempts = Object.assign({}, data.attempts);
       delete attempts["site:" + rule.key];
       await Store.set({ rules, attempts });
+      return { ok: true };
     });
-    return { ok: true };
   }
 
   /**

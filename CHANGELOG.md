@@ -6,7 +6,19 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- The first box in "Set a site PIN" is now the main PIN. It was verified against the site's previous PIN whenever a rule existed, so changing a custom PIN only worked when all three boxes held the same digits. The main-PIN check also no longer counts as a lock-screen guess or grants a temporary unlock. The box is shown before the site has a rule and is translated in all eight languages.
+
+## [1.0.3] - 2026-11-24
+
+### Fixed
+
+- Ship `popup.js` in every release archive. The v1.0.2 archive omitted the popup controller, so the installed extension showed an empty popup and could not create a PIN or lock a tab.
+
 ### Changed
+
+- Fail the release build when any script referenced by an HTML page is missing from the staged files, so an archive with an empty popup can never be published again.
 
 - Mirror the reference release and README format exactly: six badges, centered language strip, browser table in an alignment wrapper, eight numbered sections with a 14-part interface tour, and the same separator placement in every translation.
 - Rebuild all eight banners as real HTML/CSS composited at 1500x500 CSS pixels and captured at 2x into 3000x1000 WebP with transparent rounded corners, using the same dark tokens, Inter Tight / Cairo / Noto Sans SC typography and product-shot structure as the reference.
@@ -109,7 +121,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - The attempt counter is shared across all sites when the global PIN is used,
   so switching tabs cannot reset the lock-out ladder.
 
-[Unreleased]: https://github.com/el9a7rawi/LockTab/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/el9a7rawi/LockTab/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/el9a7rawi/LockTab/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/el9a7rawi/LockTab/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/el9a7rawi/LockTab/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/el9a7rawi/LockTab/releases/tag/v1.0.0

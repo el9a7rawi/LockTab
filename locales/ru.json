@@ -34,6 +34,7 @@
   "setupTitle": "Задайте PIN-код",
   "setupHint": "6 цифр. Хранится как хеш, никогда в открытом виде.",
   "pinLabel": "PIN-код",
+  "primaryPinLabel": "Основной PIN-код",
   "confirmLabel": "Повторите PIN-код",
   "save": "Сохранить",
   "cancel": "Отмена",

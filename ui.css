@@ -47,6 +47,9 @@
   --switch-knob-shadow: 0 0 2px rgba(0, 0, 0, 0.22);
   --menu-shadow: 0 12px 32px rgba(20, 24, 38, 0.14);
 
+  /* A focus cue that stays legible in both themes without shouting. Mixing
+     the accent with the surface keeps the ring soft but still visible. */
+  --focus-ring: color-mix(in srgb, var(--accent) 65%, var(--card));
   --button-gradient: linear-gradient(135deg, #4f46e5, #7c3aed);
   --radius: 16px;
   --shadow: 0 8px 28px rgba(79, 70, 229, 0.1);
@@ -386,7 +389,7 @@ a.ghost-btn { text-decoration: none; }
 }
 .switch input:checked + .track { background: var(--primary); }
 .switch input:checked + .track::after { inset-inline-start: 21px; }
-.switch input:focus-visible + .track { outline: 2px solid var(--accent); outline-offset: 1px; }
+.switch input:focus-visible + .track { outline: 1px solid var(--focus-ring); outline-offset: 0; }
 .switch input:disabled { cursor: not-allowed; }
 .switch input:disabled + .track { opacity: 0.5; }
 
@@ -424,17 +427,11 @@ a.ghost-btn { text-decoration: none; }
    Focus and helpers
    ------------------------------------------------------------------------- */
 input:focus-visible,
-select:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-/* A 2px ring plus a soft halo made primary actions look like alerts. Buttons
-   and links keep a clearly visible focus, just one hairline closer. */
+select:focus-visible,
 button:focus-visible,
 a:focus-visible {
-  outline: 1px solid var(--accent);
-  outline-offset: 1px;
+  outline: 1px solid var(--focus-ring);
+  outline-offset: 0;
 }
 
 [hidden] { display: none !important; }
@@ -476,7 +473,7 @@ a:focus-visible {
   border-color: var(--accent); background: var(--card);
 }
 .otp-box:focus-visible {
-  outline: 2px solid var(--accent); outline-offset: 1px;
+  outline: 1px solid var(--focus-ring); outline-offset: 0;
 }
 .otp-box.otp-next { border-style: dashed; border-color: var(--accent); background: var(--card); }
 .otp.invalid .otp-box { border-color: var(--danger); }

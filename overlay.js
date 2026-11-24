@@ -50,6 +50,7 @@
   .wrap {
     --bg: #f7f8fc; --card: #ffffff; --text: #141826; --muted: #4b5563;
     --border: #e8eaf1; --accent: #4f46e5; --accent-soft: #eef0ff;
+    --focus-ring: color-mix(in srgb, var(--accent) 65%, var(--card));
     --success: #047857; --success-soft: #e7f7f0;
     --danger: #b91c1c; --danger-soft: #fdecec; --warn: #b45309; --warn-soft: #fdf3e3;
     --muted-soft: #f1f2f6; --radius: 16px; --button-gradient: linear-gradient(135deg, #4f46e5, #7c3aed);
@@ -83,6 +84,7 @@
     .wrap {
       --bg: #000000; --card: #141417; --text: #fafafa; --muted: #a1a1aa;
       --border: #26262b; --accent: #a5b4fc; --accent-soft: #1e1f3a;
+      --focus-ring: color-mix(in srgb, var(--accent) 65%, var(--card));
       --success: #34d399; --success-soft: #0f231c;
       --danger: #f87171; --danger-soft: #2a1113; --warn: #fbbf24; --warn-soft: #2a2110;
       --muted-soft: #1c1c21;
@@ -130,7 +132,7 @@
     transition: border-color 0.1s, box-shadow 0.1s;
   }
   .otp-box:focus { border-color: var(--accent); }
-  .otp-box:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .otp-box:focus-visible { outline: 1px solid var(--focus-ring); outline-offset: 0; }
   .otp-box.filled { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   .otp-box.otp-next { border-style: dashed; border-color: var(--accent); background: var(--card); }
   .otp.invalid .otp-box,
@@ -172,8 +174,8 @@
   .card-actions .ghost { flex: 1 1 0; min-width: 0; border: 0; }
   [dir="rtl"] .card-actions { flex-direction: row-reverse; }
   .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-  button:focus-visible, a:focus-visible { outline: 1px solid var(--accent); outline-offset: 1px; }
-  input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button:focus-visible, a:focus-visible,
+  input:focus-visible, select:focus-visible { outline: 1px solid var(--focus-ring); outline-offset: 0; }
   @media (prefers-reduced-motion: reduce) {
     .wrap, .card, .card.shake, .otp-box { animation: none !important; }
     * { transition-duration: 0.01ms !important; }

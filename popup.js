@@ -636,7 +636,9 @@
     el.sitePinForm.hidden = false;
     hideError(el.sitePinError);
     fields.sitePinCurrent.clear();
-    el.sitePinCurrentWrap.hidden = !view.hasRule;
+    /* The first box is the main PIN in both modes — it proves ownership before
+       any per-site secret is created or replaced, even on an unmarked page. */
+    el.sitePinCurrentWrap.hidden = false;
 
     const setMode = mode === "set";
     el.sitePinNewWrap.hidden = !setMode;
@@ -656,11 +658,12 @@
     hideError(el.sitePinError);
     const current = fields.sitePinCurrent.getValue();
 
+    if (!Core.validatePin(current)) {
+      showError(el.sitePinError, I18n.t("pinInvalid"));
+      return invalid(fields.sitePinCurrent);
+    }
+
     if (siteFormMode === "revert") {
-      if (view.hasRule && !Core.validatePin(current)) {
-        showError(el.sitePinError, I18n.t("pinInvalid"));
-        return invalid(fields.sitePinCurrent);
-      }
       const result = await send({ type: "USE_GLOBAL_PIN", tabId, current });
       if (!result || !result.ok) {
         showError(el.sitePinError, describeError(result));

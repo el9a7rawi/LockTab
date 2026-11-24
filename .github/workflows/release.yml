@@ -25,11 +25,17 @@ jobs:
           set -euo pipefail
           VERSION="${GITHUB_REF_NAME#v}"
           mkdir -p dist
-          FILES=(manifest.json popup.html privacy.html ui.css ui.js background.js core.js crypto.js i18n.js overlay.js pin.js storage.js theme.js LICENSE icons locales fonts)
+          FILES=(manifest.json popup.html popup.js privacy.html ui.css ui.js background.js core.js crypto.js i18n.js overlay.js pin.js storage.js theme.js LICENSE icons locales fonts)
           for BROWSER in chrome edge brave opera firefox; do
             STAGE="dist/stage-${BROWSER}"
             mkdir -p "$STAGE"
             cp -R "${FILES[@]}" "$STAGE/"
+
+            # A controller referenced by an HTML page but left out of FILES
+            # produces an archive that installs and shows an empty popup.
+            for JS in $(sed -n 's/.*src="\([^"]*\.js\)".*/\1/p' "$STAGE"/*.html | sort -u); do
+              test -f "$STAGE/$JS" || { echo "$STAGE missing $JS"; exit 1; }
+            done
 
             if [ "$BROWSER" = "firefox" ]; then
               node .github/firefox-manifest.mjs "$STAGE/manifest.json"
@@ -39,7 +45,7 @@ jobs:
             (cd "$STAGE" && zip -qr "${GITHUB_WORKSPACE}/${ARCHIVE}" .)
 
             CONTENTS=$(unzip -Z1 "$ARCHIVE")
-            for REQUIRED in ui.css ui.js popup.html privacy.html background.js core.js crypto.js i18n.js overlay.js pin.js storage.js theme.js LICENSE \
+            for REQUIRED in ui.css ui.js popup.html popup.js privacy.html background.js core.js crypto.js i18n.js overlay.js pin.js storage.js theme.js LICENSE \
                             icons/icon-128.png fonts/cairo-arabic.woff2 \
                             locales/en.json locales/ar.json; do
               echo "$CONTENTS" | grep -qx "$REQUIRED" || { echo "$ARCHIVE missing $REQUIRED"; exit 1; }

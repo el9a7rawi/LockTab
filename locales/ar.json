@@ -34,6 +34,7 @@
   "setupTitle": "أنشئ رمزك السري",
   "setupHint": "٦ أرقام. يُحفظ كـ hash، لا كنص أبداً.",
   "pinLabel": "الرمز السري",
+  "primaryPinLabel": "الرمز الأساسي",
   "confirmLabel": "أعد الرمز",
   "save": "حفظ",
   "cancel": "إلغاء",

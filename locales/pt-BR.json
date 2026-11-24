@@ -34,6 +34,7 @@
   "setupTitle": "Crie seu PIN",
   "setupHint": "6 dígitos. Guardado como hash, nunca como texto.",
   "pinLabel": "PIN",
+  "primaryPinLabel": "PIN principal",
   "confirmLabel": "Repita o PIN",
   "save": "Salvar",
   "cancel": "Cancelar",

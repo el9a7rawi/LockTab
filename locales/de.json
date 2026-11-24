@@ -34,6 +34,7 @@
   "setupTitle": "PIN erstellen",
   "setupHint": "6 Ziffern. Als Hash gespeichert, nie im Klartext.",
   "pinLabel": "PIN",
+  "primaryPinLabel": "Haupt-PIN",
   "confirmLabel": "PIN wiederholen",
   "save": "Speichern",
   "cancel": "Abbrechen",

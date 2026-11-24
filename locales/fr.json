@@ -34,6 +34,7 @@
   "setupTitle": "Créez votre code PIN",
   "setupHint": "6 chiffres. Stocké en hachage, jamais en clair.",
   "pinLabel": "Code PIN",
+  "primaryPinLabel": "Code principal",
   "confirmLabel": "Répétez le code PIN",
   "save": "Enregistrer",
   "cancel": "Annuler",
