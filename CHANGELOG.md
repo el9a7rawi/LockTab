@@ -6,6 +6,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-11-24
+
 ### Fixed
 
 - The first box in "Set a site PIN" is now the main PIN. It was verified against the site's previous PIN whenever a rule existed, so changing a custom PIN only worked when all three boxes held the same digits. The main-PIN check also no longer counts as a lock-screen guess or grants a temporary unlock. The box is shown before the site has a rule and is translated in all eight languages.
@@ -122,7 +124,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - The attempt counter is shared across all sites when the global PIN is used,
   so switching tabs cannot reset the lock-out ladder.
 
-[Unreleased]: https://github.com/el9a7rawi/LockTab/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/el9a7rawi/LockTab/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/el9a7rawi/LockTab/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/el9a7rawi/LockTab/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/el9a7rawi/LockTab/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/el9a7rawi/LockTab/compare/v1.0.0...v1.0.1
