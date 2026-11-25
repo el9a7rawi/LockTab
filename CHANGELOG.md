@@ -6,6 +6,13 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-11-25
+
+### Fixed
+
+- Changing **Stay open for** now reschedules an active unlock instead of leaving the old deadline in place. Shortening the duration below the time already elapsed re-covers the tab immediately; switching to **Until closed** stores a far-future expiry and switching back restores a timed one.
+- The popup countdown updates from the storage change instead of showing the previous deadline after the setting was changed.
+
 ## [1.0.4] - 2026-11-24
 
 ### Fixed
@@ -124,7 +131,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - The attempt counter is shared across all sites when the global PIN is used,
   so switching tabs cannot reset the lock-out ladder.
 
-[Unreleased]: https://github.com/el9a7rawi/LockTab/compare/v1.0.4...HEAD
+[Unreleased]: https://github.com/el9a7rawi/LockTab/compare/v1.0.5...HEAD
+[1.0.5]: https://github.com/el9a7rawi/LockTab/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/el9a7rawi/LockTab/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/el9a7rawi/LockTab/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/el9a7rawi/LockTab/compare/v1.0.1...v1.0.2

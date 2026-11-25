@@ -701,6 +701,19 @@
      Handlers
      ------------------------------------------------------------------------ */
   function bind() {
+    /* The background reschedules unlocks when the stay-open duration changes.
+       Updating from the storage event keeps the countdown in step without
+       guessing when that asynchronous write has finished. */
+    if (globalThis.chrome && chrome.storage && chrome.storage.onChanged) {
+      chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName !== "local" || !changes.unlocked || !view || !view.urlKey) return;
+        const table = changes.unlocked.newValue || {};
+        view.unlockedUntil = table[view.urlKey] || 0;
+        if (view.hasRule) view.state = view.unlockedUntil ? "temp" : "locked";
+        renderStatus();
+      });
+    }
+
     el.themeBtn.addEventListener("click", () => {
       Theme.toggle();
       applyThemeGlyph();

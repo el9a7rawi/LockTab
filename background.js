@@ -805,6 +805,16 @@ if (typeof importScripts === "function") {
         if (overlayKeys.some((key) => before[key] !== after[key])) {
           broadcastPolicy().catch(() => undefined);
         }
+        if (before.autoLockMinutes !== after.autoLockMinutes) {
+          /* The popup writes this preference directly, so the background has to
+             reschedule unlocks itself: leaving an old expiry in place means a
+             shorter setting never takes effect and a longer one can cut a tab
+             off at the previous deadline. */
+          rescheduleUnlocks(
+            Core.clampAutoLock(before.autoLockMinutes),
+            Core.clampAutoLock(after.autoLockMinutes)
+          ).catch(() => undefined);
+        }
       }
       /* The badge counts rules, not unlock state, so an unlock does not need a
          full tabs query on every PIN entry. */
@@ -917,6 +927,39 @@ if (typeof importScripts === "function") {
         if (info && Core.findRule(rules, info)) await pushPolicy(tab.id);
       })
     );
+  }
+
+  /**
+   * Rewrites live unlocks when the stay-open duration changes. Shifting the
+   * stored expiry by the difference keeps the time already spent open; a new
+   * "until closed" choice gets the far-future marker. Anything that lands in
+   * the past is left for the sweep to drop and re-cover.
+   */
+  async function rescheduleUnlocks(previousMinutes, nextMinutes) {
+    if (previousMinutes === nextMinutes) return;
+    const now = Date.now();
+    let changed = false;
+
+    await Store.exclusive(async () => {
+      const data = await Store.get(["unlocked"]);
+      const unlocked = {};
+      for (const [key, stored] of Object.entries(data.unlocked || {})) {
+        const expiry = Number(stored);
+        let next;
+        if (nextMinutes === 0) {
+          next = Number.MAX_SAFE_INTEGER;
+        } else if (previousMinutes === 0 || !Number.isFinite(expiry) || expiry === Number.MAX_SAFE_INTEGER) {
+          next = now + nextMinutes * 60000;
+        } else {
+          next = expiry + (nextMinutes - previousMinutes) * 60000;
+        }
+        unlocked[key] = next;
+        if (next !== expiry) changed = true;
+      }
+      if (changed) await Store.set({ unlocked });
+    });
+
+    if (changed) await sweep();
   }
 
   function ensureAlarm() {

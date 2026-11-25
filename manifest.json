@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LockTab — Your Tabs, Your Eyes Only",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Lock any tab in one click with a 6-digit PIN. Private PINs per site, one-time recovery, zero cloud. Your tabs, your eyes only.",
   "minimum_chrome_version": "121",
   "icons": {
