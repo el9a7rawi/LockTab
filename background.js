@@ -21,6 +21,7 @@ if (typeof importScripts === "function") {
   const Store = global.LockTabStorage;
 
   const SWEEP_ALARM = "locktab-sweep";
+  const EXPIRY_ALARM = "locktab-expiry";
   const BADGE_COLOR = "#4f46e5";
   const BADGE_TEXT_COLOR = "#ffffff";
 
@@ -326,13 +327,10 @@ if (typeof importScripts === "function") {
       return;
     }
 
-    const tabs = await queryTabs({});
-    let count = 0;
-    for (const tab of tabs) {
-      /* The map is already maintained by onUpdated; avoid re-parsing URLs. */
-      const info = Core.normalizeUrl(tabUrlKey.get(tab.id) || tab.url);
-      if (info && Core.findRule(data.rules, info)) count += 1;
-    }
+    /* The badge must answer "how many sites are locked", not "how many open
+       tabs happen to match a rule". Counting tabs made the number grow when a
+       page was unlocked and locked again with several tabs on the same site. */
+    const count = Core.describeRules(data.rules).length;
 
     const text = count > 0 ? String(count) : "";
     await call((done) => api.action.setBadgeText({ text }, done)).catch(() => undefined);
@@ -397,9 +395,10 @@ if (typeof importScripts === "function") {
       if (accepted) {
         delete attempts[scope];
         const minutes = Core.clampAutoLock(data.settings.autoLockMinutes);
-        const expiresAt = minutes === 0 ? Number.MAX_SAFE_INTEGER : now + minutes * 60000;
+        const expiresAt = minutes === 0 ? Core.FOREVER : now + minutes * 60000;
         const unlocked = Object.assign({}, data.unlocked, { [info.urlKey]: expiresAt });
         await Store.set({ attempts, unlocked });
+        armExpiryAlarm().catch(() => undefined);
         return { ok: true, unlockedUntil: expiresAt };
       }
 
@@ -455,6 +454,7 @@ if (typeof importScripts === "function") {
     tabUrlKey.set(tabId, info.urlKey);
     const delivered = await pushPolicy(tabId);
     scheduleBadgeRefresh();
+    armExpiryAlarm().catch(() => undefined);
     if (!delivered) return { ok: false, error: "content_unavailable" };
     return { ok: true, urlKey: info.urlKey, host: info.host };
   }
@@ -487,6 +487,7 @@ if (typeof importScripts === "function") {
 
     await pushPolicy(tabId);
     scheduleBadgeRefresh();
+    armExpiryAlarm().catch(() => undefined);
     return { ok: true };
   }
 
@@ -634,6 +635,7 @@ if (typeof importScripts === "function") {
       });
 
       scheduleBadgeRefresh();
+      armExpiryAlarm().catch(() => undefined);
       /* Other locked tabs would stay visually covered until reloaded. */
       await broadcastPolicy();
       return { ok: true };
@@ -765,6 +767,7 @@ if (typeof importScripts === "function") {
         stringsCache.clear();
         await broadcastPolicy();
         scheduleBadgeRefresh();
+        armExpiryAlarm().catch(() => undefined);
         return { ok: true };
       default:
         return { ok: false, error: "unknown_message" };
@@ -838,6 +841,22 @@ if (typeof importScripts === "function") {
   /* --------------------------------------------------------------------------
      Tab lifecycle
      ------------------------------------------------------------------------ */
+  /** An unlock belongs to a URL, so it ends when no open tab holds that URL. */
+  async function pruneUnlocksForOpenTabs() {
+    const tabs = await queryTabs({});
+    const active = tabs
+      .map((tab) => Core.normalizeUrl(tab.url))
+      .filter(Boolean)
+      .map((info) => info.urlKey);
+    await Store.exclusive(async () => {
+      const data = await Store.get(["unlocked"]);
+      const pruned = Core.pruneUnlocked(data.unlocked, active);
+      if (Object.keys(pruned).length !== Object.keys(data.unlocked).length) {
+        await Store.set({ unlocked: pruned });
+      }
+    });
+  }
+
   api.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status === "loading" && tab.url) {
       const info = Core.normalizeUrl(tab.url);
@@ -852,6 +871,11 @@ if (typeof importScripts === "function") {
       /* A single-page app can change route without loading a document, so the
          content script that is already running needs the new verdict pushed. */
       pushPolicy(tabId).catch(() => undefined);
+      /* Navigating away is the end of an "until the tab closes" unlock just as
+         surely as closing the tab, otherwise reopening the page would be free. */
+      pruneUnlocksForOpenTabs()
+        .then(() => armExpiryAlarm())
+        .catch(() => undefined);
     }
 
     if (changeInfo.status === "complete") scheduleBadgeRefresh();
@@ -860,20 +884,8 @@ if (typeof importScripts === "function") {
   api.tabs.onRemoved.addListener((tabId) => {
     tabUrlKey.delete(tabId);
     styledTabs.delete(tabId);
-    queryTabs({})
-      .then(async (tabs) => {
-        const active = tabs
-          .map((tab) => Core.normalizeUrl(tab.url))
-          .filter(Boolean)
-          .map((info) => info.urlKey);
-        await Store.exclusive(async () => {
-          const data = await Store.get(["unlocked"]);
-          const pruned = Core.pruneUnlocked(data.unlocked, active);
-          if (Object.keys(pruned).length !== Object.keys(data.unlocked).length) {
-            await Store.set({ unlocked: pruned });
-          }
-        });
-      })
+    pruneUnlocksForOpenTabs()
+      .then(() => armExpiryAlarm())
       .catch(() => undefined);
     scheduleBadgeRefresh();
   });
@@ -947,8 +959,14 @@ if (typeof importScripts === "function") {
         const expiry = Number(stored);
         let next;
         if (nextMinutes === 0) {
-          next = Number.MAX_SAFE_INTEGER;
-        } else if (previousMinutes === 0 || !Number.isFinite(expiry) || expiry === Number.MAX_SAFE_INTEGER) {
+          /* An unlock that already expired must stay expired. Promoting it to
+             the far-future marker here would reopen a lock the timer closed. */
+          if (!Core.isUnlockActive(expiry, now)) {
+            changed = true;
+            continue;
+          }
+          next = Core.FOREVER;
+        } else if (previousMinutes === 0 || !Number.isFinite(expiry) || expiry === Core.FOREVER) {
           next = now + nextMinutes * 60000;
         } else {
           next = expiry + (nextMinutes - previousMinutes) * 60000;
@@ -960,6 +978,44 @@ if (typeof importScripts === "function") {
     });
 
     if (changed) await sweep();
+    await armExpiryAlarm();
+  }
+
+  /**
+   * The periodic sweep is a safety net, but a one-minute period can leave a
+   * page readable for almost a minute after its deadline. Arm a one-shot alarm
+   * for the nearest expiry so the gate closes when the timer actually ends.
+   */
+  async function armExpiryAlarmNow() {
+    if (!api.alarms) return;
+    const data = await Store.get(["unlocked"]);
+    const now = Date.now();
+    let nearest = Infinity;
+    for (const stored of Object.values(data.unlocked || {})) {
+      const expiry = Number(stored);
+      if (Number.isFinite(expiry) && expiry !== Core.FOREVER && expiry > now) {
+        nearest = Math.min(nearest, expiry);
+      }
+    }
+    if (!Number.isFinite(nearest)) {
+      if (api.alarms.clear) await call((done) => api.alarms.clear(EXPIRY_ALARM, done)).catch(() => undefined);
+      return;
+    }
+    /* alarms.create requires epoch milliseconds as a number, not a Date object.
+       A type mismatch is reported only through runtime.lastError and would leave
+       this one-shot alarm silently absent. */
+    const when = nearest;
+    await call((done) => api.alarms.create(EXPIRY_ALARM, { when }, done)).catch(() => undefined);
+  }
+
+  /* Creating an alarm with the same name replaces the previous one. Without a
+     queue, a slow read from an older unlock could overwrite a newer, earlier
+     deadline and keep that tab readable for minutes. */
+  let alarmTail = Promise.resolve();
+  function armExpiryAlarm() {
+    const run = alarmTail.then(armExpiryAlarmNow, armExpiryAlarmNow);
+    alarmTail = run.then(() => undefined, () => undefined);
+    return run;
   }
 
   function ensureAlarm() {
@@ -974,7 +1030,10 @@ if (typeof importScripts === "function") {
 
   if (api.alarms) {
     api.alarms.onAlarm.addListener((alarm) => {
-      if (alarm.name === SWEEP_ALARM) sweep().catch(() => undefined);
+      if (alarm.name !== SWEEP_ALARM && alarm.name !== EXPIRY_ALARM) return;
+      sweep()
+        .then(() => armExpiryAlarm())
+        .catch(() => undefined);
     });
   }
 
@@ -1020,6 +1079,7 @@ if (typeof importScripts === "function") {
     clearUnlocks()
       .then(() => {
         ensureAlarm();
+        armExpiryAlarm().catch(() => undefined);
         return refreshBadge();
       })
       .catch(() => undefined);

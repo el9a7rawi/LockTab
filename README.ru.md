@@ -19,7 +19,7 @@
   <a href="README.md">English</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ar.md">العربية</a> · <a href="README.zh-CN.md">中文（简体）</a>
 </h4>
 
-<h3 align="center">Download for your browser — click the icon</h3>
+<h3 align="center">Скачайте для своего браузера — нажмите значок</h3>
 
 <div align="center">
 
@@ -36,7 +36,7 @@
 
 <div align="center">
 
-| Without LockTab | With LockTab |
+| Без LockTab | С LockTab |
 |---|---|
 | Любой может прочитать открытую вкладку | Вкладка скрыта до ввода PIN-кода |
 | Один пароль для всех сайтов | Отдельный PIN для важных страниц |
@@ -45,7 +45,7 @@
 
 </div>
 
-undefined
+LockTab скрывает вкладку от того, кто садится за ваше устройство. Это не шифрование диска и не защита от скомпрометированного браузера или администратора, удалившего расширение.
 
 ---
 
@@ -59,43 +59,43 @@ undefined
 
 ## 3. Обзор интерфейса — все части расширения
 
-### 3.1 Header — everything in reach
+### 3.1 Заголовок — всё под рукой
 <p align="center"><img src="assets/screenshots/ru/sections/section-header.webp" width="400" alt="Header" /></p>
 
-The title, theme toggle, GitHub link and language picker share one compact row.
+Название, тема, язык и ссылка на GitHub занимают одну спокойную строку.
 
-### 3.2 One primary action
+### 3.2 Одно главное действие
 <p align="center"><img src="assets/screenshots/ru/sections/section-hero.webp" width="400" alt="Primary action" /></p>
 
-A single gradient button covers the active page. Temporary unlock and lock removal ask for the PIN first.
+Одна кнопка с градиентом скрывает активную страницу. Временная разблокировка и удаление требуют PIN.
 
-### 3.3 Tab status
+### 3.3 Состояние вкладки
 <p align="center"><img src="assets/screenshots/ru/sections/section-status.webp" width="400" alt="Tab status" /></p>
 
-A flat status plate shows whether the tab is locked, open, or open for a while.
+Плоская плашка показывает, заблокирована вкладка, открыта или открыта временно.
 
-### 3.4 First run — create your PIN
+### 3.4 Ввод PIN
 <p align="center"><img src="assets/screenshots/ru/sections/section-setup.webp" width="400" alt="PIN setup" /></p>
 
-Six boxes appear one after another, stop exactly at six, and centre the asterisk.
+Шесть полей появляются одно за другим, останавливаются на шестом и центрируют звёздочку.
 
-### 3.5 Recovery code shown once
+### 3.5 Код восстановления
 <p align="center"><img src="assets/screenshots/ru/sections/section-recovery.webp" width="400" alt="Recovery code" /></p>
 
-The code is displayed only at setup. Store it somewhere safe; a used code can never be replayed.
+Показывается один раз после настройки. Использованный код нельзя повторить.
 
-### 3.6 A PIN for one site
+### 3.6 Заблокированные сайты
 <p align="center"><img src="assets/screenshots/ru/sections/section-pin.webp" width="400" alt="Site PIN" /></p>
 
-A site PIN overrides the global one on that domain, so sensitive pages can stay separate.
+Пронумерованные строки перечисляют все домены. После пяти сайтов стрелки листают список.
 
-### 3.7 Locked sites
+### 3.7 Настройки
 <p align="center"><img src="assets/screenshots/ru/sections/section-sites.webp" width="400" alt="Locked sites" /></p>
 
-Numbered rows list every locked domain. Past five sites, arrows page through the list.
+Размытие в трёх уровнях, счётчик на значке, длительность разблокировки, тема и язык — в одном месте.
 
-### 3.8 Lock from anywhere
-The Alt+Shift+L shortcut locks the current tab without opening the popup.
+### 3.8 Поддержка
+LockTab бесплатен и с открытым кодом. PayPal и выделенный InstaPay помогают ему оставаться независимым.
 
 ### 3.9 Настройки
 <p align="center"><img src="assets/screenshots/ru/sections/section-settings.webp" width="400" alt="Settings" /></p>
@@ -129,19 +129,19 @@ PayPal и InstaPay помогают сохранять независимост�
 
 ## 4. Что защищает блокировка
 
-1. **A 6-digit PIN.** Stored as a PBKDF2 hash with a unique 16-byte salt; the plaintext is never written to disk.
-2. **A closed gate.** The overlay runs in a closed shadow root, traps focus and blocks scrolling underneath.
-3. **A shared counter.** Wrong guesses escalate through 30, 60, 300 and 900 second lock-outs; switching tabs does not reset it.
-4. **One-time recovery.** The code is shown once, consumed once, and clears every lock.
+1. PIN-код из 6 цифр. Хранится как хеш PBKDF2 с уникальной солью; открытый код никогда не записывается на диск.
+2. Закрытая перекрышка. Блокировка использует закрытый shadow root, удерживает фокус внутри и блокирует прокрутку страницы.
+3. Общий счётчик. Ошибки увеличивают задержку до 30, 60, 300 и 900 секунд; переключение вкладок счётчик не сбрасывает.
+4. Одноразовое восстановление. Код показывается один раз, используется один раз и снимает все блокировки.
 
 ---
 
 ## 5. Установка (без сборки)
 
-1. Open `chrome://extensions`.
-2. Enable **Developer mode**.
-3. Click **Load unpacked** and select the extracted release folder.
-4. Click the LockTab icon in the toolbar.
+1. Откройте `chrome://extensions`.
+2. Включите **Режим разработчика**.
+3. Нажмите **Загрузить распакованное расширение** и выберите извлечённую папку.
+4. Нажмите на значок LockTab на панели инструментов.
 
 Конфиденциальность описана в разделе 7 и в `privacy.html`.
 

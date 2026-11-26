@@ -19,7 +19,7 @@
   <a href="README.md">English</a> · <a href="README.es.md">Español</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.ar.md">العربية</a> · <a href="README.zh-CN.md">中文（简体）</a>
 </h4>
 
-<h3 align="center">Download for your browser — click the icon</h3>
+<h3 align="center">Téléchargez pour votre navigateur — cliquez sur l'icône</h3>
 
 <div align="center">
 
@@ -36,16 +36,16 @@ Chrome et les navigateurs Chromium sont la cible principale. Firefox 121+ est pr
 
 <div align="center">
 
-| Without LockTab | With LockTab |
+| Sans LockTab | Avec LockTab |
 |---|---|
 | N'importe qui peut lire un onglet ouvert | Votre onglet est masqué jusqu'à la saisie du code |
 | Un mot de passe partagé pour tous les sites | Un code dédié aux pages qui comptent |
-| Perdre le code, c’est perdre accès | Un code de récupération à usage unique efface tout |
+| Perdre le code, c’est perdre l’accès | Un code de récupération à usage unique efface tout |
 | Des extensions qui envoient vos données | Entièrement hors ligne, sans compte ni suivi |
 
 </div>
 
-undefined
+LockTab masque un onglet de toute personne qui s'assoit devant votre appareil. Ce n'est pas un chiffrement de disque et ne protège pas contre un navigateur compromis ou un administrateur qui retire l'extension.
 
 ---
 
@@ -59,43 +59,43 @@ undefined
 
 ## 3. Visite de l'interface — toutes les parties de l'extension
 
-### 3.1 Header — everything in reach
+### 3.1 En-tête — tout à portée
 <p align="center"><img src="assets/screenshots/fr/sections/section-header.webp" width="400" alt="Header" /></p>
 
-The title, theme toggle, GitHub link and language picker share one compact row.
+Le titre, le thème, la langue et le lien GitHub partagent une même rangée discrète.
 
-### 3.2 One primary action
+### 3.2 Une action principale
 <p align="center"><img src="assets/screenshots/fr/sections/section-hero.webp" width="400" alt="Primary action" /></p>
 
-A single gradient button covers the active page. Temporary unlock and lock removal ask for the PIN first.
+Un seul bouton dégradé masque la page active. Le déverrouillage temporaire et la suppression demandent le code.
 
-### 3.3 Tab status
+### 3.3 État de l'onglet
 <p align="center"><img src="assets/screenshots/fr/sections/section-status.webp" width="400" alt="Tab status" /></p>
 
-A flat status plate shows whether the tab is locked, open, or open for a while.
+Une plaque plate indique si l'onglet est verrouillé, ouvert ou ouvert temporairement.
 
-### 3.4 First run — create your PIN
+### 3.4 Saisie du code
 <p align="center"><img src="assets/screenshots/fr/sections/section-setup.webp" width="400" alt="PIN setup" /></p>
 
-Six boxes appear one after another, stop exactly at six, and centre the asterisk.
+Six cases apparaissent les unes après les autres, s'arrêtent à six et centrent l'astérisque.
 
-### 3.5 Recovery code shown once
+### 3.5 Code de récupération
 <p align="center"><img src="assets/screenshots/fr/sections/section-recovery.webp" width="400" alt="Recovery code" /></p>
 
-The code is displayed only at setup. Store it somewhere safe; a used code can never be replayed.
+Affiché une seule fois après la configuration. Un code déjà utilisé ne peut jamais être rejoué.
 
-### 3.6 A PIN for one site
+### 3.6 Sites verrouillés
 <p align="center"><img src="assets/screenshots/fr/sections/section-pin.webp" width="400" alt="Site PIN" /></p>
 
-A site PIN overrides the global one on that domain, so sensitive pages can stay separate.
+Des lignes numérotées listent chaque domaine. Au-delà de cinq sites, des flèches parcourent la liste.
 
-### 3.7 Locked sites
+### 3.7 Réglages
 <p align="center"><img src="assets/screenshots/fr/sections/section-sites.webp" width="400" alt="Locked sites" /></p>
 
-Numbered rows list every locked domain. Past five sites, arrows page through the list.
+Flou sur trois niveaux, badge, durée de déverrouillage, thème et langue — au même endroit.
 
-### 3.8 Lock from anywhere
-The Alt+Shift+L shortcut locks the current tab without opening the popup.
+### 3.8 Soutien
+LockTab est gratuit et open source. PayPal et un InstaPay mis en avant le gardent indépendant.
 
 ### 3.9 Paramètres
 <p align="center"><img src="assets/screenshots/fr/sections/section-settings.webp" width="400" alt="Settings" /></p>
@@ -129,19 +129,19 @@ PayPal et InstaPay aident à garder le projet indépendant.
 
 ## 4. Ce que protège le verrou
 
-1. **A 6-digit PIN.** Stored as a PBKDF2 hash with a unique 16-byte salt; the plaintext is never written to disk.
-2. **A closed gate.** The overlay runs in a closed shadow root, traps focus and blocks scrolling underneath.
-3. **A shared counter.** Wrong guesses escalate through 30, 60, 300 and 900 second lock-outs; switching tabs does not reset it.
-4. **One-time recovery.** The code is shown once, consumed once, and clears every lock.
+1. Un code à 6 chiffres. Stocké comme hachage PBKDF2 avec un sel unique ; le code en clair nest jamais écrit sur le disque.
+2. Une couverture fermée. Le volet utilise une shadow root fermée, garde le focus à lintérieur et bloque le défilement de la page.
+3. Un compteur partagé. Les erreurs passent à 30, 60, 300 et 900 secondes ; changer donglet ne réinitialise pas le compteur.
+4. Une récupération à usage unique. Le code saffiche une fois, est consommé une fois et efface tous les verrous.
 
 ---
 
 ## 5. Installation (non empaquetée)
 
-1. Open `chrome://extensions`.
-2. Enable **Developer mode**.
-3. Click **Load unpacked** and select the extracted release folder.
-4. Click the LockTab icon in the toolbar.
+1. Ouvrez `chrome://extensions`.
+2. Activez le **mode développeur**.
+3. Cliquez sur **Charger l'extension non empaquetée** et sélectionnez le dossier extrait.
+4. Cliquez sur l'icône LockTab dans la barre d'outils.
 
 La confidentialité est détaillée à la section 7 et dans `privacy.html`.
 

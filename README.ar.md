@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/banner/locktab-banner-ar.webp" width="100%" alt="LockTab — تبويباتك، عينك فقط" />
+  <img src="assets/banner/locktab-banner-ar.webp" width="100%" alt="LockTab — تبويباتك، عيونك فقط" />
 </p>
 
-<h1 align="center">LockTab — تبويباتك، عينك فقط</h1>
+<h1 align="center">LockTab — تبويباتك، عيونك فقط</h1>
 
 <p align="center">اقفل أي تبويب بنقرة واحدة برمز من ٦ أرقام. خصّص رمزاً لموقع بعينه، واحصل على رمز استعادة لمرة واحدة، واترك جهازك وأنت تعلم أن أحداً لا يستطيع قراءة ما على شاشتك. ثماني لغات، ودعم RTL كامل، ولا أي اتصال بالإنترنت.</p>
 
@@ -19,7 +19,7 @@
   <a href="README.md">English</a> · <a href="README.es.md">Español</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh-CN.md">中文（简体）</a>
 </h4>
 
-<h3 align="center">Download for your browser — click the icon</h3>
+<h3 align="center">حمّل الإضافة لمتصفحك — انقر الأيقونة</h3>
 
 <div align="center">
 
@@ -36,7 +36,7 @@ Chrome ومتصفحات Chromium هي الهدف الأساسي. يدعم Firefo
 
 <div align="center">
 
-| Without LockTab | With LockTab |
+| بلا LockTab | مع LockTab |
 |---|---|
 | أي شخص يستطيع قراءة تبويب مفتوح | تبويبك مغطى حتى يُدخل الرمز |
 | كلمة مرور واحدة لكل المواقع | رمز خاص بالصفحات التي تهمك |
@@ -92,10 +92,10 @@ Chrome ومتصفحات Chromium هي الهدف الأساسي. يدعم Firefo
 ### 3.7 المواقع المقفلة
 <p align="center"><img src="assets/screenshots/ar/sections/section-sites.webp" width="400" alt="المواقع المقفلة" /></p>
 
-صفوف مرقّمة تعرض كل دومين مقفل. بعد خمسة مواقع تظهر أسهم للتنقل.
+صفوف مرقّمة تعرض كل نطاق مقفل. بعد خمسة مواقع تظهر أسهم للتنقل.
 
 ### 3.8 القفل من أي مكان
-اختصار Alt+Shift+L يقفل التبويب الحالي دون فتح الـ popup.
+اختصار الاختصار المضبوط يقفل التبويب الحالي دون فتح النافذة المنبثقة.
 
 ### 3.9 الإعدادات
 <p align="center"><img src="assets/screenshots/ar/sections/section-settings.webp" width="400" alt="الإعدادات" /></p>
@@ -115,7 +115,7 @@ Chrome ومتصفحات Chromium هي الهدف الأساسي. يدعم Firefo
 ### 3.12 إدخال الرمز على شاشة القفل
 <p align="center"><img src="assets/screenshots/ar/lockscreen.webp" width="600" alt="إدخال الرمز" /></p>
 
-الحاجز shadow root مغلق: يبقى التركيز داخله، ولا تستطيع الصفحة التمرير، والخطأ الخاطئ يرفع مدة الحظر.
+الحاجز shadow root مغلق: يبقى التركيز داخله، ولا تستطيع الصفحة التمرير، والمحاولة الخاطئة ترفع مدة الحظر.
 
 ### 3.13 الحالة الفارغة
 <p align="center"><img src="assets/screenshots/ar/sections/section-empty.webp" width="400" alt="الحالة الفارغة" /></p>
@@ -129,19 +129,19 @@ LockTab مجاني ومفتوح المصدر. PayPal وInstaPay يساعدان �
 
 ## 4. ما الذي يحميه القفل
 
-1. **A 6-digit PIN.** Stored as a PBKDF2 hash with a unique 16-byte salt; the plaintext is never written to disk.
-2. **A closed gate.** The overlay runs in a closed shadow root, traps focus and blocks scrolling underneath.
-3. **A shared counter.** Wrong guesses escalate through 30, 60, 300 and 900 second lock-outs; switching tabs does not reset it.
-4. **One-time recovery.** The code is shown once, consumed once, and clears every lock.
+1. رمز من ٦ أرقام. يُخزَّن كقيمة مُجزّأة عبر PBKDF2 مع ملح فريد، ولا يُكتب الرمز الأصلي على القرص أبداً.
+2. حاجز مغلق. تعمل الطبقة داخل shadow root مغلق، وتبقي التركيز داخلها وتمنع تمرير الصفحة.
+3. عداد مشترك. تتصاعد المحاولات الخاطئة إلى ٣٠ و٦٠ و٣٠٠ و٩٠٠ ثانية، ولا يؤدي تغيير التبويب إلى إعادة ضبطه.
+4. استعادة لمرة واحدة. يُعرض الرمز مرة واحدة ويُستهلك مرة واحدة ويمسح كل الأقفال.
 
 ---
 
 ## 5. التثبيت (غير مجمّع)
 
-1. Open `chrome://extensions`.
-2. Enable **Developer mode**.
-3. Click **Load unpacked** and select the extracted release folder.
-4. Click the LockTab icon in the toolbar.
+1. افتح `chrome://extensions`.
+2. فعّل **وضع المطوّر**.
+3. انقر **تحميل غير مجمّع** واختر مجلد الإصدار المستخرج.
+4. انقر أيقونة LockTab في شريط الأدوات.
 
 الخصوصية موضحة في القسم ٧ أدناه وفي `privacy.html`.
 

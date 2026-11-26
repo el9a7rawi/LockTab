@@ -106,6 +106,7 @@
   "lockedSitesEmpty": "还没有锁定的网站。",
   "lockShortcutHint": "或随时按 {key}。",
   "shortcutLabel": "锁定快捷键",
+  "shortcutNone": "未设置",
   "shortcutEdit": "更改",
   "recoveryPlaceholder": "XXXX-XXXX-XXXX-XXXX-XXXX",
   "sitePrevAria": "上一页网站",

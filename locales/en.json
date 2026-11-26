@@ -106,6 +106,7 @@
   "lockedSitesEmpty": "No sites locked yet.",
   "lockShortcutHint": "Or press {key} from anywhere.",
   "shortcutLabel": "Lock shortcut",
+  "shortcutNone": "Not set",
   "shortcutEdit": "Change",
   "recoveryPlaceholder": "XXXX-XXXX-XXXX-XXXX-XXXX",
   "sitePrevAria": "Previous sites",

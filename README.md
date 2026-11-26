@@ -95,7 +95,7 @@ A site PIN overrides the global one on that domain, so sensitive pages can stay 
 Numbered rows list every locked domain. Past five sites, arrows page through the list.
 
 ### 3.8 Lock from anywhere
-The Alt+Shift+L shortcut locks the current tab without opening the popup.
+The the configured shortcut shortcut locks the current tab without opening the popup.
 
 ### 3.9 Settings
 <p align="center"><img src="assets/screenshots/en/sections/section-settings.webp" width="400" alt="Settings" /></p>
@@ -131,10 +131,10 @@ LockTab is free and open source. PayPal and a highlighted InstaPay option help k
 
 ## 4. What the lock protects
 
-1. **A 6-digit PIN.** Stored as a PBKDF2 hash with a unique 16-byte salt; the plaintext is never written to disk.
-2. **A closed gate.** The overlay runs in a closed shadow root, traps focus and blocks scrolling underneath.
-3. **A shared counter.** Wrong guesses escalate through 30, 60, 300 and 900 second lock-outs; switching tabs does not reset it.
-4. **One-time recovery.** The code is shown once, consumed once, and clears every lock.
+1. A 6-digit PIN. Stored as a PBKDF2 hash with a unique 16-byte salt; the plaintext is never written to disk.
+2. A closed gate. The overlay runs in a closed shadow root, traps focus and blocks scrolling underneath.
+3. A shared counter. Wrong guesses escalate through 30, 60, 300 and 900 second lock-outs; switching tabs does not reset it.
+4. One-time recovery. The code is shown once, consumed once, and clears every lock.
 
 ---
 

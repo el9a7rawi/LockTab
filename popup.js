@@ -328,13 +328,20 @@
   }
 
   function isNeverExpiring(value) {
-    return value === Number.MAX_SAFE_INTEGER || !Number.isFinite(value);
+    return value === Core.FOREVER;
   }
 
   function tickStatus() {
     if (!view || view.state !== "temp" || !statusTemplate || isNeverExpiring(view.unlockedUntil)) return;
     const parts = statusTemplate.split("{time}");
     const left = Math.max(0, Math.ceil((view.unlockedUntil - Date.now()) / 1000));
+    if (left === 0) {
+      /* Stop showing "0:00" while the background sweep is still pending, but
+         never tear down a PIN dialog the user is currently typing into. */
+      stopStatusTimer();
+      if (!formOpen()) refresh().catch(() => undefined);
+      return;
+    }
     el.stateHint.textContent = parts[0] + Core.formatDuration(left) + (parts[1] || "");
   }
 
@@ -347,7 +354,7 @@
   }
 
   function formatUnlockTime(expiresAt) {
-    if (!expiresAt || expiresAt === Number.MAX_SAFE_INTEGER) return I18n.t("autoLockNever");
+    if (!expiresAt || expiresAt === Core.FOREVER) return I18n.t("autoLockNever");
     return Core.formatDuration(Math.ceil((expiresAt - Date.now()) / 1000));
   }
 
@@ -524,9 +531,36 @@
   /* --------------------------------------------------------------------------
      Selects
      ------------------------------------------------------------------------ */
-  function renderShortcut() {
-    el.shortcutValue.textContent = Core.LOCK_SHORTCUT;
-    el.lockShortcutHint.textContent = I18n.t("lockShortcutHint", { key: Core.LOCK_SHORTCUT });
+  async function renderShortcut() {
+    /* The suggested key in the manifest is only a default. Chrome lets the user
+       rebind it, so the label must show the binding that is actually installed. */
+    let key = Core.LOCK_SHORTCUT;
+    try {
+      const commands = chrome.commands && typeof chrome.commands.getAll === "function"
+        ? await new Promise((resolve) => {
+            /* Firefox's chrome alias is callback-based; Chrome also accepts the
+               callback form, so this works in both without a feature test. */
+            let settled = false;
+            const done = (list) => {
+              if (settled) return;
+              settled = true;
+              resolve(list || []);
+            };
+            try {
+              const result = chrome.commands.getAll(done);
+              if (result && typeof result.then === "function") result.then(done, () => done([]));
+            } catch (_error) {
+              done([]);
+            }
+          })
+        : [];
+      const lock = commands.find((command) => command.name === "lock-now");
+      if (lock) key = lock.shortcut || I18n.t("shortcutNone");
+    } catch (_error) {
+      key = I18n.t("shortcutNone");
+    }
+    el.shortcutValue.textContent = key;
+    el.lockShortcutHint.textContent = I18n.t("lockShortcutHint", { key });
   }
 
   function buildSelects() {
@@ -706,7 +740,12 @@
        guessing when that asynchronous write has finished. */
     if (globalThis.chrome && chrome.storage && chrome.storage.onChanged) {
       chrome.storage.onChanged.addListener((changes, areaName) => {
-        if (areaName !== "local" || !changes.unlocked || !view || !view.urlKey) return;
+        if (areaName !== "local" || !view || promptResolve) return;
+        if (changes.rules) {
+          if (!formOpen()) refresh().catch(() => undefined);
+          return;
+        }
+        if (!changes.unlocked || !view.urlKey) return;
         const table = changes.unlocked.newValue || {};
         view.unlockedUntil = table[view.urlKey] || 0;
         if (view.hasRule) view.state = view.unlockedUntil ? "temp" : "locked";
@@ -902,10 +941,26 @@
     });
   }
 
+  function formOpen() {
+    return !el.promptField.hidden || !el.sitePinForm.hidden || !el.changePinForm.hidden;
+  }
+
+  /* Focus whichever PIN row is actually on screen. The first-run row is hidden
+     for an established account, so focusing it unconditionally typed into a
+     detached element and forced a mouse click before the first digit. Called at
+     boot only: a later refresh must not steal focus from a form being typed. */
+  function focusVisibleField() {
+    if (!el.promptField.hidden) fields.promptPin.focus();
+    else if (!el.sitePinForm.hidden) {
+      (el.sitePinCurrentWrap.hidden ? fields.sitePinNew : fields.sitePinCurrent).focus();
+    } else if (!el.changePinForm.hidden) fields.changeCurrent.focus();
+    else if (!el.setupCard.hidden) fields.setupPin.focus();
+  }
+
   async function boot() {
     await Theme.ready;
     await I18n.init();
-    renderShortcut();
+    await renderShortcut();
     buildSelects();
     buildFields();
     applyThemeGlyph();
@@ -918,7 +973,7 @@
     tabId = tab ? tab.id : null;
     bind();
     await refresh();
-    fields.setupPin.focus();
+    focusVisibleField();
   }
 
   boot().catch(() => showFeedback(I18n.t("errorGeneric")));

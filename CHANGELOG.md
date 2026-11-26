@@ -6,6 +6,18 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.6] - 2026-11-26
+
+### Fixed
+
+- The toolbar badge counts locked sites, not matching open tabs, so unlocking and re-locking a page no longer inflates the number.
+- A one-shot alarm is armed for the nearest unlock deadline; the minute-long sweep remains only as a fallback, so a tab is covered when the timer actually ends rather than up to a minute later.
+- The shortcut shown in the popup now comes from the installed Chrome binding instead of the manifest's suggested default, and shows an unassigned state when the user removed the shortcut.
+- The visible PIN field receives focus when the popup opens, so typing digits works without clicking a box first.
+- An unlock that had already expired can no longer be revived by switching the setting to **Until closed**.
+- A non-digit character or non-numeric paste is cleared from a PIN box so the display always matches the stored digits.
+- The popup refreshes when locked-site rules change while it is open, and its countdown no longer freezes at `0:00` while the background sweep is pending.
+
 ## [1.0.5] - 2026-11-25
 
 ### Fixed
@@ -101,7 +113,7 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 - Remove the redundant `activeTab` permission and the unused fallback lock page.
 - Cap PBKDF2 iteration counts read from storage.
-- Give the extension a single production voice: "Your tabs. Your eyes only." across the manifest, the lock screen and all eight locale bundles.
+- Use one consistent product voice across the manifest, the lock screen and all eight locale bundles.
 - Rewrite all eight READMEs in the reference release format with localized banners, six badges, browser icons and an eight-section tour.
 - Add round transparent corners to every banner and interface capture, and a localized social post for English and Arabic.
 - Add CI and tag-driven release workflows that publish five browser archives with SHA-256 checksums and no governance or development files.
@@ -131,7 +143,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - The attempt counter is shared across all sites when the global PIN is used,
   so switching tabs cannot reset the lock-out ladder.
 
-[Unreleased]: https://github.com/el9a7rawi/LockTab/compare/v1.0.5...HEAD
+[Unreleased]: https://github.com/el9a7rawi/LockTab/compare/v1.0.6...HEAD
+[1.0.6]: https://github.com/el9a7rawi/LockTab/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/el9a7rawi/LockTab/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/el9a7rawi/LockTab/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/el9a7rawi/LockTab/compare/v1.0.2...v1.0.3

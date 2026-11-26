@@ -106,6 +106,7 @@
   "lockedSitesEmpty": "Aucun site verrouillé pour l'instant.",
   "lockShortcutHint": "Ou appuyez sur {key} depuis n'importe où.",
   "shortcutLabel": "Raccourci de verrouillage",
+  "shortcutNone": "Non défini",
   "shortcutEdit": "Modifier",
   "recoveryPlaceholder": "XXXX-XXXX-XXXX-XXXX-XXXX",
   "sitePrevAria": "Sites précédents",

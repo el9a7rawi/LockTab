@@ -108,6 +108,7 @@
   "lockedSitesEmpty": "Пока нет заблокированных сайтов.",
   "lockShortcutHint": "Или нажмите {key} в любом месте.",
   "shortcutLabel": "Горячая клавиша блокировки",
+  "shortcutNone": "Не задано",
   "shortcutEdit": "Изменить",
   "recoveryPlaceholder": "XXXX-XXXX-XXXX-XXXX-XXXX",
   "sitePrevAria": "Предыдущие сайты",

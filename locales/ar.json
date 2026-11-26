@@ -1,7 +1,7 @@
 {
-  "docTitle": "LockTab — تبويباتك، عينك فقط",
+  "docTitle": "LockTab — تبويباتك، عيونك فقط",
   "appTitle": "LockTab",
-  "subtitle": "تبويباتك، عينك فقط.",
+  "subtitle": "تبويباتك، عيونك فقط.",
   "githubAria": "LockTab على GitHub",
   "githubTitle": "شاهد المشروع على GitHub",
   "themeToDark": "التبديل إلى الوضع الداكن",
@@ -32,7 +32,7 @@
   "languageAuto": "حسب المتصفح",
   "pinChangeSite": "تغيير رمز هذا الموقع",
   "setupTitle": "أنشئ رمزك السري",
-  "setupHint": "٦ أرقام. يُحفظ كـ hash، لا كنص أبداً.",
+  "setupHint": "٦ أرقام. يُحفظ الرمز كقيمة مُجزّأة، لا كنص أبداً.",
   "pinLabel": "الرمز السري",
   "primaryPinLabel": "الرمز الأساسي",
   "confirmLabel": "أعد الرمز",
@@ -110,13 +110,14 @@
   "lockedSitesEmpty": "لا توجد مواقع مقفلة بعد.",
   "lockShortcutHint": "أو اضغط {key} من أي مكان.",
   "shortcutLabel": "اختصار القفل",
+  "shortcutNone": "غير محدد",
   "shortcutEdit": "تغيير",
   "recoveryPlaceholder": "XXXX-XXXX-XXXX-XXXX-XXXX",
   "sitePrevAria": "المواقع السابقة",
   "siteNextAria": "المواقع التالية",
   "sitePage": "{n} من {total}",
-  "unsupportedTitle": "صفحة النظام",
+  "unsupportedTitle": "صفحة المتصفح",
   "unsupportedHint": "هذه صفحة تابعة للمتصفح، ولا يمكن لـ LockTab تغطيتها.",
   "resetConfirmTitle": "مسح كل شيء؟",
-  "errorContentUnavailable": "تحتاج هذه التبويبة إلى إعادة تحميل قبل ظهور القفل. أعد تحميلها ثم حاول مرة أخرى."
+  "errorContentUnavailable": "تحتاج هذه التبويب إلى إعادة تحميل قبل ظهور القفل. أعد تحميلها ثم حاول مرة أخرى."
 }

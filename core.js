@@ -12,6 +12,10 @@
   const PIN_MIN = 6;
   const PIN_MAX = 6;
 
+  /* One representation for "no deadline": a plain number survives storage and
+     JSON, unlike Infinity, and is far beyond any real clock value. */
+  const FOREVER = Number.MAX_SAFE_INTEGER;
+
   /* I and O are absent alongside 0 and 1 so a code read off a screen cannot be
      mistyped into a different valid code. */
   const RECOVERY_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -272,10 +276,10 @@
     return hours > 0 ? hours + ":" + pad(minutes) + ":" + pad(rest) : minutes + ":" + pad(rest);
   }
 
-  /** True while a temporary unlock is valid. A far-future expiry means "until restart". */
+  /** True while a temporary unlock is valid. The far-future marker means "until the tab closes". */
   function isUnlockActive(expiresAt, now) {
     if (!expiresAt) return false;
-    if (expiresAt === Infinity) return true;
+    if (expiresAt === FOREVER) return true;
     return Number(expiresAt) > (Number(now) || Date.now());
   }
 
@@ -368,6 +372,7 @@
     remainingAttempts,
     clampAutoLock,
     otpBoxCount,
+    FOREVER,
     clampBlur,
     matchLocale,
     isRtlLocale,

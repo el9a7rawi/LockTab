@@ -300,6 +300,13 @@
       shadowObserver = null;
     }
     document.removeEventListener("visibilitychange", refreshBlur);
+    document.removeEventListener("visibilitychange", focusVisiblePin);
+    if (globalThis.removeEventListener) globalThis.removeEventListener("focus", focusVisiblePin, true);
+    for (const entry of guardedListeners) {
+      if (globalThis.removeEventListener) globalThis.removeEventListener(entry.type, entry.handler, true);
+    }
+    guardedListeners = [];
+    gateSubmit = null;
     if (pinField) {
       pinField.destroy();
       pinField = null;
@@ -343,6 +350,65 @@
   function refreshBlur() {
     lastBlurValue = "";
     applyBlur();
+  }
+
+  /** Returning to the tab should land in the PIN row, not on the page behind it. */
+  function focusVisiblePin() {
+    if (!shadow || !pinField || document.hidden) return;
+    const active = shadow.activeElement;
+    if (active && active.id === "locktab-recovery-code") return;
+    pinField.focus();
+  }
+
+  let gateSubmit = null;
+  let guardedListeners = [];
+
+  function gateActive() {
+    return Boolean(host && shadow && policy && policy.locked);
+  }
+
+  function fromGate(event) {
+    const path = event.composedPath ? event.composedPath() : [];
+    return path.includes(shadow) || path.includes(host) || event.target === host;
+  }
+
+  /**
+   * Focus alone cannot protect the page: a script such as a spreadsheet can
+   * keep focus in its own cell while the gate is visible. Intercept input in
+   * the capture phase instead, and feed digits to the PIN row ourselves.
+   */
+  function guardInput(event) {
+    if (!gateActive() || fromGate(event)) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (event.type !== "keydown" || !pinField) return;
+    if (/^[0-9]$/.test(event.key)) {
+      pinField.setValue(pinField.getValue() + event.key);
+    } else if (event.key === "Backspace") {
+      pinField.setValue(pinField.getValue().slice(0, -1));
+    } else if (event.key === "Enter") {
+      gateSubmit && gateSubmit();
+    }
+  }
+
+  function installInputGuard() {
+    if (typeof globalThis.addEventListener !== "function") return;
+    const types = [
+      "keydown", "keyup", "keypress", "beforeinput", "input", "paste", "cut", "copy",
+      "compositionstart", "compositionupdate", "compositionend", "contextmenu",
+      "mousedown", "mouseup", "click", "wheel", "touchstart", "touchmove", "touchend",
+    ];
+    for (const type of types) {
+      globalThis.addEventListener(type, guardInput, true);
+      guardedListeners.push({ type, handler: guardInput });
+    }
+    /* Pull focus back if the page manages to steal it while the gate is up. */
+    globalThis.addEventListener("focusin", pullFocus, true);
+    guardedListeners.push({ type: "focusin", handler: pullFocus });
+  }
+
+  function pullFocus() {
+    if (gateActive()) requestAnimationFrame(focusVisiblePin);
   }
 
   /**
@@ -533,6 +599,7 @@
       setTimeout(() => card.classList.remove("shake"), 220);
     };
 
+    gateSubmit = () => submit.click();
     submit.addEventListener("click", attempt);
     recover.addEventListener("click", renderRecoveryView);
 
@@ -551,10 +618,11 @@
       setMeta(meta, t("attemptsLabel") + ": " + policy.remaining, "warn");
     }
 
-    setTimeout(() => pinField && pinField.focus(), 30);
+    requestAnimationFrame(focusVisiblePin);
   }
 
   function renderRecoveryView() {
+    gateSubmit = null;
     if (!shadow) return;
     const card = shadow.querySelector(".card");
     if (!card) return;
@@ -644,6 +712,10 @@
     shadow.append(styleNode, wrapNode);
     applyBlur();
 
+    /* A click anywhere on the gate should put the caret back in the PIN row,
+       not leave it on the covered page. */
+    host.addEventListener("mouseup", () => requestAnimationFrame(focusVisiblePin));
+
     /* The host is created once, but every render rebuilds the card. Attaching
        these here keeps keystrokes inside the gate without stacking a fresh
        listener set with each view switch. */
@@ -671,8 +743,13 @@
     );
 
     document.addEventListener("visibilitychange", refreshBlur);
+    document.addEventListener("visibilitychange", focusVisiblePin);
+    /* A focus set while the tab is in the background is discarded by the
+       browser; re-apply it when the user actually returns. */
+    if (globalThis.addEventListener) globalThis.addEventListener("focus", focusVisiblePin, true);
     lastFocus = document.activeElement;
     lockPageScroll();
+    installInputGuard();
     attachToDocument();
     renderPinView();
   }

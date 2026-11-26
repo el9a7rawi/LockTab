@@ -67,10 +67,16 @@
 
       input.addEventListener("input", () => {
         const digit = input.value.replace(/\D/g, "").slice(-1);
-        if (!digit) return;
+        if (!digit) {
+          /* The field is text-only because password bullets break Arabic.
+             Restore the displayed value from state: clearing it would hide a
+             digit that is still part of the PIN. */
+          input.value = digits[index] ? "*" : "";
+          return;
+        }
         digits[index] = digit;
         digits = digits.slice(0, max);
-        render(index + 1, index);
+        render(index + 1);
         onChange(getValue());
       });
 
@@ -80,14 +86,14 @@
           if (input.value) digits.splice(index, 1);
           else if (index >= digits.length && digits.length) digits.pop();
           else if (digits.length) digits.splice(index, 1);
-          render(Math.max(0, index - 1), Math.max(0, index - 1));
+          render(Math.max(0, index - 1));
           onChange(getValue());
           return;
         }
         if (event.key === "Delete") {
           event.preventDefault();
           digits.splice(index, 1);
-          render(index, index);
+          render(index);
           onChange(getValue());
           return;
         }
@@ -108,19 +114,22 @@
       });
 
       input.addEventListener("paste", (event) => {
+        event.preventDefault();
         const text = (event.clipboardData || global.clipboardData).getData("text");
         const clean = text.replace(/\D/g, "").slice(0, max);
-        if (!clean) return;
-        event.preventDefault();
+        if (!clean) {
+          input.value = digits[index] ? "*" : "";
+          return;
+        }
         digits = clean.split("");
-        render(Math.min(digits.length, max - 1), digits.length - 1);
+        render(Math.min(digits.length, max - 1));
         onChange(getValue());
       });
 
       return input;
     }
 
-    function render(focusIndex, changedIndex) {
+    function render(focusIndex) {
       const count = visibleCount();
       if (!wrap) {
         wrap = document.createElement("div");
@@ -231,3 +240,4 @@
 
   global.LockTabPin = { create, createMatchIndicator };
 })(typeof globalThis !== "undefined" ? globalThis : self);
+
